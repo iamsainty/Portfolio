@@ -207,6 +207,27 @@ body {
   box-shadow: var(--box-shadow);
   transition: box-shadow var(--transition-duration) ease, transform var(--transition-duration) ease;
 }
+/* Project Preview Styles */
+.project-preview {
+  position: relative;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid var(--primary-color); /* Add a border for a cleaner look */
+  transition: transform var(--transition-duration) ease;
+}
+
+.project-preview img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border-radius: 8px;
+  transition: transform var(--transition-duration) ease;
+}
+
+.project-preview:hover {
+  transform: scale(1.05); /* Adjust the scale for a subtle zoom effect on hover */
+}
+
 
 .project-item:hover,
 .skill-item:hover,
