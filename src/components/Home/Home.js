@@ -6,22 +6,21 @@ import Experience from './Experience';
 import Education from './Education';
 import Certifications from './Certifications';
 import Contact from './Contact';
-import Footer from './Footer';
 
-export default function Home() {
+export default function Home(props) {
+    let mode=props.mode;
 
   return (
     <>
     <div className='container'>
-      <Introduction/>
-      <Skills/>
-      <Projects/>
-      <Experience/>
-      <Education/>
-      <Certifications/>
-      <Contact/>
+      <Introduction mode={mode}/>
+      <Skills mode={mode}/>
+      <Projects mode={mode}/>
+      <Experience mode={mode}/>
+      <Education mode={mode}/>
+      <Certifications mode={mode}/>
+      <Contact mode={mode}/>
     </div>
-      <Footer/>
     </>
   );
 }

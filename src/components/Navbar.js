@@ -1,15 +1,13 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar() {
+export default function Navbar(props) {
+
     return (
         <div>
-            <nav className="navbar navbar-expand-lg bg-body-tertiary">
+            <nav className={`navbar fixed-top navbar-expand-lg navbar-${props.mode} bg-${props.mode}`}>
                 <div className="container-fluid">
-                    <Link className="navbar-brand" to="/" style={{ paddingLeft: '2vh' }}><b>Priyanshu Chaurasiya</b></Link>
-                    <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <i className="fas fa-bars"></i> {/* Font Awesome Icon for the toggler */}
-                    </button>
+                    <Link className="navbar-brand" to="/" style={{ paddingLeft: '2vh' }}><b>Priyanshu</b></Link>
 
 
                     <div className="collapse navbar-collapse" id="navbarNav">
@@ -28,7 +26,12 @@ export default function Navbar() {
                                 <Link className="nav-link" to="/contact">Contact</Link></li>
                         </ul>
                     </div>
+                    <div className={`form-check theme-switch form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`} >
+                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onClick={props.toggleMode} />
+                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault" style={{paddingRight: '2.5vh', paddingLeft: '1vh', fontSize: '2vh'}}>Switch Mode</label>
+                    </div>
                 </div>
+
             </nav>
         </div>
     )

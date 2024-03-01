@@ -15,7 +15,7 @@ const ProjectCard = styled.div`
   width: 90%;
   margin: 0 auto;
   background-color: #fff;
-  border-radius: 8px;
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   padding-bottom: 10px;
@@ -27,7 +27,7 @@ const ProjectCard = styled.div`
 `;
 
 
-export default function Projects() {
+export default function Projects(props) {
   const projects = [
     {
       title: 'Text Studio',
@@ -43,7 +43,7 @@ export default function Projects() {
 
   return (
     <ProjectContainer>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold' }}>
+      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
         Projects
       </h2>
 
@@ -73,9 +73,9 @@ export default function Projects() {
         >
           {projects.map((project) => (
             <div className="col" key={project.title}>
-              <ProjectCard>
+              <ProjectCard style={{background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid`}}>
                 <img src={project.preview} className="card-img-top" alt={`${project.title} Preview`} />
-                <div className="card-body my-3">
+                <div className="card-body my-3" style={{  color: props.mode==='dark'?'white':'#191919'}}>
                   <h2 style={{fontSize: '2vh', fontWeight: 'bold'}}>{project.title}</h2>
                   <p className="card-text" style={{margin:'0.5vh', fontSize: '1.75vh'}}>{project.description}</p>
                 </div>

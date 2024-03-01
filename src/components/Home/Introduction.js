@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import priyanshuimage from '../../media/priyanshu.png';
+import priyanshucartoon from '../../media/priyanshu-cartoon.png';
 import instagramlogo from '../../media/instagram-logo.png'
 import githublogo from '../../media/github-logo.png'
 import linkedinlogo from '../../media/linkedin-logo.png'
@@ -31,7 +31,7 @@ const social = [
 ]
 
 
-export default function Introduction() {
+export default function Introduction(props) {
     const professions = [' Developer', ' Designer', ' Programmer', ' Blogger'];
     const [currentProfessionIndex, setCurrentProfessionIndex] = useState(0);
 
@@ -44,11 +44,11 @@ export default function Introduction() {
     }, [professions.length]);
 
     return (
-        <div style={{ height: '100vh' }}>
-            <div className="container h-100">
-                <div className="row align-items-center h-100">
-                    <div className="col-md-6 d-flex flex-column justify-content-center" >
-                        <div style={{ height: 'auto' }}>
+        <div style={{ height: '110vh' }}>
+            <div className="container" style={{paddingTop: '5vh'}}>
+                <div className="row align-items-center">
+                    <div className="col-md-6 d-flex flex-column justify-content-center" style={{paddingTop: '10vh'}} >
+                        <div style={{ height: 'auto', color: props.mode==='dark'?'white':'#191919' }}>
                             <h1 style={{ fontSize: '5vh', fontWeight: 'bolder', paddingTop: '10vh'}}>
                                 I'm Priyanshu Chaurasiya
                             </h1>
@@ -68,7 +68,7 @@ export default function Introduction() {
                                 ))}
                             </p>
                         </div>
-                        <div className='d-flex' style={{border: 'black 1.5px solid', padding: '1.5vh', height: '25%', marginTop: '10vh', width: 'fit-content', borderRadius: '2vh'}}>
+                        <div className="d-flex" style={{border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid` , padding: '1.5vh', height: '25%', marginTop: '10vh', width: 'fit-content', borderRadius: '2vh', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)'}}>
                             {social.map((socialmedia, index) => (
                                 <Link key={index} to={socialmedia.link}>
                                     <img
@@ -82,8 +82,8 @@ export default function Introduction() {
 
                     </div>
                     {/* You can add the image here */}
-                    <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: 'auto' }}>
-                        <img src={priyanshuimage} alt="Priyanshu" style={{ maxWidth: '75%', height: 'auto' }} />
+                    <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: 'auto', paddingTop: '10vh'}}>
+                        <img src={priyanshucartoon} alt="Priyanshu" style={{ maxWidth: '100%', Height: '100vh'}} />
                     </div>
                 </div>
             </div>

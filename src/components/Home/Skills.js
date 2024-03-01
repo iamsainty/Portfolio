@@ -34,7 +34,7 @@ const CustomCard = styled.div`
   }
 `;
 
-const Skills = () => {
+const Skills = (props) => {
   const cardsRef = useRef([]);
 
   useEffect(() => {
@@ -50,19 +50,19 @@ const Skills = () => {
   return (
     <SkillContainer>
       <div className="container mt-5">
-        <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold' }}>
+        <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'  }}>
           Skills
         </h2>
 
         <Row>
           {professions.map((profession, index) => (
-            <Col key={index} className={`my-3 mx-3`}>
-              <CustomCard ref={(ref) => (cardsRef.current[index] = ref)}>
-                <BootstrapCard.Body>
-                  <h4 className="text-center">{profession.profession}</h4>
+            <Col key={index} className={`my-3 mx-3`} >
+              <CustomCard ref={(ref) => (cardsRef.current[index] = ref)} style={{background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', borderColor: props.mode==='dark'? 'white':'black' , border: '0.25px solid',  color: props.mode==='dark'?'white':'#191919'}}>
+                <BootstrapCard.Body >
+                  <h4 className="text-center" style={{fontSize: '3vh', fontWeight: 'bold', paddingBottom: '0vh'}}>{profession.profession}</h4>
                   <ul className="list-group list-group-flush text-center">
                     {profession.skills.map((skill, index) => (
-                      <li key={index} className="list-group-item">
+                      <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh', color: props.mode==='dark'?'white':'#191919'}}>
                         {skill}
                       </li>
                     ))}

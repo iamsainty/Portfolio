@@ -70,34 +70,34 @@ const Logo = styled.img`
   object-fit: cover;
 `;
 
-export default function Contact() {
+export default function Contact(props) {
 
   return (
-    <>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold' }}>
+    <div style={{paddingBottom: '10vh'}}>
+      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
         Contact
       </h2>
       <div className="container align-item-center">
         <div className="row">
           <div className="col-lg-6 d-flex flex-column text-center" style={{ height: '60vh' }}>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '25vh', textalign: 'center'}}>
-            <blockquote className="blockquote" style={{ fontSize: '4vh', maxWidth: '100%' }}>
+            <blockquote className="blockquote" style={{ fontSize: '4vh', maxWidth: '100%', color: props.mode==='dark'?'white':'#191919' }}>
               Networking is the key <b/>to success.
               </blockquote>
               </div>
 
-            <h2 style={{ fontSize: '8vh', fontWeight: 'bold' }}>Let's Connect</h2>
+            <h2 style={{ fontSize: '8vh', fontWeight: 'bold', color: props.mode==='dark'?'white':'#191919' }}>Let's Connect</h2>
 
 
           </div>
           <div className="col">
             {sociallinks.map((social) => (
               <Link to={`${social.link}`} style={{ textDecoration: 'none', color: 'black' }} key={social.platform}>
-                <Card>
+                <Card style={{color: props.mode==='dark'?'white':'#191919', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid`}}>
                   <div style={{ display: 'flex' }}>
                     <Logo src={social.icon} alt={`${social.platform} logo`} style={{ height: '5vh', width: 'auto' }} />
                     <div className='text-left'>
-                      <h2 style={{ fontSize: '1.75vh', color: 'black', fontWeight: 'bold' }}>{social.platform}</h2>
+                      <h2 style={{ fontSize: '1.75vh', fontWeight: 'bold' }}>{social.platform}</h2>
                       <p style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{social.username}</p>
                     </div>
                   </div>
@@ -107,6 +107,6 @@ export default function Contact() {
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }

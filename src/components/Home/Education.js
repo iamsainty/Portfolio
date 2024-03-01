@@ -30,15 +30,18 @@ const EducationContainer = styled.div`
 `;
 
 const Card = styled.div`
-  background-color: #fff;
+  background-color: ${(props) => (props.mode === 'dark' ? '#000' : '#fff')};
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: ${(props) =>
+    props.mode === 'dark' ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)'};
   margin-bottom: 20px;
   padding: 20px;
   transition: transform 0.3s ease-in-out;
 
   &:hover {
     transform: scale(1.05);
+    box-shadow: ${(props) =>
+      props.mode === 'dark' ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)'};
   }
 `;
 
@@ -50,24 +53,28 @@ const Logo = styled.img`
   object-fit: cover;
 `;
 
-const Education = () => {
+const Education = (props) => {
   return (
     <EducationContainer>
-      <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold' }}>Education</h2>
+  <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'  }}>
+          Education
+        </h2>            
+        <div className="align-item-center">
       {education.map((edu) => (
-        <Card key={edu.title}>
+        <Card key={edu.title} mode={props.mode} style={{ color: props.mode==='dark'? 'white': '#191919', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', borderColor: props.mode === 'dark' ? 'white' : 'black', border: '0.25px solid',}}>
           <div style={{ display: 'flex' }}>
-            <div className="col-md-auto my-3">
+            <div className="col-md-auto">
               <Logo src={edu.logoUrl} alt={`${edu.institute} logo`} style={{height: '10vh', width: 'auto'}}/>
             </div>
-            <div className="col my-3">
+            <div className="col">
               <h2  style={{fontSize: '2vh', fontWeight: 'bold'}}>{edu.title}</h2>
-              <p className="card-text" style={{margin:'0.5vh', fontSize: '1.75vh'}}>{edu.institute}</p>
-              <p className="card-text" style={{margin:'0.5vh', fontSize: '1.75vh'}}>{edu.year}</p>
+              <p className="card-text" style={{margin:'0', fontSize: '1.75vh'}}>{edu.institute}</p>
+              <p className="card-text" style={{margin:'0', fontSize: '1.75vh'}}>{edu.year}</p>
             </div>
           </div>
         </Card>
       ))}
+      </div>
     </EducationContainer>
   );
 };

@@ -46,21 +46,32 @@ const Logo = styled.img`
   object-fit: cover;
 `;
 
-const Experience = () => {
+const Experience = (props) => {
   return (
     <ExperienceContainer>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold', marginBottom: '30px' }}>Experience</h2>
-      {experiences.map((experience) => (
-        <Card key={experience.title}>
-          <div style={{ display: 'flex' }}>
-            <Logo src={experience.logoUrl} alt={`${experience.institute} logo`} style={{height: '10vh', width: 'auto'}} />
-            <div className='text-left'>
-              <h2 style={{fontSize: '2vh', fontWeight: 'bold'}}>{experience.title}</h2>
-              <p style={{margin:'0.5vh', fontSize: '1.75vh'}}>{experience.organization}</p>
-              <p style={{margin:'0.5vh', fontSize: '1.75vh'}}>{experience.startDate} - {experience.endDate}</p>
-            </div>
+        <h2 className="text-center my-5" style={{fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
+          Experience
+        </h2>
+        {experiences.map((experience) => (
+        <Card
+        key={experience.title}
+        style={{
+          background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)',
+          borderColor: props.mode === 'dark' ? 'white' : 'black',
+          border: '0.25px solid',
+          color: props.mode==='dark'? 'white': '#191919'
+        }}
+      >
+        <div style={{ display: 'flex' }}>
+        <Logo src={experience.logoUrl} alt={`${experience.organization} logo`} style={{ height: '10vh', width: 'auto' }} />
+          <div className='text-left'>
+            <h2 style={{ fontSize: '2vh', fontWeight: 'bold' }}>{experience.title}</h2>
+            <p style={{ margin: '0', fontSize: '1.75vh' }}>{experience.organization}</p>
+            <p style={{ margin: '0', fontSize: '1.75vh' }}>{experience.startDate} - {experience.endDate}</p>
           </div>
-        </Card>
+        </div>
+      </Card>
+      
       ))}
     </ExperienceContainer>
   );
