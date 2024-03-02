@@ -87,6 +87,7 @@ export default function Contact(props) {
               </div>
 
             <h2 style={{ fontSize: '8vh', fontWeight: 'bold', color: props.mode==='dark'?'white':'#191919' }}>Let's Connect</h2>
+            
 
 
           </div>

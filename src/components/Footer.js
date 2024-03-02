@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Navigateto = [
     { page: "Home", link: "/" },
-    { page: "Education", link: "/education" },
-    { page: "Projects", link: "/projects" }
+    { page: "Blog", link: "/blog" },
+    { page: "Projects", link: "/projects" },
+    { page: "Sitemap", link: "/" },
 ];
 
 const Contactme = [
@@ -106,7 +107,7 @@ export default function Footer(props) {
                 </div>
             </div>
             <div className='container'>
-                <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>&copy; 2024 Your Name. All Rights Reserved.</p>
+                <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>&copy; 2024 Priyanshu Chaurasiya. All Rights Reserved.</p>
                 <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>Designed and Developed with &hearts; by Priyanshu Chaurasiya</p>
             </div>
         </div>

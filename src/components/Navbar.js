@@ -15,15 +15,15 @@ export default function Navbar(props) {
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" aria-current="page" to="/">Home</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/about">About</Link></li>
+                                <Link className="nav-link" to="/">About</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/education">Education</Link></li>
+                                <Link className="nav-link" to="/">Education</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/projects">Projects</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/blog">Blog</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/contact">Contact</Link></li>
+                                <Link className="nav-link" to="/">Contact</Link></li>
                         </ul>
                     </div>
                     <div className={`form-check theme-switch form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`} >

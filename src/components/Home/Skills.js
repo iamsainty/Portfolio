@@ -48,7 +48,7 @@ const Skills = (props) => {
   }, []);
 
   return (
-    <SkillContainer>
+    <SkillContainer style={{marginTop: '20vh'}}>
       <div className="container mt-5">
         <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'  }}>
           Skills

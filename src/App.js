@@ -15,9 +15,11 @@ import Disclaimer from "./components/Pages/Disclaimer";
 import Footer from "./components/Footer";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import AffiliateDisclosure from "./components/Pages/AffiliateDisclosure";
+import Projects from "./components/Projects/Projects";
+import Blog from "./components/Blog/Blog";
 
 function App() {
-  const [mode, setMode] = useState('dark');
+  const [mode, setMode] = useState('light');
 
   useEffect(() => {
     document.body.style.background = mode === 'dark' ? 'linear-gradient(125deg, #000000, #000000, #0D0A2D)' : 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
@@ -43,11 +45,11 @@ function App() {
             <Route exact path="/disclaimer" element={<Disclaimer mode={mode} />} /> 
             <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} />} /> 
             <Route exact path="/affiliate-disclosure" element={<AffiliateDisclosure mode={mode} />} /> 
-            {/* <Route exact path="/about" element={<About/>} />
-            <Route exact path="/education" element={<Education/>} />
-            <Route exact path="/projects" element={<Projects/>}/>
-            <Route exact path="/blog" element={<Blog/>} />c
-            <Route exact path="/contact" element={<Contact/>} /> */}
+            {/* <Route exact path="/about" element={<About/>} /> */}
+            {/* <Route exact path="/education" element={<Education/>} /> */}
+            <Route exact path="/projects" element={<Projects mode={mode}/>}/>
+            <Route exact path="/blog" element={<Blog/>} />
+            {/* <Route exact path="/contact" element={<Contact/>} /> */}
             {/* Add other routes here */}
           </Routes>
         </div>
