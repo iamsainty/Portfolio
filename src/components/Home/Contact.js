@@ -40,12 +40,6 @@ const sociallinks = [
   }
 ];
 
-// const connectquotes = [
-//   'Networking is the key to success.',
-//   'We are on a journey of collaboration',
-//   'The power of connection fuels innovation',
-//   'Every connection is a step towards greatness',
-// ];
 
 
 
@@ -73,28 +67,16 @@ const Logo = styled.img`
 export default function Contact(props) {
 
   return (
-    <div style={{paddingBottom: '10vh'}}>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
+    <div style={{ paddingBottom: '10vh' }}>
+      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode === 'dark' ? 'white' : '#191919' }}>
         Contact
       </h2>
       <div className="container align-item-center">
         <div className="row">
-          <div className="col-lg-6 d-flex flex-column text-center" style={{ height: '60vh' }}>
-            <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center', height: '25vh', textalign: 'center'}}>
-            <blockquote className="blockquote" style={{ fontSize: '4vh', maxWidth: '100%', color: props.mode==='dark'?'white':'#191919' }}>
-              Networking is the key <b/>to success.
-              </blockquote>
-              </div>
-
-            <h2 style={{ fontSize: '8vh', fontWeight: 'bold', color: props.mode==='dark'?'white':'#191919' }}>Let's Connect</h2>
-            
-
-
-          </div>
-          <div className="col">
+          <div className="col" style={{maxWidth: '100%'}}>
             {sociallinks.map((social) => (
               <Link to={`${social.link}`} style={{ textDecoration: 'none', color: 'black' }} key={social.platform}>
-                <Card style={{color: props.mode==='dark'?'white':'#191919', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid`}}>
+                <Card style={{ color: props.mode === 'dark' ? 'white' : '#191919', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
                   <div style={{ display: 'flex' }}>
                     <Logo src={social.icon} alt={`${social.platform} logo`} style={{ height: '5vh', width: 'auto' }} />
                     <div className='text-left'>
@@ -105,6 +87,50 @@ export default function Contact(props) {
                 </Card>
               </Link>
             ))}
+          </div>
+          <div className="col-lg-6 d-flex flex-column text-center" style={{ height: 'auto', width: 'auto' }}>
+            <div
+              className="alert fade show"
+              role="alert"
+              style={{
+                border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid`,
+                padding: '4vh',
+                height: '100%',
+                width: '100%',
+                borderRadius: '2vh',
+                background: 'linear-gradient(125deg, #25D366, #128C7E)',
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+
+              }}
+            >
+              <button
+                type="button"
+                className="btn-close d-flex align-items-center"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+                style={{ height: '5vh' }}
+              >
+                <p style={{ padding: '4vh', fontSize: '2.5vh', paddingTop: '6vh' }}>Close</p>
+              </button>
+
+
+              <div className='text-start' >
+                <strong style={{fontSize: '5vh'}}>Loving this portfolio</strong>
+                <p style={{fontSize: '4vh', paddingTop: '3vh'}}>Get yours done</p>
+              </div>
+              <Link to="https://wa.me/+918572937042?text=Your%20portfolio%20looks%20great%2C%20can%20you%20build%20the%20same%20for%20me" style={{ fontSize: '2vh', fontWeight: 'bold', textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
+              <div className='d-flex align-items-center' style={{ border: '1px black solid', width: 'fit-content', paddingLeft: '2vh', paddingRight: '3vh', padding: '1vh', borderRadius: '2.5vh', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)' }}>
+                <div className="col" style={{ maxWidth: 'fit-content' }}>
+                  {/* <img src={whatsapplogo} alt="whatsapp logo" style={{ height: '4vh', width: '4vh' }} /> */}
+                </div>
+                <div className="col align-item-center" style={{ paddingLeft: '2vh', paddingRight: '2vh'}}>
+                  Know More
+                </div>
+              </div>
+              </Link>
+            </div>
           </div>
         </div>
       </div>

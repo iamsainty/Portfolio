@@ -17,6 +17,8 @@ import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import AffiliateDisclosure from "./components/Pages/AffiliateDisclosure";
 import Projects from "./components/Projects/Projects";
 import Blog from "./components/Blog/Blog";
+import About from "./components/About/About";
+import YourPortfolio from "./components/YourPortfolio/YourPortfolio";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -45,10 +47,11 @@ function App() {
             <Route exact path="/disclaimer" element={<Disclaimer mode={mode} />} /> 
             <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} />} /> 
             <Route exact path="/affiliate-disclosure" element={<AffiliateDisclosure mode={mode} />} /> 
-            {/* <Route exact path="/about" element={<About/>} /> */}
+            <Route exact path="/about" element={<About mode={mode}/>} />
             {/* <Route exact path="/education" element={<Education/>} /> */}
             <Route exact path="/projects" element={<Projects mode={mode}/>}/>
-            <Route exact path="/blog" element={<Blog/>} />
+            <Route exact path="/blog" element={<Blog mode={mode}/>} />
+            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}/>} />            
             {/* <Route exact path="/contact" element={<Contact/>} /> */}
             {/* Add other routes here */}
           </Routes>

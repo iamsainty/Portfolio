@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import priyanshucartoon from '../../media/priyanshu-cartoon-full.webp';
+import React from 'react';
+import priyanshucartoon from '../../media/priyanshu-your-portfolio-avatar.webp';
 import instagramlogo from '../../media/instagram-logo.png'
 import githublogo from '../../media/github-logo.png'
 import linkedinlogo from '../../media/linkedin-logo.png'
@@ -31,42 +31,18 @@ const social = [
 ]
 
 
-export default function Introduction(props) {
-    const professions = [' Developer', ' Designer', ' Programmer', ' Blogger'];
-    const [currentProfessionIndex, setCurrentProfessionIndex] = useState(0);
-
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setCurrentProfessionIndex((prevIndex) => (prevIndex + 1) % professions.length);
-        }, 2000);
-
-        return () => clearInterval(interval);
-    }, [professions.length]);
+export default function YourPortfolioIntro(props) {
 
     return (
-        <div style={{ height: 'auto' }}>
+        <div className='container' style={{ height: 'auto' }}>
             <div className="container" style={{ paddingTop: '5vh' }}>
                 <div className="row align-items-center">
                     <div className="col-md-6 d-flex flex-column justify-content-center" style={{ paddingTop: '0vh' }} >
                         <div style={{ height: 'auto', color: props.mode === 'dark' ? 'white' : '#191919' }}>
-                            <h1 style={{ fontSize: '5vh', fontWeight: 'bolder', paddingTop: '10vh' }}>
-                                I'm Priyanshu Chaurasiya
+                            <h1 style={{ fontSize: '7vh', fontWeight: 'bolder', paddingTop: '10vh' }}>
+                                Thank You !!
                             </h1>
-                            <p style={{ fontSize: '100%' }}>
-                                {professions.map((profession, index) => (
-                                    <span
-                                        key={index}
-                                        style={{
-                                            opacity: index === currentProfessionIndex ? 1 : 0,
-                                            transition: 'opacity 1.5s ease-in-out',
-                                            display: 'inline-block',
-                                            fontSize: '4vh'
-                                        }}
-                                    >
-                                        {index === currentProfessionIndex ? profession : ''}
-                                    </span>
-                                ))}
-                            </p>
+                            <p style={{ fontSize: '2.25vh', paddingTop: '5vh' }}>I'm glad to know you loved my portfolio so much, Are you thinking if you would have this same portfolio ? This could be yours.                            </p>
                         </div>
                         <div className="d-flex" style={{ border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid`, padding: '1.5vh', height: '25%', marginTop: '10vh', width: 'fit-content', borderRadius: '2vh', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)' }}>
                             {social.map((socialmedia, index) => (
@@ -79,9 +55,11 @@ export default function Introduction(props) {
                                 </Link>
                             ))}
                         </div>
+                        
+
                     </div>
                     {/* You can add the image here */}
-                    <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: 'auto', paddingTop: '0vh' }}>
+                    <div className="col-md-6 d-flex flex-column align-items-center" style={{ height: 'auto', marginTop: '2vh' }}>
                         <img src={priyanshucartoon} alt="Priyanshu" style={{ maxWidth: '100%', Height: '80vh' }} />
                     </div>
                 </div>

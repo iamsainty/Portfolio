@@ -115,7 +115,8 @@ export default function Projects(props) {
                   <div className="col my-2  d-flex justify-content-center align-items-center" style={{ border: '1px solid', borderColor: props.mode === 'dark' ? 'white' : 'black', marginLeft: '0.5vh', borderRadius: '1vh', padding: '0.5vh', paddingRight: '2vh' }}>
                     <Link to={project.live} style={{ textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
                       <img src={githublogo} alt="" style={{ height: '4vh' }} />
-                      &nbsp; View on GitHub
+                      &nbsp; {project.github===null?"Can't show on GitHub (private)":  'View on github'}
+                   
                     </Link>
                   </div>
                   <div className="col-md-6 my-2 d-flex justify-content-center align-items-center" style={{ border: '1px solid', borderColor: props.mode === 'dark' ? 'white' : 'black', marginLeft: '0.5vh', borderRadius: '1vh', padding: '0.5vh' }}>

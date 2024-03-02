@@ -15,7 +15,7 @@ export default function Navbar(props) {
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" aria-current="page" to="/">Home</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/">About</Link></li>
+                                <Link className="nav-link" to="/about">About</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/">Education</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
@@ -24,11 +24,13 @@ export default function Navbar(props) {
                                 <Link className="nav-link" to="/blog">Blog</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/">Contact</Link></li>
+                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
+                                <Link className="btn btn-outline-dark" to="/your-portfolio">Get Your Portfolio</Link></li>
                         </ul>
                     </div>
                     <div className={`form-check theme-switch form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`} >
                         <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onClick={props.toggleMode} />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault" style={{paddingRight: '2.5vh', paddingLeft: '1vh', fontSize: '2vh'}}>Switch Mode</label>
+                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault" style={{ paddingRight: '2.5vh', paddingLeft: '1vh', fontSize: '2vh' }}>Switch Mode</label>
                     </div>
                 </div>
 

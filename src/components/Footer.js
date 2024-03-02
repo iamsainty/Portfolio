@@ -5,6 +5,7 @@ const Navigateto = [
     { page: "Home", link: "/" },
     { page: "Blog", link: "/blog" },
     { page: "Projects", link: "/projects" },
+    { page: "About", link: "/about" },
     { page: "Sitemap", link: "/" },
 ];
 
