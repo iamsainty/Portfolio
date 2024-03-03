@@ -1,15 +1,12 @@
-// import React from 'react'
 import styled from 'styled-components';
-// import nopre from '../../media/no-preview-available.png'
-import ProjectLanding from './ProjectLanding';
-import githublogo from '../../media/github-logo.png'
-import eyeimg from '../../media/eye.png'
+import githublogo from '../../media/Social icons/github-logo.png'
 import { Link } from 'react-router-dom';
-import textstudiopre from '../../media/textstudio-preview.png'
-import newshubpre from '../../media/newshub-preview.png'
-import portfoliopre from '../../media/portfolio-preview.png'
+import textstudiopre from '../../media/Projects/textstudio-preview.png'
+import newshubpre from '../../media/Projects/newshub-preview.png'
+import portfoliopre from '../../media/Projects/portfolio-preview.png'
 import React, { useState } from 'react';
-import { Input } from 'antd'; // Assuming you're using Ant Design for the Input component
+import { Input } from 'antd';
+import Introduction from '../Introduction';
 
 
 const projects = [
@@ -65,13 +62,15 @@ export default function Projects(props) {
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
   };
-  
+
+  const myprojects = ['Text Studio', 'News Hub', 'Portfolio']
+
 
 
   return (
     <>
       <div className='container'>
-        <ProjectLanding mode={mode} />
+        <Introduction heading={"Explore Projects"} mode={mode} array={myprojects} />
         <div style={{ height: '20vh', width: '100%' }}></div>
         <Input
           placeholder="Search projects..."
@@ -112,17 +111,18 @@ export default function Projects(props) {
               </div>
               <div className="container text-center" style={{ paddingTop: '3vh' }}>
                 <div className="row align-items-center">
-                  <div className="col my-2  d-flex justify-content-center align-items-center" style={{ border: '1px solid', borderColor: props.mode === 'dark' ? 'white' : 'black', marginLeft: '0.5vh', borderRadius: '1vh', padding: '0.5vh', paddingRight: '2vh' }}>
-                    <Link to={project.live} style={{ textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
-                      <img src={githublogo} alt="" style={{ height: '4vh' }} />
-                      &nbsp; {project.github===null?"Can't show on GitHub (private)":  'View on github'}
-                   
+                  <div className="col-md-6 my-2 d-flex justify-content-center align-items-center">
+                    <Link to={project.github} style={{ width: '100%' }}>
+                      <button type="button" className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} style={{ width: '100%' }}>
+                        <img src={githublogo} alt="" style={{ height: '4vh' }} />&nbsp; {project.github === null ? "Can't show on GitHub (private)" : 'View on GitHub'}
+                      </button>
                     </Link>
                   </div>
-                  <div className="col-md-6 my-2 d-flex justify-content-center align-items-center" style={{ border: '1px solid', borderColor: props.mode === 'dark' ? 'white' : 'black', marginLeft: '0.5vh', borderRadius: '1vh', padding: '0.5vh' }}>
-                    <Link to={project.live} style={{ textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
-                      <img src={eyeimg} alt="" style={{ height: '4vh' }} />
-                      &nbsp; View Live
+                  <div className="col-md-6 my-2 d-flex justify-content-center align-items-center">
+                    <Link to={project.live} style={{ width: '100%' }}>
+                      <button type="button" className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} style={{ width: '100%' }}>
+                        &#128065;&nbsp; {project.live === null ? "Live not available" : 'View live'}
+                      </button>
                     </Link>
                   </div>
                 </div>

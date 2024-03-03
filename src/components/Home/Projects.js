@@ -3,8 +3,9 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import textstudiopreview from '../../media/textstudio-preview.png';
-import newshubpreview from '../../media/newshub-preview.png';
+import textstudiopreview from '../../media/Projects/textstudio-preview.png';
+import newshubpreview from '../../media/Projects/newshub-preview.png';
+import { Link } from 'react-router-dom';
 
 const ProjectContainer = styled.div`
   text-align: center;
@@ -43,7 +44,7 @@ export default function Projects(props) {
 
   return (
     <ProjectContainer>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
+      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode === 'dark' ? 'white' : '#191919' }}>
         Projects
       </h2>
 
@@ -73,17 +74,21 @@ export default function Projects(props) {
         >
           {projects.map((project) => (
             <div className="col" key={project.title}>
-              <ProjectCard style={{background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid`}}>
+              <ProjectCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
                 <img src={project.preview} className="card-img-top" alt={`${project.title} Preview`} />
-                <div className="card-body my-3" style={{  color: props.mode==='dark'?'white':'#191919'}}>
-                  <h2 style={{fontSize: '2vh', fontWeight: 'bold'}}>{project.title}</h2>
-                  <p className="card-text" style={{margin:'0.5vh', fontSize: '1.75vh'}}>{project.description}</p>
+                <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                  <h2 style={{ fontSize: '2vh', fontWeight: 'bold' }}>{project.title}</h2>
+                  <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{project.description}</p>
                 </div>
               </ProjectCard>
             </div>
           ))}
         </Slider>
       </div>
+      <Link to='/projects' >
+      <button type="button" className={`btn btn-outline-${props.mode==='dark'?'light':'dark'}`} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Projects</button>
+      </Link>
+      <br /><br />
     </ProjectContainer>
   );
 }

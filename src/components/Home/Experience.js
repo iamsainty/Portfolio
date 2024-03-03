@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import iiclogo from '../../media/iic-logo.png';
-import gdsclogo from '../../media/gdsc-logo.png';
+import iiclogo from '../../media/Logo/iic-logo.png';
+import gdsclogo from '../../media/Logo/gdsc-logo.png';
 
 const experiences = [
   {

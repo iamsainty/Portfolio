@@ -1,12 +1,19 @@
 import React from 'react'
-import AboutIntro from './AboutIntro'
 import { Link } from 'react-router-dom';
+import Introduction from '../Introduction';
 
 export default function About(props) {
     let mode = props.mode;
+    const aboutheading = [
+        'Educational Journey',
+        'Passion for Development',
+        'Technical Skills',
+        'Freelance Aspirations',
+        'Future Endeavors',
+    ]
     return (
         <div>
-            <AboutIntro mode={mode} />
+            <Introduction array={aboutheading} heading={"About me"} mode={mode} />
             <div style={{width: '100%', height: '15vh'}}></div>
             <div style={{color: props.mode==='dark'?'white':'black'}}>
             <div className="container" style={{padding: '2vh', textAlign: 'justify' }}>

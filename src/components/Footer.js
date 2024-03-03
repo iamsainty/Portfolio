@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 
 const Navigateto = [
     { page: "Home", link: "/" },
-    { page: "Blog", link: "/blog" },
     { page: "Projects", link: "/projects" },
-    { page: "About", link: "/about" },
-    { page: "Sitemap", link: "/" },
+    { page: "Certifications", link: "/certifications" },
+    { page: "Blog", link: "/blog" }
 ];
 
 const Contactme = [
@@ -47,6 +46,10 @@ const Connectme = [
 
 const pages=[
     {
+        page: "About",
+        link: "/about"
+    },
+    {
         page: "Disclaimer",
         link: "/disclaimer"
     },
@@ -55,8 +58,8 @@ const pages=[
         link: "/privacy-policy"
     },
     {
-        page: "Affiliate Disclosure",
-        link: "/affiliate-disclosure"
+        page: "GDPR Compliance",
+        link: "/gdpr-compliance"
     }
 ]
 

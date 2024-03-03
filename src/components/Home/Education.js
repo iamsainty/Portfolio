@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import kvnlogo from '../../media/kvn-logo.png';
-import bbdlogo from '../../media/bbd-logo.png';
+import kvnlogo from '../../media/Logo/kvn-logo.png';
+import bbdlogo from '../../media/Logo/bbd-logo.png';
 
 const education = [
   {

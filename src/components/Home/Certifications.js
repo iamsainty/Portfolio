@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import htmlcssjscoursera from '../../media/html-css-js-coursera-certificate.jpeg';
-import uiuxdesignwithfigma from '../../media/ui-ux-design-with-figma-udemy-certificate.jpeg';
+import htmlcssjscoursera from '../../media/Certificates/html-css-js-coursera-certificate.jpeg';
+import uiuxdesignwithfigma from '../../media/Certificates/ui-ux-design-with-figma-udemy-certificate.jpeg';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -48,7 +48,7 @@ export default function Certifications(props) {
 
     return (
         <CertificateContainer>
-            <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode==='dark'?'white': 'black'}}>Certifications</h2>
+            <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode === 'dark' ? 'white' : 'black' }}>Certifications</h2>
 
             <div className="container text-center my-5">
                 <Slider
@@ -75,20 +75,21 @@ export default function Certifications(props) {
                     ]}>
                     {certificates.map((certificate, index) => (
                         <div className="col" key={index}>
-                            <Link to={`${certificate.verify}`} style={{ textDecoration: 'none', color: 'black' }} key={certificate.verify}>
-                                <CertificateCard style={{background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode==='dark'? 'white': 'black'} 0.25px solid`, color: props.mode==='dark'?'white':'#191919'}}>
-                                    <img src={certificate.certificate} className="card-img-top" alt={`${certificate.title} Preview`} />
-                                    <div className="card-body my-3">
-                                        <h2 style={{ margin: '0.5vh', fontSize: '2vh', fontWeight: 'bold' }}>{certificate.title}</h2>
-                                        <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{certificate.issuedby}</p>
-                                        <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{certificate.time}</p>
-                                    </div>
-                                </CertificateCard>
-                            </Link>
+                            <CertificateCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid`, color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                                <img src={certificate.certificate} className="card-img-top" alt={`${certificate.title} Preview`} />
+                                <div className="card-body my-3">
+                                    <h2 style={{ margin: '0.5vh', fontSize: '2vh', fontWeight: 'bold' }}>{certificate.title}</h2>
+                                    <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{certificate.issuedby}</p>
+                                    <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{certificate.time}</p>
+                                </div>
+                            </CertificateCard>
                         </div>
                     ))}
                 </Slider>
             </div>
+            <Link to='/certifications' >
+                <button type="button" className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Certifications</button>
+            </Link>
         </CertificateContainer>
     );
 }

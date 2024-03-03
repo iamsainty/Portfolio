@@ -1,15 +1,15 @@
 import React from 'react'
-import BlogIntro from './BlogIntro'
+import Introduction from '../Introduction'
 
 export default function Blog(props) {
     let mode=props.mode;
+    const blogtitle=[
+      'No blogs to display'
+    ]
   return (
-    <div>
-      <BlogIntro mode={mode}/>
+    <div className='container'>
+      <Introduction mode={mode} array={blogtitle} heading={"Blogs"}/>
       <div style={{ height: '20vh', width: '100%' }}></div>
-      <div className="container">
-      <p>Sorry for incovenience, no blogs are published by this time, explore other sections</p>
-      </div>
     </div>
   )
 }

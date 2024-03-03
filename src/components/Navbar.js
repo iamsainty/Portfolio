@@ -17,13 +17,11 @@ export default function Navbar(props) {
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/about">About</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/">Education</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/projects">Projects</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/blog">Blog</Link></li>
+                                <Link className="nav-link" to="/certifications">Certifications</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/">Contact</Link></li>
+                                <Link className="nav-link" to="/blog">Blog</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="btn btn-outline-dark" to="/your-portfolio">Get Your Portfolio</Link></li>
                         </ul>

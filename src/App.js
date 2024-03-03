@@ -1,24 +1,20 @@
 import React, { useEffect, useState } from "react";
 import Navbar from './components/Navbar';
-// import About from './components/About';
-// import Education from './components/Education';
-// import Projects from './components/Projects';
-// import Blog from './components/Blog';
-// import Contact from './components/Contact';
+import Home from './components/Home/Home';
+import Disclaimer from "./components/Pages/Disclaimer";
+import Footer from "./components/Footer";
+import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
+import Projects from "./components/Projects/Projects";
+import Blog from "./components/Blog/Blog";
+import YourPortfolio from "./components/YourPortfolio/YourPortfolio";
+import Certificates from "./components/Certification/Certificates";
+import GDPRCompliance from "./components/Pages/GDPRCompliance";
+import About from "./components/Pages/About";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
 } from "react-router-dom";
-import Home from './components/Home/Home';
-import Disclaimer from "./components/Pages/Disclaimer";
-import Footer from "./components/Footer";
-import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
-import AffiliateDisclosure from "./components/Pages/AffiliateDisclosure";
-import Projects from "./components/Projects/Projects";
-import Blog from "./components/Blog/Blog";
-import About from "./components/About/About";
-import YourPortfolio from "./components/YourPortfolio/YourPortfolio";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -46,12 +42,13 @@ function App() {
             <Route exact path="/" element={<Home mode={mode} />} />
             <Route exact path="/disclaimer" element={<Disclaimer mode={mode} />} /> 
             <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} />} /> 
-            <Route exact path="/affiliate-disclosure" element={<AffiliateDisclosure mode={mode} />} /> 
+            <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} />} /> 
             <Route exact path="/about" element={<About mode={mode}/>} />
             {/* <Route exact path="/education" element={<Education/>} /> */}
             <Route exact path="/projects" element={<Projects mode={mode}/>}/>
             <Route exact path="/blog" element={<Blog mode={mode}/>} />
-            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}/>} />            
+            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}/>} />
+            <Route exact path="/certifications" element={<Certificates mode={mode}/>} />
             {/* <Route exact path="/contact" element={<Contact/>} /> */}
             {/* Add other routes here */}
           </Routes>

@@ -1,10 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import linkedinlogo from '../../media/linkedin-logo.png';
-import githublogo from '../../media/github-logo.png';
-import xlogo from '../../media/x-logo.png';
-import instagramlogo from '../../media/instagram-logo.png';
-import whatsapplogo from '../../media/whatsapp logo.png';
+import linkedinlogo from '../../media/Social icons/linkedin-logo.png';
+import githublogo from '../../media/Social icons/github-logo.png';
+import xlogo from '../../media/Social icons/x-logo.png';
+import instagramlogo from '../../media/Social icons/instagram-logo.png';
+import whatsapplogo from '../../media/Social icons/whatsapp logo.png';
 import { Link } from 'react-router-dom';
 
 const sociallinks = [
@@ -120,7 +120,7 @@ export default function Contact(props) {
                 <strong style={{fontSize: '5vh'}}>Loving this portfolio</strong>
                 <p style={{fontSize: '4vh', paddingTop: '3vh'}}>Get yours done</p>
               </div>
-              <Link to="https://wa.me/+918572937042?text=Your%20portfolio%20looks%20great%2C%20can%20you%20build%20the%20same%20for%20me" style={{ fontSize: '2vh', fontWeight: 'bold', textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
+              <Link to="/your-portfolio" style={{ fontSize: '2vh', fontWeight: 'bold', textDecoration: 'none', color: props.mode === 'dark' ? 'white' : 'black' }}>
               <div className='d-flex align-items-center' style={{ border: '1px black solid', width: 'fit-content', paddingLeft: '2vh', paddingRight: '3vh', padding: '1vh', borderRadius: '2.5vh', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)' }}>
                 <div className="col" style={{ maxWidth: 'fit-content' }}>
                   {/* <img src={whatsapplogo} alt="whatsapp logo" style={{ height: '4vh', width: '4vh' }} /> */}
