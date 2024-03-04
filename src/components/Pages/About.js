@@ -1,5 +1,4 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
 import Introduction from '../Introduction';
 
 export default function About(props) {
@@ -51,7 +50,7 @@ export default function About(props) {
 
             <h2 style={{fontSize: '3.5vh', fontWeight: 'bold'}}>Contact Me</h2>
 
-            <p style={{fontSize: '2vh'}}>If you would like to learn more about me or discuss potential collaborations, please feel free to <Link to="/">click here</Link> to contact me.</p>
+            <p style={{fontSize: '2vh'}}>If you would like to learn more about me or discuss potential collaborations, please feel free to contact me.</p>
             <br />
 
             <p style={{fontSize: '2vh'}}>Thank you for taking the time to get to know me. I look forward to new opportunities and challenges in the dynamic field of technology.</p>

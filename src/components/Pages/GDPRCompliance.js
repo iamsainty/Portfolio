@@ -41,7 +41,7 @@ export default function GDPRCompliance(props) {
             <h2 style={{fontSize: '3.5vh', fontWeight: 'bold'}}>Updates to this GDPR Compliance Statement</h2>
             <p style={{fontSize: '2vh'}}>This GDPR Compliance Statement may be updated periodically to reflect any changes in data processing practices or legal requirements. Please check this page for the latest information.</p><br/>
 
-            <p style={{fontSize: '2vh'}}>If you have any questions or concerns regarding the GDPR compliance of this website, please contact me at <Link to="mailto:ppriyanshuchaurasiya@gmail.com">ppriyanshuchaurasiya@gmail.com</Link> or through the <Link to="/contact">Contact Page</Link>.</p><br/>
+            <p style={{fontSize: '2vh'}}>If you have any questions or concerns regarding the GDPR compliance of this website, please contact me at <Link to="mailto:ppriyanshuchaurasiya@gmail.com">ppriyanshuchaurasiya@gmail.com</Link></p><br/>
 
         </div>
         </div>
