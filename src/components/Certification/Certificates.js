@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import htmlcssjscoursera from '../../media/Certificates/html-css-js-coursera-certificate.jpeg';
 import uiuxdesignwithfigma from '../../media/Certificates/ui-ux-design-with-figma-udemy-certificate.jpeg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from 'antd';
 import Introduction from '../Introduction';
 
@@ -44,6 +44,9 @@ const Logo = styled.img`
 `;
 
 export default function Projects(props) {
+    useEffect(() => {
+        document.title = `${props.title}`;
+      }, [props.title]);
     let mode = props.mode;
 
     const [searchQuery, setSearchQuery] = useState('');

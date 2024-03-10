@@ -111,7 +111,7 @@ export default function Footer(props) {
                 </div>
             </div>
             <div className='container'>
-                <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>&copy; 2024 Priyanshu Chaurasiya. All Rights Reserved.</p>
+                <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>&copy; 2024 by Priyanshu Chaurasiya is licensed under <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/?ref=chooser-v1">Attribution-NonCommercial-NoDerivatives 4.0 International </a></p>
                 <p style={{fontSize: '1.75vh', paddingLeft: '5vh'}}>Designed and Developed with &hearts; by Priyanshu Chaurasiya</p>
             </div>
         </div>

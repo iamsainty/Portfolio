@@ -1,7 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Introduction from '../Introduction';
 
 export default function About(props) {
+    useEffect(() => {
+        document.title = `${props.title}`;
+      }, [props.title]);
+      
+  
     let mode = props.mode;
     const aboutheading = [
         'Educational Journey',

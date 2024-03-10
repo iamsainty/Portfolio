@@ -39,18 +39,25 @@ function App() {
         <Navbar mode={mode} toggleMode={toggleMode} />
         <div style={{ height: '100%', overflowY: 'auto',}}>
           <Routes>
-            <Route exact path="/" element={<Home mode={mode} />} />
-            <Route exact path="/disclaimer" element={<Disclaimer mode={mode} />} /> 
-            <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} />} /> 
-            <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} />} /> 
-            <Route exact path="/about" element={<About mode={mode}/>} />
-            {/* <Route exact path="/education" element={<Education/>} /> */}
-            <Route exact path="/projects" element={<Projects mode={mode}/>}/>
-            <Route exact path="/blog" element={<Blog mode={mode}/>} />
-            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}/>} />
-            <Route exact path="/certifications" element={<Certificates mode={mode}/>} />
-            {/* <Route exact path="/contact" element={<Contact/>} /> */}
-            {/* Add other routes here */}
+
+
+            <Route exact path="/" element={<Home mode={mode}  title='Home - Sainty' />} />
+
+
+            <Route exact path="/projects" element={<Projects mode={mode}  title='Projects - Sainty'/>}/>
+            <Route exact path="/certifications" element={<Certificates mode={mode}  title='Certificates - Sainty'/>} />
+            <Route exact path="/blog" element={<Blog mode={mode}  title='Blog - Sainty'/>} />
+            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}  title='Your Portfolio - Sainty'/>} />
+
+
+            {/* Routes for legal Pages */}
+            <Route exact path="/about" element={<About mode={mode} title='About - Sainty'/> } />
+            <Route exact path="/disclaimer" element={<Disclaimer mode={mode}   title='Disclaimer - Sainty'/>} /> 
+            <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode}  title='Privacy Policy - Sainty' />} /> 
+            <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode}  title='GDPR Compliance - Sainty' />} /> 
+
+
+
           </Routes>
         </div>
         <Footer mode={mode}/>

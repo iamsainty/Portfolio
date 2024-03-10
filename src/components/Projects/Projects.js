@@ -2,9 +2,9 @@ import styled from 'styled-components';
 import githublogo from '../../media/Social icons/github-logo.png'
 import { Link } from 'react-router-dom';
 import textstudiopre from '../../media/Projects/textstudio-preview.png'
-import newshubpre from '../../media/Projects/newshub-preview.png'
+import newsswiftpre from '../../media/Projects/newsswift-preview.png'
 import portfoliopre from '../../media/Projects/portfolio-preview.png'
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Input } from 'antd';
 import Introduction from '../Introduction';
 
@@ -19,11 +19,11 @@ const projects = [
     tags: ['tag1', 'tag2']
   },
   {
-    preview: newshubpre,
-    title: "NewsHub",
-    description: "NewsHub is a cutting-edge news website developed with React, seamlessly integrating real-time news from across the globe via the NEWSAPI. Users can explore news by category, including sports, health, business, science, and more. For in-depth coverage, the platform redirects users to official news channels, ensuring a rich and diverse news consumption experience.",
-    github: "https://github.com/iamsainty/NewsHub",
-    live: "/",
+    preview: newsswiftpre,
+    title: "News Swift",
+    description: "News Swift is a cutting-edge news website developed with React, seamlessly integrating real-time news from across the globe via the NEWSAPI. Users can explore news by category, including sports, health, business, science, and more. For in-depth coverage, the platform redirects users to official news channels, ensuring a rich and diverse news consumption experience.",
+    github: "https://github.com/iamsainty/NewsSwift",
+    live: "https://news-swift.web.app/",
     tags: ['tag1', 'tag2']
   },
   {
@@ -56,6 +56,9 @@ const Logo = styled.img`
 `;
 
 export default function Projects(props) {
+  useEffect(() => {
+      document.title = `${props.title}`;
+    }, [props.title]);
   let mode = props.mode;
 
   const [searchQuery, setSearchQuery] = useState('');

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import Introduction from '../Introduction';
 
 export default function YourPortfolio(props) {
+
+  useEffect(() => {
+    document.title = `${props.title}`;
+  }, [props.title]);
   let mode=props.mode;
 
   const headings =[

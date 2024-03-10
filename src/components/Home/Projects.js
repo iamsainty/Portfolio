@@ -4,7 +4,8 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import textstudiopreview from '../../media/Projects/textstudio-preview.png';
-import newshubpreview from '../../media/Projects/newshub-preview.png';
+import newsswiftpreview from '../../media/Projects/newsswift-preview.png';
+import portfoliopreview from '../../media/Projects/portfolio-preview.png'
 import { Link } from 'react-router-dom';
 
 const ProjectContainer = styled.div`
@@ -31,14 +32,19 @@ const ProjectCard = styled.div`
 export default function Projects(props) {
   const projects = [
     {
+      title: 'Personal Portfolio',
+      preview: portfoliopreview,
+      description: 'My Own personal portfolio',
+    },
+    {
+      title: 'News Swift',
+      preview: newsswiftpreview,
+      description: 'Daily dose of fresh news',
+    },
+    {
       title: 'Text Studio',
       preview: textstudiopreview,
       description: 'Text analyzing and formatting web application',
-    },
-    {
-      title: 'News Hub',
-      preview: newshubpreview,
-      description: 'Daily dose of fresh news',
     },
   ];
 

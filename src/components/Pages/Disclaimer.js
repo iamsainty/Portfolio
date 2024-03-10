@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Introduction from '../Introduction';
 import { Link } from 'react-router-dom';
 
 const Disclaimer = (props) => {
+  useEffect(() => {
+      document.title = `${props.title}`;
+    }, [props.title]);
   let mode = props.mode;
   const headings = [
     "Accuracy of Information",

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Introduction from '../Introduction';
 import Skills from './Skills';
 import Projects from './Projects';
@@ -8,6 +8,10 @@ import Certifications from './Certifications';
 import Contact from './Contact';
 
 export default function Home(props) {
+
+    useEffect(() => {
+        document.title = `${props.title}`;
+      }, [props.title]);
   let mode = props.mode;
 
   const professions = ['Developer', 'Designer', 'Programmer', 'Blogger'];

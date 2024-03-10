@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Introduction from '../Introduction'
 import { Link } from 'react-router-dom';
 
 export default function GDPRCompliance(props) {
+
+    useEffect(() => {
+        document.title = `${props.title}`;
+      }, [props.title]);
     let mode = props.mode;
     const headings = [
         "Purpose of Data Processing",
