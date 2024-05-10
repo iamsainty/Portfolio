@@ -24,4 +24,24 @@ router.post('/register', async (req, res) => {
     }
 });
 
+//login a user using POST
+router.post("/login", async (req, res) => {
+    try {
+        let user = await User.findOne({ username: req.body.username }); 
+        if (!user) return res.status(401).json({ message: "User does not exist" });
+        
+        // Checking if passwords match
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if(!validPassword) return res.status(401).json({ auth: false, message: "Invalid credentials" })
+
+        // Create and send the JSON Web Token
+        const token = jwt.sign({ id: user.id}, JWT_SECRET);
+        res.status(200).send({ token: token, user: user });
+    } catch (error) {
+        // Handle any errors that occur during the process
+        res.status(500).json({ message: "An error occurred during login." });
+    }
+})
+
+
 module.exports = router;
