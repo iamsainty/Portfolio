@@ -15,6 +15,8 @@ import {
   Routes,
   Route,
 } from "react-router-dom";
+import Login from "./components/Account/Login";
+import Register from "./components/Account/Register";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -43,7 +45,12 @@ function App() {
 
             <Route exact path="/" element={<Home mode={mode}  title='Home - Sainty' />} />
 
+            {/* Routes for authentication */}
+            <Route exact path="/login" element={<Login mode={mode}  title='Login - Sainty' />} />
+            <Route exact path="/register" element={<Register mode={mode}  title='Register - Sainty' />} />
 
+
+            {/* Routes for webpages */}
             <Route exact path="/projects" element={<Projects mode={mode}  title='Projects - Sainty'/>}/>
             <Route exact path="/certifications" element={<Certificates mode={mode}  title='Certificates - Sainty'/>} />
             <Route exact path="/blog" element={<Blog mode={mode}  title='Blog - Sainty'/>} />
