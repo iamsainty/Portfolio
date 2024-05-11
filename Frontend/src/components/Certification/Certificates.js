@@ -6,7 +6,6 @@ import React, { useEffect, useState } from 'react';
 import { Input } from 'antd';
 import Introduction from '../Introduction';
 
-
 const certificates = [
     {
         "title": "HTML, CSS, and Javascript for Web Developers",
@@ -23,8 +22,6 @@ const certificates = [
         "verify": "https://www.udemy.com/certificate/UC-1919a52b-b419-4670-b6a1-b67961609adb"
     }
 ];
-
-
 
 const Card = styled.div`
   background-color: #fff;
@@ -46,8 +43,7 @@ const Logo = styled.img`
 export default function Projects(props) {
     useEffect(() => {
         document.title = `${props.title}`;
-      }, [props.title]);
-    let mode = props.mode;
+    }, [props.title]);
 
     const [searchQuery, setSearchQuery] = useState('');
     const handleSearch = (e) => {
@@ -63,29 +59,55 @@ export default function Projects(props) {
         document.body.removeChild(link);
     };
 
-    const certifications = [
-        'HTML, CSS, and Javascript for Web Developers',
-        'UI/UX Design With Figma'
-    ]
-
     return (
         <>
             <div className='container'>
-                <Introduction array={certifications} heading={"View Certifications"} mode={mode} />
+                <Introduction array={certificates.map(certificate => certificate.title)} heading={"My Certifications"} mode={props.mode} />
                 <div style={{ height: '20vh', width: '100%' }}></div>
-                <Input
-                    placeholder="Search certificate..."
-                    value={searchQuery}
-                    onChange={handleSearch}
-                    style={{
-                        marginBottom: '5vh',
+                <div className="d-flex align-items-center mb-5">
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
                         width: '100%',
-                        padding: '2vh',
-                        background: 'linear-gradien(#DEE4EA, #F9FCFF)',
-                        fontSize: '2vh',
-                        border: '1px solid #191919'
-                    }}
-                />
+                        borderRadius: '5px',
+                        border: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                        overflow: 'hidden',
+                        backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                    }}>
+                        <div style={{
+                            backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                            color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                            height: '100%',
+                            minWidth: '7vh',
+                            fontWeight: 'bold',
+                            fontSize: '1.8vh',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '0 1.5vh',
+                            borderRight: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                        }}>
+                            Search
+                        </div>
+                        <Input
+                            placeholder="Search certificate..."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                            style={{
+                                flex: '1',
+                                height: '100%',
+                                padding: '2.5vh 1.5vh', // Adjusted padding for increased height
+                                fontSize: '1.6vh',
+                                borderRadius: '0',
+                                border: 'none',
+                                backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                                color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                                outline: 'none',
+                            }}
+                        />
+                    </div>
+                </div>
+
 
 
                 {certificates.filter((certificate) => certificate.title.toLowerCase().includes(searchQuery.toLowerCase()) ||

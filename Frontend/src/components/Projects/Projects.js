@@ -75,19 +75,49 @@ export default function Projects(props) {
       <div className='container'>
         <Introduction heading={"Explore Projects"} mode={mode} array={myprojects} />
         <div style={{ height: '20vh', width: '100%' }}></div>
-        <Input
-          placeholder="Search projects..."
-          value={searchQuery}
-          onChange={handleSearch}
-          style={{
-            marginBottom: '5vh',
-            width: '100%',
-            padding: '2vh',
-            background: 'linear-gradien(#DEE4EA, #F9FCFF)',
-            fontSize: '2vh',
-            border: '1px solid #191919'
-          }}
-        />
+        <div className="d-flex align-items-center mb-5">
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        width: '100%',
+                        borderRadius: '5px',
+                        border: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                        overflow: 'hidden',
+                        backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                    }}>
+                        <div style={{
+                            backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                            color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                            height: '100%',
+                            minWidth: '7vh',
+                            fontWeight: 'bold',
+                            fontSize: '1.8vh',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '0 1.5vh',
+                            borderRight: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                        }}>
+                            Search
+                        </div>
+                        <Input
+                            placeholder="Search project..."
+                            value={searchQuery}
+                            onChange={handleSearch}
+                            style={{
+                                flex: '1',
+                                height: '100%',
+                                padding: '2.5vh 1.5vh', // Adjusted padding for increased height
+                                fontSize: '1.6vh',
+                                borderRadius: '0',
+                                border: 'none',
+                                backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                                color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                                outline: 'none',
+                            }}
+                        />
+                    </div>
+                </div>
 
 
         {projects.filter((project) =>

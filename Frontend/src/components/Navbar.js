@@ -22,8 +22,6 @@ export default function Navbar(props) {
                                 <Link className="nav-link" to="/certifications">Certifications</Link></li>
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/blog">Blog</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className={`btn btn-outline-${props.mode==='dark'?'light':'dark'}`} to="/your-portfolio">Get Your Portfolio</Link></li>
                         </ul>
                     </div>
                     <div className={`form-check theme-switch form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`} >
