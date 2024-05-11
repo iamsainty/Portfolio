@@ -14,18 +14,34 @@ router.get('/blogs', async (req, res) => {
     }
 });
 
+
+//Fetching single blog
+router.get('/:blogurl', async (req, res) => {
+    try {
+        const blogurl = req.blogurl;
+        const foundBlog = await BlogPost.findOne({ "blogurl": blogurl });
+        if (!foundBlog) return res.status(404).send("No such blog exists.");
+        else {
+            res.json(foundBlog);
+        }
+    } catch (error) {
+        console.error('Error fetching blog post:', error);
+        res.status(500).send('Error fetching blog post');
+    }
+});
+
+
 // Adding a new blog post
 router.post('/newblog', userdetails, async (req, res) => {
     try {
-        const { title, shortDescription, coverImage, content, tags } = req.body;
+        const { title, shortDescription, content, blogurl } = req.body;
         const user = await User.findById(req.user.id);
         const blogPost = new BlogPost({
             author: user.name, // Assuming you have some way to track the author's ID
             title,
             shortDescription,
-            coverImage,
             content,
-            tags
+            blogurl
         });
         const savedPost = await blogPost.save();
         res.json(savedPost);
@@ -38,13 +54,11 @@ router.post('/newblog', userdetails, async (req, res) => {
 // Update a blog post
 router.put('/editblog/:id', userdetails, async (req, res) => {
     try {
-        const { title, shortDescription, coverImage, content, tags } = req.body;
+        const { title, shortDescription, content } = req.body;
         const updatedFields = {
             title,
             shortDescription,
-            coverImage,
             content,
-            tags,
             lastUpdated: Date.now()
         };
         const updatedPost = await BlogPost.findByIdAndUpdate(req.params.id, { $set: updatedFields }, { new: true });

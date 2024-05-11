@@ -17,6 +17,7 @@ import {
 } from "react-router-dom";
 import Login from "./components/Account/Login";
 import Register from "./components/Account/Register";
+import BlogPost from "./components/Blog/BlogPost";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -56,6 +57,9 @@ function App() {
             <Route exact path="/blog" element={<Blog mode={mode}  title='Blog - Sainty'/>} />
             <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}  title='Your Portfolio - Sainty'/>} />
 
+
+            {/*  Dynamic routes with parameters :id to show blogs*/}
+            <Route exact path="/blog/:blogurl" element={<BlogPost mode={mode} />} />
 
             {/* Routes for legal Pages */}
             <Route exact path="/about" element={<About mode={mode} title='About - Sainty'/> } />

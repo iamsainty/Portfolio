@@ -21,17 +21,14 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  coverImage: {
-    type: String,
-    required: true
-  },
   content: {
     type: String,
     required: true
   },
-  tags: {
-    type: [String],
-    default: []
+  blogurl:{
+    type :String,
+    unique :true,
+    required : true
   }
 });
 

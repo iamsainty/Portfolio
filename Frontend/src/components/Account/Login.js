@@ -29,7 +29,7 @@ const Login = () => {
                 setMsg('Enter your password');
                 return;
             }
-            const response = await fetch("http://localhost:5001/api/auth/login", {
+            const response = await fetch("http://localhost:5002/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
@@ -39,7 +39,7 @@ const Login = () => {
             const json = await response.json();
             if (response.ok) {
                 localStorage.setItem('token', json.authtoken);
-                navigate('/mynotes');
+                navigate('/admin');
                 window.location.reload();
             } else {
                 setMsg(json.error);
