@@ -38,17 +38,16 @@ const Login = () => {
             });
             const json = await response.json();
             if (response.ok) {
-                localStorage.setItem('token', json.authtoken);
+                localStorage.setItem('token', json.token); // Use token instead of authtoken
                 navigate('/admin');
-                window.location.reload();
             } else {
-                setMsg(json.error);
+                setMsg(json.message);
             }
         } catch (error) {
             console.error('Error during login:', error);
             setMsg('An error occurred. Please try again later.');
         }
-    };
+    };    
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });

@@ -18,7 +18,7 @@ import {
 import Login from "./components/Account/Login";
 import Register from "./components/Account/Register";
 import BlogPost from "./components/Blog/BlogPost";
-
+import Dashboard from "./components/AdminPanel/Dashboard";
 function App() {
   const [mode, setMode] = useState('light');
 
@@ -60,6 +60,10 @@ function App() {
 
             {/*  Dynamic routes with parameters :id to show blogs*/}
             <Route exact path="/blog/:blogurl" element={<BlogPost mode={mode} />} />
+
+
+            {/* Routes for admin panel operations */}
+            <Route exact path="/admin" element={<Dashboard mode={mode}  title='Admin - Sainty' />} />
 
             {/* Routes for legal Pages */}
             <Route exact path="/about" element={<About mode={mode} title='About - Sainty'/> } />

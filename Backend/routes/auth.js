@@ -31,18 +31,16 @@ router.post("/login", async (req, res) => {
         let user = await User.findOne({ username: req.body.username });
         if (!user) return res.status(401).json({ message: "User does not exist" });
 
-        // Checking if passwords match
         const validPassword = await bcrypt.compare(req.body.password, user.password);
-        if (!validPassword) return res.status(401).json({ auth: false, message: "Invalid credentials" })
+        if (!validPassword) return res.status(401).json({ message: "Invalid username or password" });
 
-        // Create and send the JSON Web Token
         const token = jwt.sign({ id: user.id }, JWT_SECRET);
         res.status(200).send({ token: token, user: user });
     } catch (error) {
-        // Handle any errors that occur during the process
-        res.status(500).json({ message: "An error occurred during login." });
+        res.status(500).json({ message: "An error occurred during login" });
     }
 });
+
 
 //Get user details using Token with POST
 router.post('/userdetails', userdetails, async (req, res) => {
