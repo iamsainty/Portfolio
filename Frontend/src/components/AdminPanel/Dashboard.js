@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate hook instead of Navigate
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
+import Introduction from '../Introduction';
 
-// Styled components for the admin options
 const OptionCard = styled.div`
-  background-color: #fff;
+  background-color: ${({ mode }) => (mode === 'dark' ? '#222' : '#fff')}; /* Conditional background color */
+  color: ${({ mode }) => (mode === 'dark' ? '#fff' : '#000')}; /* Conditional text color */
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -26,33 +27,48 @@ const OptionDescription = styled.p`
   font-size: 1.75vh;
 `;
 
+const ButtonContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+`;
+
+const Button = styled.button`
+  flex-grow: 1;
+  margin-right: 10px;
+`;
+
 const options = [
-  { title: 'Skills', description: 'Manage skills' },
-  { title: 'Projects', description: 'Manage projects' },
-  { title: 'Experience', description: 'Manage experience' },
-  { title: 'Education', description: 'Manage education' },
-  { title: 'Certification', description: 'Manage certifications' },
-  { title: 'Contact', description: 'Manage contact details' },
-  { title: 'Blog', description: 'Manage blog posts' },
+  { title: 'Skills', description: 'Manage skills', route: 'skill' },
+  { title: 'Projects', description: 'Manage projects', route: 'project' },
+  { title: 'Experience', description: 'Manage experience', route: 'experience' },
+  { title: 'Education', description: 'Manage education', route: 'education' },
+  { title: 'Certification', description: 'Manage certifications', route: 'certification' },
+  { title: 'Blog', description: 'Manage blog posts', route: 'blog' },
 ];
 
-const Dashboard = () => {
-  const navigate = useNavigate(); // Use useNavigate hook to get navigation function
+const Dashboard = (props) => {
+  const navigate = useNavigate();
 
   useEffect(() => {
-    // Check if user is logged in
     const fetchUser = async () => {
-        if (!localStorage.getItem('token')) {
-            navigate('/login');
-        }
+      if (!localStorage.getItem('token')) {
+        navigate('/login');
+      }
     };
     fetchUser();
-    // eslint-disable-next-line
-  }, [navigate]); // Add navigate to the dependency array
+  }, [navigate]);
 
-  const handleOptionClick = (option) => {
-    // Redirect to corresponding admin page based on option clicked
-    navigate(`/admin/${option.toLowerCase()}`); // Use navigate function instead of Navigate component
+  const handleAdd = (option) => {
+    navigate(`/admin/new${option.route}`);
+  };
+
+  const handleEdit = (option) => {
+    navigate(`/admin/edit${option.route}`);
+  };
+
+  const handleDelete = (option) => {
+    navigate(`/admin/delete${option.route}`);
   };
 
   const handleLogout = () => {
@@ -62,20 +78,24 @@ const Dashboard = () => {
 
   return (
     <div className="container">
-      <h1>Welcome to Admin Panel</h1>
-      <button className="btn btn-danger mb-3" onClick={handleLogout}>Logout</button>
+      <Introduction array={options.map(option => option.title)} heading={"Admin Panel"} mode={props.mode} />
+      <br /><br /><br /><br />
       <div className="row">
         {options.map((option) => (
           <div className="col-md-4" key={option.title}>
-            <OptionCard
-              onClick={() => handleOptionClick(option.title)}
-            >
+            <OptionCard mode={props.mode}>
               <OptionTitle>{option.title}</OptionTitle>
               <OptionDescription>{option.description}</OptionDescription>
+              <ButtonContainer>
+                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleAdd(option)}>Add</Button>
+                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleEdit(option)}>Edit</Button>
+                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleDelete(option)}>Delete</Button>
+              </ButtonContainer>
             </OptionCard>
           </div>
         ))}
       </div>
+      <button className="btn btn-danger mb-3" style={{ width: '100%' }} onClick={handleLogout}>Logout</button>
     </div>
   );
 };

@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
+import { EditorState, convertToRaw } from 'draft-js';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import BlogContext from '../../context/blogcontext';
 
 const BlogContainer = styled.div`
   max-width: 800px;
@@ -39,30 +38,6 @@ const Input = styled.input`
   border-radius: 5px;
 `;
 
-const ButtonContainer = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Button = styled.button`
-  padding: 12px 24px;
-  font-size: 1.2rem;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #f0f0f0;
-  }
-
-  ${(props) => props.active && `
-    background-color: #007bff;
-    color: #fff;
-  `}
-`;
-
 const ErrorMessage = styled.div`
   color: red;
   font-size: 1rem;
@@ -70,6 +45,7 @@ const ErrorMessage = styled.div`
 
 const NewBlog = () => {
   const navigate = useNavigate();
+  const { newBlog } = useContext(BlogContext);
 
   const [blog, setBlog] = useState({
     title: '',
@@ -80,7 +56,6 @@ const NewBlog = () => {
   });
 
   const [errorMsg, setErrorMsg] = useState('');
-  const [editorMode, setEditorMode] = useState('text'); // or 'html'
 
   useEffect(() => {
     if (!localStorage.getItem('token')) {
@@ -93,15 +68,11 @@ const NewBlog = () => {
     setBlog({ ...blog, [name]: value });
   };
 
-  const handleContentChange = (contentState) => {
-    setBlog({ ...blog, content: contentState });
+  const handleContentChange = (content) => {
+    setBlog({ ...blog, content });
   };
 
-  const handleModeToggle = () => {
-    setEditorMode(editorMode === 'text' ? 'html' : 'text');
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     // Validation
     if (!blog.title.trim()) {
@@ -116,27 +87,24 @@ const NewBlog = () => {
       setErrorMsg('Blog URL cannot be empty');
       return;
     }
-    // Convert content to HTML if in HTML mode
-    let contentHTML = '';
-    if (editorMode === 'html') {
-      contentHTML = draftToHtml(convertToRaw(blog.content.getCurrentContent()));
-      console.log('Content HTML:', contentHTML);
-    } else {
-      // Otherwise, get plain text from the editor state
-      const contentPlainText = blog.content.getCurrentContent().getPlainText();
-      console.log('Content Plain Text:', contentPlainText);
+    // Convert content to HTML
+    const contentHTML = convertToRaw(blog.content.getCurrentContent());
+    console.log('Content HTML:', contentHTML);
+    // Call newBlog function from context
+    try {
+      await newBlog(blog.title, blog.shortDescription, contentHTML);
+      // Reset form fields
+      setBlog({
+        title: '',
+        shortDescription: '',
+        content: EditorState.createEmpty(),
+        blogUrl: '',
+        tags: '',
+      });
+      setErrorMsg('');
+    } catch (error) {
+      console.error('Error adding blog:', error);
     }
-    // Connect with backend and add the blog
-    console.log('Blog added:', blog);
-    // Reset form fields
-    setBlog({
-      title: '',
-      shortDescription: '',
-      content: EditorState.createEmpty(),
-      blogUrl: '',
-      tags: '',
-    });
-    setErrorMsg('');
   };
 
   return (
@@ -165,21 +133,13 @@ const NewBlog = () => {
         </FormGroup>
         <FormGroup>
           <Label>Content:</Label>
-          {editorMode === 'html' ? (
-            <Editor
-              editorState={blog.content}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={handleContentChange}
-            />
-          ) : (
-            <textarea
-              value={blog.content.getCurrentContent().getPlainText()}
-              onChange={(e) => handleContentChange(EditorState.createWithContent(htmlToDraft(e.target.value)))}
-              rows={10}
-            />
-          )}
+          <Editor
+            editorState={blog.content}
+            toolbarClassName="toolbarClassName"
+            wrapperClassName="wrapperClassName"
+            editorClassName="editorClassName"
+            onEditorStateChange={handleContentChange}
+          />
         </FormGroup>
         <FormGroup>
           <Label>Blog URL:</Label>
@@ -202,15 +162,7 @@ const NewBlog = () => {
           <small>Separate tags with commas (e.g., technology, programming)</small>
         </FormGroup>
         {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
-        <ButtonContainer>
-          <Button active={editorMode === 'text'} type="button" onClick={handleModeToggle}>
-            Switch to Text
-          </Button>
-          <Button active={editorMode === 'html'} type="button" onClick={handleModeToggle}>
-            Switch to HTML
-          </Button>
-          <Button type="submit">Submit</Button>
-        </ButtonContainer>
+        <button type="submit">Submit</button>
       </Form>
     </BlogContainer>
   );
