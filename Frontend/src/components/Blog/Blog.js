@@ -100,7 +100,7 @@ function Blog(props) {
       <SearchContainer mode={props.mode} className="mb-5">
         <SearchLabel mode={props.mode}>Search</SearchLabel>
         <Input
-          placeholder="Search certificate..."
+          placeholder="Search blog..."
           value={searchQuery}
           onChange={handleSearch}
           style={{
@@ -119,8 +119,7 @@ function Blog(props) {
       {loading ? (
         <div>Loading...</div>
       ) : filteredBlogs.length === 0 ? (
-        <p>No blogs to display</p>
-      ) : (
+        <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
         <BlogSlider
           infinite={true}
           speed={1000}

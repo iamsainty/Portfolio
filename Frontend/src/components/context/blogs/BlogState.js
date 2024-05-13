@@ -61,7 +61,7 @@ const BlogState = (props) => {
 
     const deleteblog = async (id) => {
         try {
-            const url = `${host}/blog/deletenote/${id}`;
+            const url = `${host}/blog/deleteblog/${id}`;
             await fetch(url, {
                 method: "DELETE",
                 headers: {

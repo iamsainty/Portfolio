@@ -18,14 +18,10 @@ const OptionCard = styled.div`
 `;
 
 const OptionTitle = styled.h2`
-  font-size: 2vh;
+  font-size: 3vh;
   font-weight: bold;
 `;
 
-const OptionDescription = styled.p`
-  margin: 0;
-  font-size: 1.75vh;
-`;
 
 const ButtonContainer = styled.div`
   display: flex;
@@ -39,12 +35,12 @@ const Button = styled.button`
 `;
 
 const options = [
-  { title: 'Skills', description: 'Manage skills', route: 'skill' },
-  { title: 'Projects', description: 'Manage projects', route: 'project' },
-  { title: 'Experience', description: 'Manage experience', route: 'experience' },
-  { title: 'Education', description: 'Manage education', route: 'education' },
-  { title: 'Certification', description: 'Manage certifications', route: 'certification' },
-  { title: 'Blog', description: 'Manage blog posts', route: 'blog' },
+  { title: 'Skill', route: 'skill' },
+  { title: 'Project', route: 'project' },
+  { title: 'Experience', route: 'experience' },
+  { title: 'Education', route: 'education' },
+  { title: 'Certification', route: 'certification' },
+  { title: 'Blog', route: 'blog' },
 ];
 
 const Dashboard = (props) => {
@@ -59,16 +55,8 @@ const Dashboard = (props) => {
     fetchUser();
   }, [navigate]);
 
-  const handleAdd = (option) => {
-    navigate(`/admin/new${option.route}`);
-  };
-
-  const handleEdit = (option) => {
-    navigate(`/admin/edit${option.route}`);
-  };
-
-  const handleDelete = (option) => {
-    navigate(`/admin/delete${option.route}`);
+  const handlemanage = (option) => {
+    navigate(`/admin/manage${option.route}`);
   };
 
   const handleLogout = () => {
@@ -85,11 +73,8 @@ const Dashboard = (props) => {
           <div className="col-md-4" key={option.title}>
             <OptionCard mode={props.mode}>
               <OptionTitle>{option.title}</OptionTitle>
-              <OptionDescription>{option.description}</OptionDescription>
               <ButtonContainer>
-                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleAdd(option)}>Add</Button>
-                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleEdit(option)}>Edit</Button>
-                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handleDelete(option)}>Delete</Button>
+                <Button className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} onClick={() => handlemanage(option)}>Manage {option.title}</Button>
               </ButtonContainer>
             </OptionCard>
           </div>

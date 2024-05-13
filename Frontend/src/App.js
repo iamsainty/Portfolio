@@ -21,6 +21,7 @@ import BlogPost from "./components/Blog/BlogPost";
 import Dashboard from "./components/AdminPanel/Dashboard";
 import NewBlog from "./components/AdminPanel/manageblog/NewBlog";
 import BlogState from "./components/context/blogs/BlogState";
+import ManageBlog from "./components/AdminPanel/manageblog/ManageBlogs";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -66,6 +67,7 @@ function App() {
 
               {/* Routes for managing blogs */}
               <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty' />} />
+              <Route exact path="/admin/manageblog" element={<ManageBlog mode={mode} title='Delete Blog -Sainty' />} />
 
               {/* Routes for legal Pages */}
               <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />
