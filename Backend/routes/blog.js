@@ -53,6 +53,7 @@ router.post('/newblog', userdetails, async (req, res) => {
 });
 
 // Update a blog post
+// Edit a blog post
 router.put('/editblog/:id', userdetails, async (req, res) => {
     try {
         const { title, summary, content, tag } = req.body;
@@ -69,6 +70,8 @@ router.put('/editblog/:id', userdetails, async (req, res) => {
         res.status(500).send("Some Error occurred");
     }
 });
+
+
 
 // Delete a blog post
 router.delete('/deleteblog/:id', userdetails, async (req, res) => {
