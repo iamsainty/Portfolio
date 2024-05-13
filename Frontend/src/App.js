@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import Navbar from './components/Navbar';
 import Home from './components/Home/Home';
 import Disclaimer from "./components/Pages/Disclaimer";
@@ -20,6 +20,8 @@ import Register from "./components/Account/Register";
 import BlogPost from "./components/Blog/BlogPost";
 import Dashboard from "./components/AdminPanel/Dashboard";
 import NewBlog from "./components/AdminPanel/manageblog/NewBlog";
+import BlogState from "./components/context/blogs/BlogState";
+
 function App() {
   const [mode, setMode] = useState('light');
 
@@ -38,48 +40,42 @@ function App() {
   }
 
   return (
-    <div >
+    <div>
       <Router>
+      <BlogState>
         <Navbar mode={mode} toggleMode={toggleMode} />
-        <div style={{ height: '100%', overflowY: 'auto',}}>
-          <Routes>
+          <div style={{ height: '100%', overflowY: 'auto', }}>
+            <Routes>
+              <Route exact path="/" element={<Home mode={mode} title='Home - Sainty' />} />
 
+              {/* Routes for authentication */}
+              <Route exact path="/login" element={<Login mode={mode} title='Login - Sainty' />} />
+              <Route exact path="/register" element={<Register mode={mode} title='Register - Sainty' />} />
 
-            <Route exact path="/" element={<Home mode={mode}  title='Home - Sainty' />} />
+              {/* Routes for webpages */}
+              <Route exact path="/projects" element={<Projects mode={mode} title='Projects - Sainty' />} />
+              <Route exact path="/certifications" element={<Certificates mode={mode} title='Certificates - Sainty' />} />
+              <Route exact path="/blog" element={<Blog mode={mode} title='Blog - Sainty' />} />
+              <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode} title='Your Portfolio - Sainty' />} />
 
-            {/* Routes for authentication */}
-            <Route exact path="/login" element={<Login mode={mode}  title='Login - Sainty' />} />
-            <Route exact path="/register" element={<Register mode={mode}  title='Register - Sainty' />} />
+              {/* Dynamic routes with parameters :id to show blogs*/}
+              <Route exact path="/blog/:blogurl" element={<BlogPost mode={mode} />} />
 
+              {/* Routes for admin panel operations */}
+              <Route exact path="/admin" element={<Dashboard mode={mode} title='Admin - Sainty' />} />
 
-            {/* Routes for webpages */}
-            <Route exact path="/projects" element={<Projects mode={mode}  title='Projects - Sainty'/>}/>
-            <Route exact path="/certifications" element={<Certificates mode={mode}  title='Certificates - Sainty'/>} />
-            <Route exact path="/blog" element={<Blog mode={mode}  title='Blog - Sainty'/>} />
-            <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode}  title='Your Portfolio - Sainty'/>} />
+              {/* Routes for managing blogs */}
+              <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty' />} />
 
-
-            {/*  Dynamic routes with parameters :id to show blogs*/}
-            <Route exact path="/blog/:blogurl" element={<BlogPost mode={mode} />} />
-
-
-            {/* Routes for admin panel operations */}
-            <Route exact path="/admin" element={<Dashboard mode={mode} title='Admin - Sainty' />} />
-
-            {/* Routes for managing blogs */}
-            <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty'/>} />
-
-            {/* Routes for legal Pages */}
-            <Route exact path="/about" element={<About mode={mode} title='About - Sainty'/> } />
-            <Route exact path="/disclaimer" element={<Disclaimer mode={mode}   title='Disclaimer - Sainty'/>} /> 
-            <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode}  title='Privacy Policy - Sainty' />} /> 
-            <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode}  title='GDPR Compliance - Sainty' />} /> 
-
-
-
-          </Routes>
-        </div>
-        <Footer mode={mode}/>
+              {/* Routes for legal Pages */}
+              <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />
+              <Route exact path="/disclaimer" element={<Disclaimer mode={mode} title='Disclaimer - Sainty' />} />
+              <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} title='Privacy Policy - Sainty' />} />
+              <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} title='GDPR Compliance - Sainty' />} />
+            </Routes>
+          </div>
+          <Footer mode={mode} />
+      </BlogState>
       </Router>
     </div>
   );

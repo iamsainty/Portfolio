@@ -1,15 +1,15 @@
-import { useState, useEffect } from "react";
-import BlogContext from "./blogcontext";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react'
+import blogContext from './blogContext'
+import { useNavigate } from 'react-router-dom';
 
 const BlogState = (props) => {
     const host = "http://localhost:5002";
     const navigate = useNavigate();
 
     const [blogs, setBlogs] = useState([]);
-    const [fetchComplete, setFetchComplete] = useState(false); 
+    const [fetchComplete, setFetchComplete] = useState(false);
 
-    const fetchBlogs = async () => {
+    const fetchblogs = async () => {
         if (!localStorage.getItem('token')) {
             navigate('/login');
             return;
@@ -36,12 +36,12 @@ const BlogState = (props) => {
 
     useEffect(() => {
         if (!fetchComplete) {
-            fetchBlogs();
+            fetchblogs();
         }
         // eslint-disable-next-line
     }, [fetchComplete, navigate]);
 
-    const newBlog = async (title, shortDescription, content) => {
+    const newblog = async (title, summary, content, tag, permalink) => {
         try {
             const url = `${host}/blog/newblog`;
             const response = await fetch(url, {
@@ -50,11 +50,8 @@ const BlogState = (props) => {
                     "Content-Type": "application/json",
                     "authtoken": localStorage.getItem("token")
                 },
-                body: JSON.stringify({ title, shortDescription, content }),
+                body: JSON.stringify({ title, summary, content, tag, permalink }),
             });
-            if (!response.ok) {
-                throw new Error('Failed to add blog');
-            }
             const blog = await response.json();
             setBlogs([...blogs, blog]);
         } catch (error) {
@@ -62,14 +59,14 @@ const BlogState = (props) => {
         }
     };
 
-    const deleteBlog = async (id) => {
+    const deleteblog = async (id) => {
         try {
             const url = `${host}/blog/deletenote/${id}`;
             await fetch(url, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")  
+                    "authtoken": localStorage.getItem("token")
                 },
             });
             setBlogs(blogs.filter(blog => blog._id !== id));
@@ -78,30 +75,29 @@ const BlogState = (props) => {
         }
     };
 
-    const editBlog = async (id, title, shortDescription, content) => {
+    const editblog = async (id, title, summary, content, tag) => {
         try {
             const url = `${host}/blog/editblog/${id}`;
             await fetch(url, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")  
+                    "authtoken": localStorage.getItem("token")
                 },
-                body: JSON.stringify({ title, shortDescription, content }),
+                body: JSON.stringify({ title, summary, content, tag }),
             });
             setBlogs(blogs.map(blog =>
-                blog._id === id ? { ...blog, title, shortDescription, content } : blog
+                blog._id === id ? { ...blog, title, summary, content, tag } : blog
             ));
         } catch (error) {
             console.error("Error editing blog:", error);
         }
     };
-
-    return (
-        <BlogContext.Provider value={{ blogs, newBlog, deleteBlog, editBlog, fetchBlogs }}>
-            {props.children}
-        </BlogContext.Provider>
-    );
-};
+  return (
+    <blogContext.Provider value={{ blogs, newblog, deleteblog, editblog, fetchblogs }}>
+        {props.children}
+    </blogContext.Provider>
+  )
+}
 
 export default BlogState;

@@ -1,219 +1,166 @@
 import React, { useState, useEffect } from 'react';
+import Introduction from '../Introduction';
+import { Input } from 'antd';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { EditorState, convertToRaw } from 'draft-js';
-import { Editor } from 'react-draft-wysiwyg';
-import draftToHtml from 'draftjs-to-html';
-import htmlToDraft from 'html-to-draftjs';
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
 
 const BlogContainer = styled.div`
-  max-width: 800px;
-  margin: 0 auto;
+  text-align: center;
+  margin-top: 50px;
 `;
 
-const Title = styled.h1`
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-`;
-
-const Form = styled.form`
-  display: grid;
-  grid-gap: 20px;
-`;
-
-const FormGroup = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-`;
-
-const Label = styled.label`
-  font-size: 1.2rem;
-  margin-bottom: 5px;
-`;
-
-const Input = styled.input`
-  padding: 10px;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-`;
-
-const ButtonContainer = styled.div`
+const SearchContainer = styled.div`
   display: flex;
-  justify-content: space-between;
   align-items: center;
-`;
-
-const Button = styled.button`
-  padding: 12px 24px;
-  font-size: 1.2rem;
-  border: none;
+  width: 100%;
   border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  border: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+  overflow: hidden;
+  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
+`;
 
-  &:hover {
-    background-color: #f0f0f0;
+const SearchLabel = styled.div`
+  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
+  color: ${({ mode }) => (mode === 'dark' ? 'white' : 'black')};
+  height: 100%;
+  min-width: 7vh;
+  font-weight: bold;
+  font-size: 1.8vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1.5vh;
+  border-right: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+`;
+
+const BlogSlider = styled(Slider)`
+  .slick-slide div {
+    margin: 0 auto;
   }
-
-  ${(props) => props.active && `
-    background-color: #007bff;
-    color: #fff;
-  `}
 `;
 
-const ErrorMessage = styled.div`
-  color: red;
-  font-size: 1rem;
+const BlogCard = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  transition: transform 0.3s ease-in-out;
+  
+  &:hover {
+    transform: scale(1.05);
+  }
 `;
 
-const NewBlog = () => {
-  const navigate = useNavigate();
+function Blog(props) {
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const [blog, setBlog] = useState({
-    title: '',
-    shortDescription: '',
-    content: EditorState.createEmpty(),
-    blogUrl: '',
-    tags: '',
-  });
-
-  const [errorMsg, setErrorMsg] = useState('');
-  const [editorMode, setEditorMode] = useState('text'); // or 'html'
+  const host = "http://localhost:5002";
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
-      navigate('/login');
-    }
-  }, [navigate]);
+    const fetchBlogs = async () => {
+      try {
+        const url = `${host}/blog/blogs`;
+        const response = await fetch(url, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            "authtoken": localStorage.getItem("token")
+          },
+        });
+        const allblogs = await response.json();
+        setBlogs(allblogs);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching blogs:', error.message);
+        setLoading(false);
+      }
+    };
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setBlog({ ...blog, [name]: value });
+    fetchBlogs();
+  }, []);
+
+  const handleSearch = (e) => {
+    setSearchQuery(e.target.value);
   };
 
-  const handleContentChange = (contentState) => {
-    setBlog({ ...blog, content: contentState });
-  };
-
-  const handleModeToggle = () => {
-    setEditorMode(editorMode === 'text' ? 'html' : 'text');
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Validation
-    if (!blog.title.trim()) {
-      setErrorMsg('Title cannot be empty');
-      return;
-    }
-    if (!blog.shortDescription.trim()) {
-      setErrorMsg('Short description cannot be empty');
-      return;
-    }
-    if (!blog.blogUrl.trim()) {
-      setErrorMsg('Blog URL cannot be empty');
-      return;
-    }
-    // Convert content to HTML if in HTML mode
-    let contentHTML = '';
-    if (editorMode === 'html') {
-      contentHTML = draftToHtml(convertToRaw(blog.content.getCurrentContent()));
-      console.log('Content HTML:', contentHTML);
-    } else {
-      // Otherwise, get plain text from the editor state
-      const contentPlainText = blog.content.getCurrentContent().getPlainText();
-      console.log('Content Plain Text:', contentPlainText);
-    }
-    // Connect with backend and add the blog
-    console.log('Blog added:', blog);
-    // Reset form fields
-    setBlog({
-      title: '',
-      shortDescription: '',
-      content: EditorState.createEmpty(),
-      blogUrl: '',
-      tags: '',
-    });
-    setErrorMsg('');
-  };
+  const filteredBlogs = blogs.filter(blog =>
+    blog.title.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
-    <BlogContainer>
-      <Title>Add a New Blog</Title>
-      <Form onSubmit={handleSubmit}>
-        <FormGroup>
-          <Label>Title:</Label>
-          <Input
-            type="text"
-            name="title"
-            value={blog.title}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Short Description:</Label>
-          <Input
-            type="text"
-            name="shortDescription"
-            value={blog.shortDescription}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Content:</Label>
-          {editorMode === 'html' ? (
-            <Editor
-              editorState={blog.content}
-              toolbarClassName="toolbarClassName"
-              wrapperClassName="wrapperClassName"
-              editorClassName="editorClassName"
-              onEditorStateChange={handleContentChange}
-            />
-          ) : (
-            <textarea
-              value={blog.content.getCurrentContent().getPlainText()}
-              onChange={(e) => handleContentChange(EditorState.createWithContent(htmlToDraft(e.target.value)))}
-              rows={10}
-            />
-          )}
-        </FormGroup>
-        <FormGroup>
-          <Label>Blog URL:</Label>
-          <Input
-            type="url"
-            name="blogUrl"
-            value={blog.blogUrl}
-            onChange={handleChange}
-            required
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label>Tags:</Label>
-          <Input
-            type="text"
-            name="tags"
-            value={blog.tags}
-            onChange={handleChange}
-          />
-          <small>Separate tags with commas (e.g., technology, programming)</small>
-        </FormGroup>
-        {errorMsg && <ErrorMessage>{errorMsg}</ErrorMessage>}
-        <ButtonContainer>
-          <Button active={editorMode === 'text'} type="button" onClick={handleModeToggle}>
-            Switch to Text
-          </Button>
-          <Button active={editorMode === 'html'} type="button" onClick={handleModeToggle}>
-            Switch to HTML
-          </Button>
-          <Button type="submit">Submit</Button>
-        </ButtonContainer>
-      </Form>
+    <BlogContainer className='container'>
+      <Introduction array={blogs.map(blog => blog.title)} heading={"Read Blogs"} mode={props.mode} />
+      <div style={{ height: '20vh', width: '100%' }}></div>
+      <SearchContainer mode={props.mode} className="mb-5">
+        <SearchLabel mode={props.mode}>Search</SearchLabel>
+        <Input
+          placeholder="Search certificate..."
+          value={searchQuery}
+          onChange={handleSearch}
+          style={{
+            flex: '1',
+            height: '100%',
+            padding: '2.5vh 1.5vh', // Adjusted padding for increased height
+            fontSize: '1.6vh',
+            borderRadius: '0',
+            border: 'none',
+            backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+            color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+            outline: 'none',
+          }}
+        />
+      </SearchContainer>
+      {loading ? (
+        <div>Loading...</div>
+      ) : filteredBlogs.length === 0 ? (
+        <p>No blogs to display</p>
+      ) : (
+        <BlogSlider
+          infinite={true}
+          speed={1000}
+          slidesToShow={3}
+          slidesToScroll={1}
+          autoplay={true} // Autoplay enabled
+          autoplaySpeed={2500} // Adjust autoplay speed as needed (milliseconds)
+          responsive={[
+            {
+              breakpoint: 768,
+              settings: {
+                slidesToShow: 1,
+                slidesToScroll: 1,
+              },
+            },
+            {
+              breakpoint: 1024,
+              settings: {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+              },
+            },
+          ]}
+        >
+          {filteredBlogs.map((blog) => (
+            <div className="col" key={blog.title}>
+              <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
+                {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
+                <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                  <h2 style={{ fontSize: '2vh', fontWeight: 'bold' }}>{blog.title}</h2>
+                  <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{blog.summary}</p>
+                </div>
+              </BlogCard>
+            </div>
+          ))}
+        </BlogSlider>
+      )}
+      <br /><br />
     </BlogContainer>
   );
-};
+}
 
-export default NewBlog;
+export default Blog;

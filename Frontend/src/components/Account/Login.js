@@ -1,12 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import avatar1 from '../../media/Avatar/Avatar 1.webp';
-import avatar2 from '../../media/Avatar/Avatar 2.webp';
-import avatar3 from '../../media/Avatar/Avatar 3.webp';
-import avatar4 from '../../media/Avatar/Avatar 4.webp';
-import avatar5 from '../../media/Avatar/Avatar 5.webp';
-import avatar6 from '../../media/Avatar/Avatar 6.webp';
-import avatar7 from '../../media/Avatar/Avatar 7.webp';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ username: "", password: "" });
@@ -48,27 +41,23 @@ const Login = () => {
             setMsg('An error occurred. Please try again later.');
         }
     };    
+    useEffect(() => {
+        const fetchUser = async () => {
+          if (localStorage.getItem('token')) {
+            navigate('/admin');
+          }
+        };
+        fetchUser();
+      }, [navigate]);
 
     const handleChange = (e) => {
         setCredentials({ ...credentials, [e.target.name]: e.target.value });
     };
 
-    const avatar = [
-        avatar1,
-        avatar2,
-        avatar3,
-        avatar4,
-        avatar5,
-        avatar6,
-        avatar7,
-    ];
-    const randomAvatar = avatar[Math.floor(Math.random() * avatar.length)];
-
     return (
-        <div className="container" style={{ paddingTop: '15vh' }}>
+        <div className="container" style={{ paddingTop: '35vh', paddingBottom: '25vh' }}>
             <div className="row align-items-center justify-content-center">
-                <div className="col-md-6 d-flex flex-column justify-content-center">
-                    <div style={{ width: '80%', marginLeft: '10%' }}>
+                    <div style={{ maxWidth: '45vh'}}>
                         <h1 style={{ fontSize: '5vh', fontWeight: 'bolder', paddingTop: '0vh', paddingBottom: '3vh' }}>
                             Login
                         </h1>
@@ -81,13 +70,8 @@ const Login = () => {
                             </div>
                             <div style={{ color: 'red', paddingBottom: '1vh' }}>{msg}</div>
                             <button type="submit" className="btn btn-outline-dark btn-block" style={{ width: '100%' }}>Login</button>
-                            <p style={{ fontSize: '1.75vh', paddingTop: '2.5vh' }}>Don't have an account? <Link to='/register'>Register now</Link></p>
                         </form>
                     </div>
-                </div>
-                <div className="col-md-6 d-flex flex-column align-items-center">
-                    <img src={randomAvatar} alt="Avatar" style={{ maxWidth: '100%', height: 'auto' }} />
-                </div>
             </div>
         </div>
     );
