@@ -22,6 +22,7 @@ import Dashboard from "./components/AdminPanel/Dashboard";
 import NewBlog from "./components/AdminPanel/manageblog/NewBlog";
 import BlogState from "./components/context/blogs/BlogState";
 import ManageBlog from "./components/AdminPanel/manageblog/ManageBlogs";
+import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -60,7 +61,7 @@ function App() {
               <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode} title='Your Portfolio - Sainty' />} />
 
               {/* Dynamic routes with parameters :id to show blogs*/}
-              <Route exact path="/blog/:blogurl" element={<BlogPost mode={mode} />} />
+              <Route exact path="/blog/:permalink" element={<BlogPost mode={mode} />} />
 
               {/* Routes for admin panel operations */}
               <Route exact path="/admin" element={<Dashboard mode={mode} title='Admin - Sainty' />} />
@@ -68,6 +69,7 @@ function App() {
               {/* Routes for managing blogs */}
               <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty' />} />
               <Route exact path="/admin/manageblog" element={<ManageBlog mode={mode} title='Delete Blog -Sainty' />} />
+              <Route exact path="/admin/editblog/:blogurl" element={<EditBlog mode={mode} title='Edit Blog -Sainty' />} />
 
               {/* Routes for legal Pages */}
               <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />

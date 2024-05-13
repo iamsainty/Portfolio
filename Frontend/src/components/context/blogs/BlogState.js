@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import blogContext from './blogContext'
+import React, { useEffect, useState } from 'react';
+import blogContext from './blogContext';
 import { useNavigate } from 'react-router-dom';
 
 const BlogState = (props) => {
@@ -9,7 +9,7 @@ const BlogState = (props) => {
     const [blogs, setBlogs] = useState([]);
     const [fetchComplete, setFetchComplete] = useState(false);
 
-    const fetchblogs = async () => {
+    const fetchBlogs = async () => {
         if (!localStorage.getItem('token')) {
             navigate('/login');
             return;
@@ -34,14 +34,35 @@ const BlogState = (props) => {
         }
     };
 
+    const fetchBlog = async (id) => {
+        try {
+            const url = `${host}/blog/${id}`;
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "authtoken": localStorage.getItem("token")
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch blog');
+            }
+            const blog = await response.json();
+            return blog;
+        } catch (error) {
+            console.error("Error fetching blog:", error);
+            throw error;
+        }
+    };
+
     useEffect(() => {
         if (!fetchComplete) {
-            fetchblogs();
+            fetchBlogs();
         }
         // eslint-disable-next-line
     }, [fetchComplete, navigate]);
 
-    const newblog = async (title, summary, content, tag, permalink) => {
+    const newBlog = async (title, summary, content, tag, permalink) => {
         try {
             const url = `${host}/blog/newblog`;
             const response = await fetch(url, {
@@ -59,7 +80,7 @@ const BlogState = (props) => {
         }
     };
 
-    const deleteblog = async (id) => {
+    const deleteBlog = async (id) => {
         try {
             const url = `${host}/blog/deleteblog/${id}`;
             await fetch(url, {
@@ -75,7 +96,7 @@ const BlogState = (props) => {
         }
     };
 
-    const editblog = async (id, title, summary, content, tag) => {
+    const editBlog = async (id, title, summary, content, tag) => {
         try {
             const url = `${host}/blog/editblog/${id}`;
             await fetch(url, {
@@ -93,11 +114,12 @@ const BlogState = (props) => {
             console.error("Error editing blog:", error);
         }
     };
-  return (
-    <blogContext.Provider value={{ blogs, newblog, deleteblog, editblog, fetchblogs }}>
-        {props.children}
-    </blogContext.Provider>
-  )
-}
+
+    return (
+        <blogContext.Provider value={{ blogs, newBlog, deleteBlog, editBlog, fetchBlog }}>
+            {props.children}
+        </blogContext.Provider>
+    );
+};
 
 export default BlogState;

@@ -13,8 +13,8 @@ const BlogPost =()=> {
   useEffect(() => {
     const fetchBlogPost = async () => {
       try {
-        const blogurl = useParams.blogurl;
-        const response = await fetch(`${host}/blog/${blogurl}`, {
+        const permalink = useParams.permalink;
+        const response = await fetch(`${host}/blog/${permalink}`, {
             method: "GET",
             headers: {
                 "Content-Type": "application/json",

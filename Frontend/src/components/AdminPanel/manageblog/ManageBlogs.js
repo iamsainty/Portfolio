@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import Introduction from '../../Introduction';
 import blogContext from '../../context/blogs/blogContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -68,6 +68,7 @@ const ManageBlog = (props) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [blogIdToDelete, setBlogIdToDelete] = useState(null);
+    const navigate=useNavigate();
 
     const context = useContext(blogContext)
 
@@ -106,6 +107,11 @@ const ManageBlog = (props) => {
         window.location.reload()
     }
 
+    const handleedit = (id) => {
+        navigate(`/admin/editblog/${id}`)
+    };
+    
+
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
     };
@@ -128,10 +134,10 @@ const ManageBlog = (props) => {
                                 <div className="modal-header">
                                     <h1 className="modal-title" style={{ fontWeight: 'bolder', fontSize: '3.5vh' }}>Confirmation</h1>
                                 </div>
-                                <p style={{ fontSize: '2.5vh', padding: '2vh' }}>Are you sure to delete the selected blog?</p><br />
+                                <p style={{ fontSize: '2.5vh', padding: '2vh' }}>Are you sure to delete the selected blog?</p>
                                 <div className="modal-footer" style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                                    <button type="button" className="btn btn-dark" style={{ flex: 1, marginRight: '0.5rem' }} onClick={() => setShowModal(false)}>Cancel</button>
-                                    <button type="button" className="btn btn-outline-dark" style={{ flex: 1, marginLeft: '0.5rem' }} onClick={handleDeleteConfirm}>Confirm</button>
+                                    <button type="button" className="btn btn-outline-dark" style={{ flex: 1, marginRight: '0.5rem' }} onClick={() => setShowModal(false)}>Cancel</button>
+                                    <button type="button" className="btn btn-dark" style={{ flex: 1, marginLeft: '0.5rem' }} onClick={handleDeleteConfirm}>Confirm</button>
                                 </div>
 
                             </div>
@@ -169,7 +175,7 @@ const ManageBlog = (props) => {
                                 <p className="card-text" style={{ margin: '0', fontSize: '2vh' }}>{blog.summary}</p>
                             </div>
                             <div className="d-flex">
-                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => { deleteblog(blog._id); }} style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
+                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleedit(blog._id)}  style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
                                 <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handledelete(blog._id)} style={{ margin: '4vh 0 4vh 1vh' }}>&times; Delete</button>
                             </div>
                         </BlogCard>
