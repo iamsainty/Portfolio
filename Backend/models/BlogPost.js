@@ -17,7 +17,7 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  shortDescription: {
+  summary: {
     type: String,
     required: true
   },
@@ -25,10 +25,15 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  blogurl:{
+  permalink:{
     type :String,
     unique :true,
     required : true
+  },
+  tag:{
+    type:[String],
+    unique: true,
+    required: true
   }
 });
 

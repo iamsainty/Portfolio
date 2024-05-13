@@ -34,14 +34,15 @@ router.get('/:blogurl', async (req, res) => {
 // Adding a new blog post
 router.post('/newblog', userdetails, async (req, res) => {
     try {
-        const { title, shortDescription, content, blogurl } = req.body;
+        const { title, summary, content, tag, permalink } = req.body;
         const user = await User.findById(req.user.id);
         const blogPost = new BlogPost({
             author: user.name, // Assuming you have some way to track the author's ID
             title,
-            shortDescription,
+            summary,
             content,
-            blogurl
+            tag,
+            permalink
         });
         const savedPost = await blogPost.save();
         res.json(savedPost);
@@ -54,11 +55,12 @@ router.post('/newblog', userdetails, async (req, res) => {
 // Update a blog post
 router.put('/editblog/:id', userdetails, async (req, res) => {
     try {
-        const { title, shortDescription, content } = req.body;
+        const { title, summary, content, tag } = req.body;
         const updatedFields = {
             title,
-            shortDescription,
+            summary,
             content,
+            tag,
             lastUpdated: Date.now()
         };
         const updatedPost = await BlogPost.findByIdAndUpdate(req.params.id, { $set: updatedFields }, { new: true });
