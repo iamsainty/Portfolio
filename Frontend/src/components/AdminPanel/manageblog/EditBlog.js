@@ -20,7 +20,7 @@ const EditBlog = () => {
         const fetchBlogDetails = async () => {
             try {
                 const blogDetails = await context.fetchBlog(id);
-                setBlog(blogDetails);
+                setBlog(blogDetails); // Set initial blog state here
             } catch (error) {
                 console.error('Error fetching blog details:', error);
                 setMsg('Error fetching blog details. Please try again later.');
@@ -36,11 +36,11 @@ const EditBlog = () => {
             if (blog.title === '' || blog.summary === '' || blog.permalink === '') {
                 setMsg("All fields are required");
                 return;
-            } else if (blog.summary.length > 250) {
-                setMsg("Summary cannot exceed 250 characters");
+            } else if (blog.summary.length > 150 || blog.summary.length < 125) {
+                setMsg("Summary should be between 125 to 150 characters");
                 return;
             } else {
-                await context.editBlog(blog._id, blog.title, blog.summary, blog.content, blog.tag);
+                await context.editBlog(id, blog.title, blog.summary, blog.content, blog.tag); // Use id here
                 setShowModal(true);
             }
         } catch (error) {
@@ -49,9 +49,10 @@ const EditBlog = () => {
         }
     };
 
-    const handleChange = (content) => {
-        setBlog({ ...blog, content });
+    const handleChange = (field, value) => {
+        setBlog({ ...blog, [field]: value }); // Update only the specific field
     };
+
 
     return (
         <>

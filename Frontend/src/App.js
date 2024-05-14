@@ -69,7 +69,7 @@ function App() {
               {/* Routes for managing blogs */}
               <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty' />} />
               <Route exact path="/admin/manageblog" element={<ManageBlog mode={mode} title='Delete Blog -Sainty' />} />
-              <Route exact path="/admin/editblog/:blogurl" element={<EditBlog mode={mode} title='Edit Blog -Sainty' />} />
+              <Route exact path="/admin/editblog/:id" element={<EditBlog mode={mode} title='Edit Blog -Sainty' />} />
 
               {/* Routes for legal Pages */}
               <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />

@@ -49,8 +49,8 @@ const NewBlog = () => {
                 return;
             }
             // Check if summary exceeds 250 characters
-            else if (blog.summary.length > 250) {
-                setMsg("Summary cannot exceed 250 characters");
+            else if (blog.summary.length > 150 || blog.summary.length < 125) {
+                setMsg("Summary should be between 125 to 150 characters");
                 return;
             } else {
                 const permalinkExists = blogs.some(b => b.permalink === blog.permalink);

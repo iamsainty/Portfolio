@@ -72,7 +72,7 @@ const ManageBlog = (props) => {
 
     const context = useContext(blogContext)
 
-    const { deleteblog } = context;
+    const { deleteBlog } = context;
 
     useEffect(() => {
         const fetchBlogs = async () => {
@@ -102,7 +102,7 @@ const ManageBlog = (props) => {
     }
 
     const handleDeleteConfirm = () => {
-        deleteblog(blogIdToDelete);
+        deleteBlog(blogIdToDelete);
         setShowModal(false);
         window.location.reload()
     }
