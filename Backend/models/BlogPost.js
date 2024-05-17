@@ -31,9 +31,12 @@ const blogPostSchema = new mongoose.Schema({
     required : true
   },
   tag:{
-    type:[String],
-    unique: true,
+    type: [String],
     required: true
+  },
+  views:{
+    type: Number,
+    default: 0
   }
 });
 

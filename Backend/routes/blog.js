@@ -15,13 +15,15 @@ router.get('/blogs', async (req, res) => {
 });
 
 
-//Fetching single blog
-router.get('/:blogurl', async (req, res) => {
+
+router.get('/:tag/:permalink', async (req, res) => {
     try {
-        const blogurl = req.blogurl;
-        const foundBlog = await BlogPost.findOne({ "blogurl": blogurl });
+        const permalink = req.params.permalink; // Correct way to access URL parameters
+        const foundBlog = await BlogPost.findOne({ "permalink": permalink });
         if (!foundBlog) return res.status(404).send("No such blog exists.");
         else {
+            foundBlog.views+=1;
+            foundBlog.save()
             res.json(foundBlog);
         }
     } catch (error) {
@@ -29,6 +31,7 @@ router.get('/:blogurl', async (req, res) => {
         res.status(500).send('Error fetching blog post');
     }
 });
+
 
 
 // Adding a new blog post
