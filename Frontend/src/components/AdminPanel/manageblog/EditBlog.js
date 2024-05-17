@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import blogContext from '../../context/blogs/blogContext';
 
 const EditBlog = () => {
-    const { id } = useParams();
+    const { tag, permalink } = useParams();
     const navigate = useNavigate();
     const [blog, setBlog] = useState({ title: "", summary: "", content: "", tag: "", permalink: "" });
     const [msg, setMsg] = useState('');
@@ -19,7 +19,7 @@ const EditBlog = () => {
 
         const fetchBlogDetails = async () => {
             try {
-                const blogDetails = await context.fetchBlog(id);
+                const blogDetails = await context.fetchBlog(tag, permalink);
                 setBlog(blogDetails); // Set initial blog state here
             } catch (error) {
                 console.error('Error fetching blog details:', error);
@@ -28,7 +28,7 @@ const EditBlog = () => {
         };
 
         fetchBlogDetails();
-    }, [id, navigate, context]);
+    }, [tag, permalink, navigate, context]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -40,7 +40,7 @@ const EditBlog = () => {
                 setMsg("Summary should be between 125 to 150 characters");
                 return;
             } else {
-                await context.editBlog(id, blog.title, blog.summary, blog.content, blog.tag); // Use id here
+                await context.editBlog(permalink, blog.title, blog.summary, blog.content, blog.tag); // Use id here
                 setShowModal(true);
             }
         } catch (error) {

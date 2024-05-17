@@ -10,10 +10,6 @@ const BlogState = (props) => {
     const [fetchComplete, setFetchComplete] = useState(false);
 
     const fetchBlogs = async () => {
-        if (!localStorage.getItem('token')) {
-            navigate('/login');
-            return;
-        }
         try {
             const url = `${host}/blog/blogs`;
             const response = await fetch(url, {
@@ -34,9 +30,9 @@ const BlogState = (props) => {
         }
     };
 
-    const fetchBlog = async (id) => {
+    const fetchBlog = async (tag, permalink) => {
         try {
-            const url = `${host}/blog/${id}`;
+            const url = `${host}/blog/${tag}/${permalink}`;
             const response = await fetch(url, {
                 method: "GET",
                 headers: {

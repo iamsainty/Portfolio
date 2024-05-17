@@ -6,6 +6,7 @@ import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CategorySection from './CategorySection';
+import { Link } from 'react-router-dom';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -53,7 +54,7 @@ const BlogCard = styled.div`
   border: none; /* Remove the border */
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 `;
 
@@ -88,6 +89,10 @@ function Blog(props) {
 
     fetchBlogs();
   }, []);
+
+  useEffect(() => {
+    document.title = `${props.title}`;
+}, [props.title]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -133,7 +138,7 @@ function Blog(props) {
         </SearchContainer>
         {loading ? (
           <div>Loading...</div>
-        ) : filteredBlogs.length === 0 ? (
+        ) : filteredBlogs.length < 2 ? (
           <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
           <BlogSlider
             infinite={true}
@@ -161,25 +166,27 @@ function Blog(props) {
           >
             {filteredBlogs.map((blog) => (
               <div className="col" key={blog._id}>
-                <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
-                  {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
-                  <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
-                    <h2 style={{ fontSize: '4vh', fontWeight: 'bold', marginBottom: '1vh' }}>{blog.title}</h2>
-                    <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
-                    <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
-                    <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
-                      {blog.dateCreated === blog.lastUpdated ? (
-                        `Published on: ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                      ) : (
-                        `Last updated on: ${new Date(blog.lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                      )}
-                    </p>
-                    <p className="card-text" style={{ fontSize: '1.5vh', marginBottom: '1vh', display: 'inline-flex', alignItems: 'center' }}>
-                      <i className="material-icons" style={{ marginRight: '0.75vh' }}>bar_chart</i>
-                      {blog.views} views
-                    </p>
-                  </div>
-                </BlogCard>
+                <Link to={`/blog/${blog.tag[0]}/${blog.permalink}`} style={{ textDecoration: 'none' }}>
+                  <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
+                    {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
+                    <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                      <h2 style={{ fontSize: '4vh', fontWeight: 'bold', marginBottom: '1vh' }}>{blog.title}</h2>
+                      <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
+                      <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
+                      <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
+                        {blog.dateCreated === blog.lastUpdated ? (
+                          `Published on: ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                        ) : (
+                          `Last updated on: ${new Date(blog.lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                        )}
+                      </p>
+                      <p className="card-text" style={{ fontSize: '1.5vh', marginBottom: '1vh', display: 'inline-flex', alignItems: 'center' }}>
+                        <i className="material-icons" style={{ marginRight: '0.75vh' }}>bar_chart</i>
+                        {blog.views} views
+                      </p>
+                    </div>
+                  </BlogCard>
+                </Link>
               </div>
             ))}
           </BlogSlider>

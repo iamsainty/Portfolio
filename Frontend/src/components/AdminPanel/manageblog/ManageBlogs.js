@@ -107,8 +107,8 @@ const ManageBlog = (props) => {
         window.location.reload()
     }
 
-    const handleedit = (id) => {
-        navigate(`/admin/editblog/${id}`)
+    const handleedit = (tag, permalink) => {
+        navigate(`/admin/editblog/${permalink}`)
     };
     
 
@@ -175,7 +175,7 @@ const ManageBlog = (props) => {
                                 <p className="card-text" style={{ margin: '0', fontSize: '2vh' }}>{blog.summary}</p>
                             </div>
                             <div className="d-flex">
-                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleedit(blog._id)}  style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
+                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleedit(blog.tag, blog.permalink)}  style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
                                 <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handledelete(blog._id)} style={{ margin: '4vh 0 4vh 1vh' }}>&times; Delete</button>
                             </div>
                         </BlogCard>

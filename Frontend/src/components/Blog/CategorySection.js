@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Link } from 'react-router-dom';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -26,7 +27,7 @@ const BlogCard = styled.div`
   border: none; /* Remove the border */
 
   &:hover {
-    transform: scale(1.05);
+    transform: scale(1.03);
   }
 `;
 
@@ -52,10 +53,10 @@ const CategorySection = (props) => {
                     },
                 });
                 const allblogs = await response.json();
-    
+
                 // Filter blogs with a particular tag
                 const filteredBlogs = allblogs.filter(blog => blog.tag.includes(tag));
-    
+
                 setBlogs(filteredBlogs);
                 setLoading(false);
             } catch (error) {
@@ -63,17 +64,19 @@ const CategorySection = (props) => {
                 setLoading(false);
             }
         };
-    
+
         fetchBlogs();
     }, [tag]); // <-- Include tag as a dependency
-    
+
+
+
 
     return (
         <BlogContainer className='container'>
-            <h2 className='container' style={{fontWeight: 'bold', fontSize: '4vh', marginBottom: '5vh'}}>{tag}</h2>
+            <h2 className='container' style={{ fontWeight: 'bold', fontSize: '4vh', marginBottom: '5vh' }}>{tag}</h2>
             {loading ? (
                 <div>Loading...</div>
-            ) : blogs.length === 0 ? (
+            ) : blogs.length < 2 ? (
                 <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
                 <BlogSlider
                     infinite={true}
@@ -101,21 +104,27 @@ const CategorySection = (props) => {
                 >
                     {blogs.map((blog) => (
                         <div className="col" key={blog._id}>
-                            <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
-                                {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
-                                <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
-                                    <h2 style={{ fontSize: '3vh', fontWeight: 'bold' }}>{blog.title}</h2>
-                                    <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>                                    <p className="card-text" style={{ fontSize: '1.75vh' }}>Author : {blog.author}</p>
-                                    <p className="card-text" style={{ fontSize: '1.5vh' }}>
-                                        {blog.dateCreated === blog.lastUpdated ? (
-                                            `Published on : ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                                        ) : (
-                                            `Last updated on : ${new Date(blog.lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                                        )}
-                                    </p>
-                                    <p className="card-text" style={{ fontSize: '2vh' }}>Views : {blog.views}</p>
-                                </div>
-                            </BlogCard>
+                            <Link to={`/blog/${tag}/${blog.permalink}`} style={{ textDecoration: 'none' }}>
+                                <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
+                                    {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
+                                    <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                                        <h2 style={{ fontSize: '4vh', fontWeight: 'bold', marginBottom: '1vh' }}>{blog.title}</h2>
+                                        <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
+                                        <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
+                                        <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
+                                            {blog.dateCreated === blog.lastUpdated ? (
+                                                `Published on: ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                                            ) : (
+                                                `Last updated on: ${new Date(blog.lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
+                                            )}
+                                        </p>
+                                        <p className="card-text" style={{ fontSize: '1.5vh', display: 'inline-flex', alignItems: 'center' }}>
+                                            <i className="material-icons" style={{ marginRight: '0.75vh' }}>bar_chart</i>
+                                            {blog.views} views
+                                        </p>
+                                    </div>
+                                </BlogCard>
+                            </Link>
                         </div>
                     ))}
                 </BlogSlider>
