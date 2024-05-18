@@ -73,11 +73,13 @@ const ManageBlog = (props) => {
     const context = useContext(blogContext)
 
     const { deleteBlog } = context;
+    const host = process.env.host;
+
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const response = await fetch("http://localhost:5002/blog/blogs", {
+                const response = await fetch(`${host}/blog/blogs`, {
                     method: "GET",
                     headers: {
                         "Content-Type": "application/json",
@@ -94,6 +96,7 @@ const ManageBlog = (props) => {
         };
 
         fetchBlogs();
+        // eslint-disable-next-line
     }, []);
 
     const handledelete = (blogId) => {

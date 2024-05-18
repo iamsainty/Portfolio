@@ -37,7 +37,7 @@ const CategorySection = (props) => {
     const [loading, setLoading] = useState(true);
 
 
-    const host = "http://localhost:5002";
+    const host = process.env.host;
 
     const tag = props.tag;
 
@@ -66,6 +66,7 @@ const CategorySection = (props) => {
         };
 
         fetchBlogs();
+        // eslint-disable-next-line
     }, [tag]); // <-- Include tag as a dependency
 
 
@@ -76,7 +77,7 @@ const CategorySection = (props) => {
             <h2 className='container' style={{ fontWeight: 'bold', fontSize: '4vh', marginBottom: '5vh' }}>{tag}</h2>
             {loading ? (
                 <div>Loading...</div>
-            ) : blogs.length < 2 ? (
+            ) : blogs.length === 0 ? (
                 <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
                 <BlogSlider
                     infinite={true}
@@ -108,8 +109,8 @@ const CategorySection = (props) => {
                                 <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
                                     {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
                                     <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
-                                        <h2 style={{ fontSize: '4vh', fontWeight: 'bold', marginBottom: '1vh' }}>{blog.title}</h2>
-                                        <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
+                                        <h2 style={{ fontSize: '2.5vh', fontWeight: 'bold', marginBottom: '1vh', height: '6vh' }}>{blog.title}</h2>
+                                        <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '9vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
                                         <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
                                         <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
                                             {blog.dateCreated === blog.lastUpdated ? (

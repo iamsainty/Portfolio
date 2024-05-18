@@ -6,6 +6,8 @@ const Login = () => {
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
 
+    const host=process.env.host;
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -22,7 +24,7 @@ const Login = () => {
                 setMsg('Enter your password');
                 return;
             }
-            const response = await fetch("http://localhost:5002/auth/login", {
+            const response = await fetch(`${host}/auth/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"

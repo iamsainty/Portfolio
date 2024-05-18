@@ -12,7 +12,7 @@ const NewBlog = () => {
     const navigate = useNavigate();
     const context = useContext(blogContext);
 
-    const host = "http://localhost:5002";
+    const host = process.env.host;
 
     useEffect(() => {
         // Check if user is logged in, if not, redirect to login
@@ -38,6 +38,7 @@ const NewBlog = () => {
         };
 
         fetchBlogs();
+        // eslint-disable-next-line
     }, [navigate]);
 
     const handleSubmit = async (e) => {
