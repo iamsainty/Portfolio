@@ -23,6 +23,7 @@ import NewBlog from "./components/AdminPanel/manageblog/NewBlog";
 import BlogState from "./components/context/blogs/BlogState";
 import ManageBlog from "./components/AdminPanel/manageblog/ManageBlogs";
 import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
+import NotFound from "./components/NotFound";
 
 function App() {
   const [mode, setMode] = useState('light');
@@ -75,7 +76,12 @@ function App() {
               <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />
               <Route exact path="/disclaimer" element={<Disclaimer mode={mode} title='Disclaimer - Sainty' />} />
               <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} title='Privacy Policy - Sainty' />} />
-              <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} title='GDPR Compliance - Sainty' />} />
+              <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} title='GDPR Compliance - Sainty'/>}/>
+
+              {/* Handling error page */}
+              <Route exact path="*" element={<NotFound mode={mode} title='404 Error - Sainty' />} />
+
+
             </Routes>
           </div>
           <Footer mode={mode} />

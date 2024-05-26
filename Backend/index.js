@@ -2,6 +2,7 @@ const connectToMongo= require('./db');
 const express = require('express');
 const cors = require('cors'); // Import the cors middleware
 const bodyParser = require("body-parser");
+
 connectToMongo();
 
 const app = express();
