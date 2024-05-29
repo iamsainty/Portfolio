@@ -12,6 +12,9 @@ app.use(express.json()); // Middleware for parsing JSON bodies
 app.use(cors()); // Add the cors middleware to allow all origins
 app.use(bodyParser.json());
 
+app.use('/', (req, res)=>{
+  res.json({Success: "Backend is working perfectly"});
+});
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
 
