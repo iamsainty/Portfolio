@@ -1,23 +1,23 @@
-const connectToMongo= require('./db');
+const connectToMongo = require('./db');
 const express = require('express');
-const cors = require('cors'); // Import the cors middleware
+const cors = require('cors');
 const bodyParser = require("body-parser");
 
 connectToMongo();
 
 const app = express();
-const port = 5002;
+const port = process.env.PORT || 5002;
 
-app.use(express.json()); // Middleware for parsing JSON bodies
-app.use(cors()); // Add the cors middleware to allow all origins
+app.use(express.json());
+app.use(cors());
 app.use(bodyParser.json());
 
-app.use('/', (req, res)=>{
-  res.json({Success: "Backend is working perfectly"});
+app.use('/', (req, res) => {
+  res.json({ Success: "Backend is working perfectly" });
 });
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
 
 app.listen(port, () => {
-  console.log(`Example app listening on port http://localhost:${port}`);
+  console.log(`Example app listening at http://localhost:${port}`);
 });
