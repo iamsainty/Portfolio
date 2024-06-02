@@ -8,7 +8,7 @@ const userdetails = require('../middleware/userdetails');
 router.get('/blogs', async (req, res) => {
     try {
         const blogPosts = await BlogPost.find();
-        res.json({blogPosts});
+        res.json({blogPosts: blogPosts});
     } catch (error) {
         res.status(500).send("Some Error occurred");
     }
