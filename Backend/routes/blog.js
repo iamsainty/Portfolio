@@ -8,7 +8,7 @@ const userdetails = require('../middleware/userdetails');
 router.get('/blogs', async (req, res) => {
     try {
         const blogPosts = await BlogPost.find();
-        res.json(blogPosts);
+        res.json({blogPosts});
     } catch (error) {
         res.status(500).send("Some Error occurred");
     }
@@ -24,7 +24,7 @@ router.get('/:tag/:permalink', async (req, res) => {
         else {
             foundBlog.views+=1;
             foundBlog.save()
-            res.json(foundBlog);
+            res.json({foundBlog});
         }
     } catch (error) {
         console.error('Error fetching blog post:', error);
@@ -48,7 +48,7 @@ router.post('/newblog', userdetails, async (req, res) => {
             permalink
         });
         const savedPost = await blogPost.save();
-        res.json(savedPost);
+        res.json({savedPost});
     } catch (error) {
       console.log(error);
         res.status(500).send("Some Error occurred");
@@ -68,7 +68,7 @@ router.put('/editblog/:id', userdetails, async (req, res) => {
             lastUpdated: Date.now()
         };
         const updatedPost = await BlogPost.findByIdAndUpdate(req.params.id, { $set: updatedFields }, { new: true });
-        res.json(updatedPost);
+        res.json({updatedPost});
     } catch (error) {
         res.status(500).send("Some Error occurred");
     }
@@ -80,7 +80,7 @@ router.put('/editblog/:id', userdetails, async (req, res) => {
 router.delete('/deleteblog/:id', userdetails, async (req, res) => {
     try {
         await BlogPost.findByIdAndDelete(req.params.id);
-        res.json("Post has been deleted successfully");
+        res.json({message: "Post has been deleted successfully"});
     } catch (error) {
         res.status(500).send("Some Error occurred");
     }

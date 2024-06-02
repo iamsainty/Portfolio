@@ -35,7 +35,7 @@ router.post("/login", async (req, res) => {
         if (!validPassword) return res.status(401).json({ message: "Invalid username or password" });
 
         const token = jwt.sign({ id: user.id }, JWT_SECRET);
-        res.status(200).send({ token: token, user: user });
+        res.status(200).json({ token: token, user: user });
     } catch (error) {
         res.status(500).json({ message: "An error occurred during login" });
     }
@@ -49,7 +49,7 @@ router.post('/userdetails', userdetails, async (req, res) => {
         if (!user) {
             return res.status(404).json({ message: "User Not Found!" });
         }
-        res.status(200).json(user);
+        res.status(200).json({user});
     } catch (error) {
         console.log(error);
         res.status(500).json({ message: "Internal Server Error!" });
