@@ -29,7 +29,7 @@ const ProjectCard = styled.div`
 `;
 
 
-export default function Projects(props) {
+export default function Projects() {
   const projects = [
     {
       title: 'Personal Portfolio',
@@ -50,7 +50,7 @@ export default function Projects(props) {
 
   return (
     <ProjectContainer>
-      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode === 'dark' ? 'white' : '#191919' }}>
+      <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold', color:'#191919' }}>
         Projects
       </h2>
 
@@ -80,9 +80,9 @@ export default function Projects(props) {
         >
           {projects.map((project) => (
             <div className="col" key={project.title}>
-              <ProjectCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
+              <ProjectCard style={{ background: 'white', border: 'black 0.25px solid' }}>
                 <img src={project.preview} className="card-img-top" alt={`${project.title} Preview`} />
-                <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                <div className="card-body my-3" style={{ color: '#191919' }}>
                   <h2 style={{ fontSize: '2vh', fontWeight: 'bold' }}>{project.title}</h2>
                   <p className="card-text" style={{ margin: '0.5vh', fontSize: '1.75vh' }}>{project.description}</p>
                 </div>
@@ -92,7 +92,7 @@ export default function Projects(props) {
         </Slider>
       </div>
       <Link to='/projects' >
-      <button type="button" className={`btn btn-outline-${props.mode==='dark'?'light':'dark'}`} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Projects</button>
+      <button type="button" className={'btn btn-outline-dark'} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Projects</button>
       </Link>
       <br /><br />
     </ProjectContainer>

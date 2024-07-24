@@ -46,20 +46,19 @@ const Logo = styled.img`
   object-fit: cover;
 `;
 
-const Experience = (props) => {
+const Experience = () => {
   return (
     <ExperienceContainer>
-        <h2 className="text-center my-5" style={{fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'}}>
+        <h2 className="text-center my-5" style={{fontSize: '5vh', fontWeight: 'bold',  color: '#191919'}}>
           Experience
         </h2>
         {experiences.map((experience) => (
         <Card
         key={experience.title}
         style={{
-          background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)',
-          borderColor: props.mode === 'dark' ? 'white' : 'black',
-          border: '0.25px solid',
-          color: props.mode==='dark'? 'white': '#191919'
+          background:'linear-gradient(125deg, #F0F4F8, #FAFAFA)',
+          border: '0.25px solid black',
+          color: '#191919'
         }}
       >
         <div style={{ display: 'flex' }}>

@@ -12,20 +12,19 @@ export default function Home(props) {
     useEffect(() => {
         document.title = `${props.title}`;
       }, [props.title]);
-  let mode = props.mode;
 
   const professions = ['Developer', 'Designer', 'Programmer', 'Blogger'];
 
   return (
       <>
           <div className='container'>
-              <Introduction mode={mode} heading={"Priyanshu Chaurasiya"} array={professions} />
-              <Skills mode={mode} />
-              <Projects mode={mode} />
-              <Experience mode={mode} />
-              <Education mode={mode} />
-              <Certifications mode={mode} />
-              <Contact mode={mode} />
+              <Introduction heading={"Priyanshu Chaurasiya"} array={professions} />
+              <Skills />
+              <Projects />
+              <Experience />
+              <Education />
+              <Certifications />
+              <Contact />
           </div>
       </>
   );

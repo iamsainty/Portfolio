@@ -53,15 +53,15 @@ const Logo = styled.img`
   object-fit: cover;
 `;
 
-const Education = (props) => {
+const Education = () => {
   return (
     <EducationContainer>
-  <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: props.mode==='dark'?'white':'#191919'  }}>
+  <h2 className="text-center my-5" style={{ fontSize: '5vh', fontWeight: 'bold',  color: '#191919'  }}>
           Education
         </h2>            
         <div className="align-item-center">
       {education.map((edu) => (
-        <Card key={edu.title} mode={props.mode} style={{ color: props.mode==='dark'? 'white': '#191919', background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', borderColor: props.mode === 'dark' ? 'white' : 'black', border: '0.25px solid',}}>
+        <Card key={edu.title} style={{ color: '#191919', background: 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: '0.25px solid black'}}>
           <div style={{ display: 'flex' }}>
             <div className="col-md-auto">
               <Logo src={edu.logoUrl} alt={`${edu.institute} logo`} style={{height: '10vh', width: 'auto'}}/>

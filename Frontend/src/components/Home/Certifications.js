@@ -44,11 +44,11 @@ const CertificateCard = styled.div`
   }
 `;
 
-export default function Certifications(props) {
+export default function Certifications() {
 
     return (
         <CertificateContainer>
-            <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold', color: props.mode === 'dark' ? 'white' : 'black' }}>Certifications</h2>
+            <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold', color: 'black' }}>Certifications</h2>
 
             <div className="container text-center my-5">
                 <Slider
@@ -75,7 +75,7 @@ export default function Certifications(props) {
                     ]}>
                     {certificates.map((certificate, index) => (
                         <div className="col" key={index}>
-                            <CertificateCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid`, color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                            <CertificateCard style={{ background: 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', border:  '0.25px solid black', color: '#191919' }}>
                                 <img src={certificate.certificate} className="card-img-top" alt={`${certificate.title} Preview`} />
                                 <div className="card-body my-3">
                                     <h2 style={{ margin: '0.5vh', fontSize: '2vh', fontWeight: 'bold' }}>{certificate.title}</h2>
@@ -88,7 +88,7 @@ export default function Certifications(props) {
                 </Slider>
             </div>
             <Link to='/certifications' >
-                <button type="button" className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Certifications</button>
+                <button type="button" className={'btn btn-outline-dark'} style={{ width: '100%', padding: '1vh', fontSize: '2vh' }}>View all Certifications</button>
             </Link>
         </CertificateContainer>
     );
