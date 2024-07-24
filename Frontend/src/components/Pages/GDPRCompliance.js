@@ -7,7 +7,6 @@ export default function GDPRCompliance(props) {
     useEffect(() => {
         document.title = `${props.title}`;
       }, [props.title]);
-    let mode = props.mode;
     const headings = [
         "Purpose of Data Processing",
         "Categories of Personal Data",
@@ -20,7 +19,7 @@ export default function GDPRCompliance(props) {
     ]
     return (
         <div className='container'>
-            <Introduction array={headings} heading={"GDPR Compliance"} mode={mode} /> <br /><br /><br />
+            <Introduction array={headings} heading={"GDPR Compliance"} /> <br /><br /><br />
             <div style={{padding: '2vh', textAlign: 'justify' }}>
             <p style={{fontSize: '2vh'}}>Welcome to my personal portfolio website, This page outlines the GDPR compliance details to ensure transparency and protect your privacy. Please read the following information carefully.</p><br/>
 

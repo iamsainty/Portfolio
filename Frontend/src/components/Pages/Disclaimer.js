@@ -6,7 +6,6 @@ const Disclaimer = (props) => {
   useEffect(() => {
       document.title = `${props.title}`;
     }, [props.title]);
-  let mode = props.mode;
   const headings = [
     "Accuracy of Information",
     "No Guarantees",
@@ -16,7 +15,7 @@ const Disclaimer = (props) => {
   ]
   return (
     <div className="container mt-5">
-      <Introduction array={headings} heading={"Disclaimer"} mode={mode} /> <br /><br /><br />
+      <Introduction array={headings} heading={"Disclaimer"}/> <br /><br /><br />
       <div style={{padding: '2vh', textAlign: 'justify' }}>
 
 

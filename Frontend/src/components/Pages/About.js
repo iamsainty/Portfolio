@@ -6,8 +6,6 @@ export default function About(props) {
         document.title = `${props.title}`;
     }, [props.title]);
 
-
-    let mode = props.mode;
     const aboutheading = [
         'Educational Journey',
         'Passion for Development',
@@ -17,9 +15,9 @@ export default function About(props) {
     ]
     return (
         <div>
-            <Introduction array={aboutheading} heading={"About me"} mode={mode} />
+            <Introduction array={aboutheading} heading={"About me"} />
             <div style={{ width: '100%', height: '15vh' }}></div>
-            <div style={{ color: props.mode === 'dark' ? 'white' : 'black' }}>
+            <div style={{ color: 'black' }}>
                 <div className="container" style={{ padding: '2vh', textAlign: 'justify' }}>
 
                     <p style={{ fontSize: '2vh' }}>Hello, I'm Priyanshu Chaurasiya, originally from Azamgarh, Uttar Pradesh, India. I spent my formative years at KVN Public School in Varanasi. While I was an average student, my curiosity and passion for design started to blossom. After completing high school in 2018 and intermediate studies in 2020, I decided to take a gap year before embarking on my journey in the world of technology.</p>

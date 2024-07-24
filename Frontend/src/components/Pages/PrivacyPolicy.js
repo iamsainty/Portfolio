@@ -6,7 +6,6 @@ export default function PrivacyPolicy(props) {
   useEffect(() => {
       document.title = `${props.title}`;
     }, [props.title]);
-  let mode=props.mode;
   const headings=[
     "Information We Collect",
     "Collection Methods",
@@ -19,7 +18,7 @@ export default function PrivacyPolicy(props) {
   return (
     <div className="container mt-5">
 
-      <Introduction mode={mode} heading={"Privacy Policy"} array={headings}/> <br /><br />
+      <Introduction heading={"Privacy Policy"} array={headings}/> <br /><br />
       <div style={{padding: '2vh', textAlign: 'justify' }}>
 
 
