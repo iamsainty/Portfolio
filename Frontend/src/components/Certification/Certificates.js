@@ -62,7 +62,7 @@ export default function Projects(props) {
     return (
         <>
             <div className='container'>
-                <Introduction array={certificates.map(certificate => certificate.title)} heading={"My Certifications"} mode={props.mode} />
+                <Introduction array={certificates.map(certificate => certificate.title)} heading={"My Certifications"} />
                 <div style={{ height: '20vh', width: '100%' }}></div>
                 <div className="d-flex align-items-center mb-5">
                     <div style={{
@@ -70,13 +70,13 @@ export default function Projects(props) {
                         alignItems: 'center',
                         width: '100%',
                         borderRadius: '5px',
-                        border: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                        border: '1px solid black',
                         overflow: 'hidden',
-                        backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
+                        backgroundColor: 'white',
                     }}>
                         <div style={{
-                            backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
-                            color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                            backgroundColor: 'white',
+                            color: 'black',
                             height: '100%',
                             minWidth: '7vh',
                             fontWeight: 'bold',
@@ -85,7 +85,7 @@ export default function Projects(props) {
                             alignItems: 'center',
                             justifyContent: 'center',
                             padding: '0 1.5vh',
-                            borderRight: `1px solid ${props.mode === 'dark' ? 'white' : 'black'}`,
+                            borderRight: '1px solid black',
                         }}>
                             Search
                         </div>
@@ -100,8 +100,8 @@ export default function Projects(props) {
                                 fontSize: '1.6vh',
                                 borderRadius: '0',
                                 border: 'none',
-                                backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
-                                color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+                                backgroundColor:'white',
+                                color: 'black',
                                 outline: 'none',
                             }}
                         />
@@ -116,10 +116,10 @@ export default function Projects(props) {
                     <Card
                         key={certificate.title}
                         style={{
-                            background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)',
-                            borderColor: props.mode === 'dark' ? 'white' : 'black',
+                            background: 'linear-gradient(125deg, #F0F4F8, #FAFAFA)',
+                            borderColor: 'black',
                             border: '0.25px solid',
-                            color: props.mode === 'dark' ? 'white' : '#191919',
+                            color: '#191919',
                             maxWidth: '100%',
                             padding: '2.5vh',
                         }}
@@ -139,7 +139,7 @@ export default function Projects(props) {
                             <div className="row align-items-center">
                                 <div className="col-md-6 my-2 d-flex justify-content-center align-items-center">
                                     <Link to={certificate.verify} style={{ width: '100%' }}>
-                                        <button type="button" className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`} style={{ width: '100%' }}>
+                                        <button type="button" className='btn btn-outline-dark' style={{ width: '100%' }}>
                                             &#10003; &nbsp; {certificate.verify === null ? "Verification not available" : 'Verify certificate'}
                                         </button>
                                     </Link>
@@ -148,7 +148,7 @@ export default function Projects(props) {
                                     <div style={{ width: '100%' }}>
                                         <button
                                             type="button"
-                                            className={`btn btn-outline-${props.mode === 'dark' ? 'light' : 'dark'}`}
+                                            className='btn btn-outline-dark'
                                             style={{ width: '100%' }}
                                             onClick={() => handleDownloadCertificate(certificate.certificate)}
                                         >
