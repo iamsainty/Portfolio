@@ -5,7 +5,7 @@ import 'react-quill/dist/quill.snow.css';
 import blogContext from '../../context/blogs/blogContext';
 
 const EditBlog = () => {
-    const { tag, permalink } = useParams();
+    const { permalink } = useParams();
     const navigate = useNavigate();
     const [blog, setBlog] = useState({ title: "", summary: "", content: "", tag: "", permalink: "" });
     const [msg, setMsg] = useState('');
@@ -19,8 +19,8 @@ const EditBlog = () => {
 
         const fetchBlogDetails = async () => {
             try {
-                const blogDetails = await context.fetchBlog(tag, permalink);
-                setBlog(blogDetails); // Set initial blog state here
+                const blogDetails = await context.fetchBlog(permalink);
+                setBlog(blogDetails.foundBlog); // Set initial blog state here
             } catch (error) {
                 console.error('Error fetching blog details:', error);
                 setMsg('Error fetching blog details. Please try again later.');
@@ -28,7 +28,7 @@ const EditBlog = () => {
         };
 
         fetchBlogDetails();
-    }, [tag, permalink, navigate, context]);
+    }, [permalink, navigate, context]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

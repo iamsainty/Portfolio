@@ -12,7 +12,7 @@ const NewBlog = () => {
     const navigate = useNavigate();
     const context = useContext(blogContext);
 
-    const host = process.env.host;
+    const host = 'http://localhost:5002';
 
     useEffect(() => {
         // Check if user is logged in, if not, redirect to login
@@ -31,7 +31,7 @@ const NewBlog = () => {
                     },
                 });
                 const allBlogs = await response.json();
-                setBlogs(allBlogs);
+                setBlogs(allBlogs.blogPosts);
             } catch (error) {
                 console.error('Error fetching blogs:', error.message);
             }
