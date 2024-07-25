@@ -14,13 +14,26 @@ router.get('/blogs', async (req, res) => {
     }
 });
 
+router.get('/tag/:tag', async (req, res) => {
+    try {
+        const tag = req.params.tag; // Correct way to access URL parameters
+        const foundBlogs = await BlogPost.find({ tag: { $in: [tag] } });
+        if (foundBlogs.length === 0) {
+            return res.status(404).json("No such blog exists.");
+        } else {
+            res.json({ foundBlogs });
+        }
+    } catch (error) {
+        console.error('Error fetching blog post:', error);
+        res.status(500).send('Error fetching blog post');
+    }
+});
 
-
-router.get('/:tag/:permalink', async (req, res) => {
+router.get('/:permalink', async (req, res) => {
     try {
         const permalink = req.params.permalink; // Correct way to access URL parameters
         const foundBlog = await BlogPost.findOne({ "permalink": permalink });
-        if (!foundBlog) return res.status(404).send("No such blog exists.");
+        if (!foundBlog) return res.status(404).json("No such blog exists.");
         else {
             foundBlog.views+=1;
             foundBlog.save()
@@ -32,15 +45,14 @@ router.get('/:tag/:permalink', async (req, res) => {
     }
 });
 
-
-
 // Adding a new blog post
 router.post('/newblog', userdetails, async (req, res) => {
     try {
-        const { title, summary, content, tag, permalink } = req.body;
+        const { coverimage, title, summary, content, tag, permalink } = req.body;
         const user = await User.findById(req.user.id);
         const blogPost = new BlogPost({
-            author: user.name, // Assuming you have some way to track the author's ID
+            coverimage,
+            author: user.name,
             title,
             summary,
             content,
@@ -48,9 +60,9 @@ router.post('/newblog', userdetails, async (req, res) => {
             permalink
         });
         const savedPost = await blogPost.save();
-        res.json({savedPost});
+        res.json({ savedPost });
     } catch (error) {
-      console.log(error);
+        console.log(error);
         res.status(500).send("Some Error occurred");
     }
 });

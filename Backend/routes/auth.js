@@ -19,9 +19,9 @@ router.post('/register', async (req, res) => {
         });
         // Using jwt
         const token = jwt.sign({ id: user._id }, JWT_SECRET);
-        res.status(201).json({ message: 'User created!', data: user, token: token });
+        res.status(201).json({success: true, message: 'User created!', data: user, token: token });
     } catch (err) {
-        res.status(400).json({ message: "Failed to create the user.", error: err });
+        res.status(400).json({ success:false, message: "Failed to create the user.", error: err });
     }
 });
 
@@ -34,7 +34,7 @@ router.post("/login", async (req, res) => {
         const validPassword = await bcrypt.compare(req.body.password, user.password);
         if (!validPassword) return res.status(401).json({ message: "Invalid username or password" });
 
-        const token = jwt.sign({ id: user.id }, JWT_SECRET);
+        const token = jwt.sign({ id: user._id }, JWT_SECRET);
         res.status(200).json({ token: token, user: user });
     } catch (error) {
         res.status(500).json({ message: "An error occurred during login" });
