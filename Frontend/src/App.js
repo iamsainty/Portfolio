@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Navbar from './components/Navbar';
 import Home from './components/Home/Home';
 import Disclaimer from "./components/Pages/Disclaimer";
@@ -24,68 +24,53 @@ import BlogState from "./components/context/blogs/BlogState";
 import ManageBlog from "./components/AdminPanel/manageblog/ManageBlogs";
 import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
 import NotFound from "./components/NotFound";
+import BlogCategory from "./components/Blog/BlogCategory";
 
 function App() {
-  const [mode, setMode] = useState('light');
-
-  useEffect(() => {
-    document.body.style.background = mode === 'dark' ? 'linear-gradient(125deg, #000000, #000000, #0D0A2D)' : 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
-  }, [mode]);
-
-  const toggleMode = () => {
-    if (mode === 'light') {
-      setMode('dark');
-      document.body.style.background = 'linear-gradient(125 deg, #000000, #000000, #130F40)';
-    } else {
-      setMode('light');
-      document.body.style.background = 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
-    }
-  }
-
+  document.body.style.background = 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
+  
   return (
     <div>
       <Router>
-      <BlogState>
-        <Navbar mode={mode} toggleMode={toggleMode} />
-          <div style={{ height: '100%', overflowY: 'auto', }}>
+        <BlogState>
+          <Navbar />
             <Routes>
-              <Route exact path="/" element={<Home mode={mode} title='Home - Sainty' />} />
+              <Route exact path="/" element={<Home title='Home - Sainty' />} />
 
               {/* Routes for authentication */}
-              <Route exact path="/login" element={<Login mode={mode} title='Login - Sainty' />} />
-              <Route exact path="/register" element={<Register mode={mode} title='Register - Sainty' />} />
+              <Route exact path="/login" element={<Login title='Login - Sainty' />} />
+              <Route exact path="/register" element={<Register title='Register - Sainty' />} />
 
               {/* Routes for webpages */}
-              <Route exact path="/projects" element={<Projects mode={mode} title='Projects - Sainty' />} />
-              <Route exact path="/certifications" element={<Certificates mode={mode} title='Certificates - Sainty' />} />
-              <Route exact path="/blog" element={<Blog mode={mode} title='Blog - Sainty' />} />
-              <Route exact path="/your-portfolio" element={<YourPortfolio mode={mode} title='Your Portfolio - Sainty' />} />
+              <Route exact path="/projects" element={<Projects title='Projects - Sainty' />} />
+              <Route exact path="/certifications" element={<Certificates title='Certificates - Sainty' />} />
+              <Route exact path="/blog" element={<Blog title='Blog - Sainty' />} />
+              <Route exact path="/your-portfolio" element={<YourPortfolio title='Your Portfolio - Sainty' />} />
 
               {/* Dynamic routes with parameters :id to show blogs*/}
-              <Route exact path="/blog/:tag/:permalink" element={<BlogPost mode={mode} />} />
+              <Route exact path="/blog/tag/:tag" element={<BlogCategory title='Blog - Sainty' />} />
+              <Route exact path="/blog/:permalink" element={<BlogPost title='Blog - Sainty' />} />
 
               {/* Routes for admin panel operations */}
-              <Route exact path="/admin" element={<Dashboard mode={mode} title='Admin - Sainty' />} />
+              <Route exact path="/admin" element={<Dashboard title='Admin - Sainty' />} />
 
               {/* Routes for managing blogs */}
-              <Route exact path="/admin/newblog" element={<NewBlog mode={mode} title='New Blog -Sainty' />} />
-              <Route exact path="/admin/manageblog" element={<ManageBlog mode={mode} title='Delete Blog -Sainty' />} />
-              <Route exact path="/admin/editblog/:permalink" element={<EditBlog mode={mode} title='Edit Blog -Sainty' />} />
+              <Route exact path="/admin/newblog" element={<NewBlog title='New Blog -Sainty' />} />
+              <Route exact path="/admin/manageblog" element={<ManageBlog title='Delete Blog -Sainty' />} />
+              <Route exact path="/admin/editblog/:permalink" element={<EditBlog title='Edit Blog -Sainty' />} />
 
               {/* Routes for legal Pages */}
-              <Route exact path="/about" element={<About mode={mode} title='About - Sainty' />} />
-              <Route exact path="/disclaimer" element={<Disclaimer mode={mode} title='Disclaimer - Sainty' />} />
-              <Route exact path="/privacy-policy" element={<PrivacyPolicy mode={mode} title='Privacy Policy - Sainty' />} />
-              <Route exact path="/gdpr-compliance" element={<GDPRCompliance mode={mode} title='GDPR Compliance - Sainty'/>}/>
+              <Route exact path="/about" element={<About title='About - Sainty' />} />
+              <Route exact path="/disclaimer" element={<Disclaimer title='Disclaimer - Sainty' />} />
+              <Route exact path="/privacy-policy" element={<PrivacyPolicy title='Privacy Policy - Sainty' />} />
+              <Route exact path="/gdpr-compliance" element={<GDPRCompliance title='GDPR Compliance - Sainty' />} />
 
               {/* Handling error page */}
-              <Route exact path="*" element={<NotFound mode={mode} title='404 Error - Sainty' />} />
-
+              <Route exact path="*" element={<NotFound title='404 Error - Sainty' />} />
 
             </Routes>
-          </div>
-          <Footer mode={mode} />
-      </BlogState>
+          <Footer />
+        </BlogState>
       </Router>
     </div>
   );

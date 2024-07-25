@@ -31,7 +31,7 @@ const social = [
 
 export default function Introduction(props) {
 
-    const { heading, array, mode } = props;
+    const { heading, array } = props;
 
     const [arraylist, setarraylist] = useState([]);
     const [currentProfessionIndex, setCurrentProfessionIndex] = useState(0);
@@ -72,7 +72,7 @@ export default function Introduction(props) {
                 Liked it, Hire Me
                 </div>
                 </Link> */}
-                <div className="d-flex" style={{ border: `${mode === 'dark' ? 'white' : 'black'} 0.25px solid`, padding: '1.5vh', width: 'fit-content', borderRadius: '1vh', background: mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', margin: '2vh' }}>
+                <div className="d-flex" style={{ border: 'black 0.25px solid', padding: '1.5vh', width: 'fit-content', borderRadius: '1vh', background: 'linear-gradient(125deg, #F0F4F8, #FAFAFA)', margin: '2vh' }}>
                     {social.map((socialmedia, index) => (
                         <Link key={index} to={socialmedia.link} style={{ marginLeft: index !== 0 ? '1rem' : '0' }}>
                             <img

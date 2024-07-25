@@ -65,7 +65,7 @@ const pages=[
 
 export default function Footer(props) {
     return (
-        <div style={{ background: props.mode=== 'dark' ? `linear-gradient(125deg, #2D3436 , #000000)`: 'white', color: props.mode==='dark'?'white':'#191919', marginTop: '0vh', paddingTop: '8vh', paddingBottom: '10vh' }}>
+        <div style={{ background: 'white', color: '#191919', marginTop: '0vh', paddingTop: '8vh', paddingBottom: '10vh' }}>
             <div className="container text-left">
                 <div className="row align-items-start">
                     <div className="col" style={{ margin: '5vh' }}>
@@ -73,7 +73,7 @@ export default function Footer(props) {
                         <ul className="list-group list-group-flush">
                             {Navigateto.map((link, index) => (
                                 <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh' }}>
-                                    <Link to={link.link} style={{ textDecoration: 'none', color: props.mode==='dark'?'white':'#191919' }}>{link.page}</Link>
+                                    <Link to={link.link} style={{ textDecoration: 'none', color: '#191919' }}>{link.page}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -82,8 +82,8 @@ export default function Footer(props) {
                         <h2 style={{ fontSize: '3vh', fontWeight: 'bold', margin: '1vh', marginBottom: '2vh' }}>Contact Me</h2>
                         <ul className="list-group list-group-flush">
                             {Contactme.map((link, index) => (
-                                <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh', color: props.mode==='dark'?'white':'#191919' }}>
-                                    <Link to={link.link} style={{ textDecoration: 'none', color: props.mode==='dark'?'white':'#191919' }}>{link.platform}<br />{link.value}</Link>
+                                <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh', color: '#191919' }}>
+                                    <Link to={link.link} style={{ textDecoration: 'none', color: '#191919' }}>{link.platform}<br />{link.value}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -92,8 +92,8 @@ export default function Footer(props) {
                         <h2 style={{ fontSize: '3vh', fontWeight: 'bold', margin: '1vh', marginBottom: '2vh' }}>Connect Me</h2>
                         <ul className="list-group list-group-flush">
                             {Connectme.map((link, index) => (
-                                <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh', color: props.mode==='dark'?'white':'#191919' }}>
-                                    <Link to={link.link} style={{ textDecoration: 'none', color: props.mode==='dark'?'white':'#191919' }}>{link.page}</Link>
+                                <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh', color: '#191919' }}>
+                                    <Link to={link.link} style={{ textDecoration: 'none', color: '#191919' }}>{link.page}</Link>
                                 </li>
                             ))}
                         </ul>
@@ -103,7 +103,7 @@ export default function Footer(props) {
                         <ul className="list-group list-group-flush">
                             {pages.map((link, index) => (
                                 <li key={index} className="list-group-item" style={{ background: 'transparent', fontSize: '2vh' }}>
-                                    <Link to={link.link} style={{ textDecoration: 'none', color: props.mode==='dark'?'white':'#191919' }}>{link.page}</Link>
+                                    <Link to={link.link} style={{ textDecoration: 'none', color: '#191919' }}>{link.page}</Link>
                                 </li>
                             ))}
                         </ul>

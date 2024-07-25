@@ -1,11 +1,11 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function Navbar(props) {
+export default function Navbar() {
 
     return (
         <div>
-            <nav className={`navbar fixed-top navbar-expand-lg navbar-${props.mode} bg-${props.mode}`}>
+            <nav className={`navbar fixed-top navbar-expand-lg navbar-light bg-light`}>
                 <div className="container-fluid">
                     <Link className="navbar-brand" to="/" style={{ paddingLeft: '2vh' }}><b>Priyanshu</b></Link>
 
@@ -23,10 +23,6 @@ export default function Navbar(props) {
                             <li className="nav-item" style={{ paddingLeft: '1vh' }}>
                                 <Link className="nav-link" to="/blog">Blog</Link></li>
                         </ul>
-                    </div>
-                    <div className={`form-check theme-switch form-switch text-${props.mode === 'light' ? 'dark' : 'light'}`} >
-                        <input className="form-check-input" type="checkbox" id="flexSwitchCheckDefault" onClick={props.toggleMode} />
-                        <label className="form-check-label" htmlFor="flexSwitchCheckDefault" style={{ paddingRight: '2.5vh', paddingLeft: '1vh', fontSize: '2vh' }}>Switch Mode</label>
                     </div>
                 </div>
 

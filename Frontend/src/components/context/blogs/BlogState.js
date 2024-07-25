@@ -3,11 +3,12 @@ import blogContext from './blogContext';
 import { useNavigate } from 'react-router-dom';
 
 const BlogState = (props) => {
-    const host = process.env.host;
     const navigate = useNavigate();
 
     const [blogs, setBlogs] = useState([]);
     const [fetchComplete, setFetchComplete] = useState(false);
+
+    const host = 'http://localhost:5002';
 
     const fetchBlogs = async () => {
         try {
@@ -20,27 +21,42 @@ const BlogState = (props) => {
                 },
             });
 
-            if (!response.ok) {
-                throw new Error('Failed to fetch blogs');
-            }
+            // Log the response to check its content
+            const text = await response.text();
 
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('Unexpected response format');
-            }
-
-            const allBlogs = await response.json();
-            setBlogs(allBlogs);
+            // Try to parse the response as JSON
+            const blogData = JSON.parse(text);
+            setBlogs(blogData);
             setFetchComplete(true);
         } catch (error) {
             console.error("Error fetching blogs:", error);
-            // Handle error here, for example, display an error message to the user
         }
     };
 
-    const fetchBlog = async (tag, permalink) => {
+    const fetchcategoryblog = async ( tag ) => {
+        try{
+            const url = `${host}/blog/tag/${tag}`;
+            const response = await fetch(url, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            });
+            if(!response.ok){
+                throw new Error('Failed to fetch blogs');
+            }
+            const blogs=await response.json();
+            return blogs;
+        }
+        catch(error){
+            console.error("Error fetching blogs : ", error)
+            throw error;
+        }
+    };
+
+    const fetchBlog = async (permalink) => {
         try {
-            const url = `${host}/blog/${tag}/${permalink}`;
+            const url = `${host}/blog/${permalink}`;
             const response = await fetch(url, {
                 method: "GET",
                 headers: {
@@ -53,17 +69,11 @@ const BlogState = (props) => {
                 throw new Error('Failed to fetch blog');
             }
 
-            const contentType = response.headers.get('content-type');
-            if (!contentType || !contentType.includes('application/json')) {
-                throw new Error('Unexpected response format');
-            }
-
             const blog = await response.json();
             return blog;
         } catch (error) {
             console.error("Error fetching blog:", error);
             throw error;
-            // Handle error here, for example, display an error message to the user
         }
     };
 
@@ -91,10 +101,10 @@ const BlogState = (props) => {
             }
 
             const blog = await response.json();
-            setBlogs([...blogs, blog]);
+            const blogdata=blog.savedPost;
+            setBlogs([...blogs, blogdata]);
         } catch (error) {
             console.error("Error adding blog:", error);
-            // Handle error here, for example, display an error message to the user
         }
     };
 
@@ -112,7 +122,6 @@ const BlogState = (props) => {
             setBlogs(blogs.filter(blog => blog._id !== id));
         } catch (error) {
             console.error("Error deleting blog:", error);
-            // Handle error here, for example, display an error message to the user
         }
     };
 
@@ -133,12 +142,11 @@ const BlogState = (props) => {
             ));
         } catch (error) {
             console.error("Error editing blog:", error);
-            // Handle error here, for example, display an error message to the user
         }
     };
 
     return (
-        <blogContext.Provider value={{ blogs, newBlog, deleteBlog, editBlog, fetchBlog }}>
+        <blogContext.Provider value={{ blogs, fetchcategoryblog, newBlog, deleteBlog, editBlog, fetchBlog }}>
             {props.children}
         </blogContext.Provider>
     );
