@@ -6,7 +6,7 @@ import blogContext from '../context/blogs/blogContext';
 const BlogPost = () => {
     const [blogPost, setBlogPost] = useState(null);
     const [loading, setLoading] = useState(true);
-    const { tag, permalink } = useParams();
+    const { permalink } = useParams();
 
     const context = useContext(blogContext)
 
@@ -15,8 +15,8 @@ const BlogPost = () => {
 
         const fetchBlogDetails = async () => {
             try {
-                const blogDetails = await context.fetchBlog(tag, permalink);
-                setBlogPost(blogDetails); // Set initial blog state here
+                const blogDetails = await context.fetchBlog(permalink);
+                setBlogPost(blogDetails.foundBlog); // Set initial blog state here
                 setLoading(false)
             } catch (error) {
                 console.error('Error fetching blog details:', error);
@@ -24,7 +24,7 @@ const BlogPost = () => {
         };
 
         fetchBlogDetails();
-    }, [tag, permalink, context]);
+    }, [permalink, context]);
 
 
     if (loading) {

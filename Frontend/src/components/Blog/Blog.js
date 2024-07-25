@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Introduction from '../Introduction';
 import { Input } from 'antd';
 import styled from 'styled-components';
@@ -7,6 +7,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import CategorySection from './CategorySection';
 import { Link } from 'react-router-dom';
+import Loading from '../Loading';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -17,14 +18,14 @@ const SearchContainer = styled.div`
   align-items: center;
   width: 100%;
   border-radius: 5px;
-  border: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+  border: 1px solid black;
   overflow: hidden;
-  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
+  background-color: white;
 `;
 
 const SearchLabel = styled.div`
-  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
-  color: ${({ mode }) => (mode === 'dark' ? 'white' : 'black')};
+  background-color: white;
+  color: black;
   height: 100%;
   min-width: 7vh;
   font-weight: bold;
@@ -33,7 +34,7 @@ const SearchLabel = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 1.5vh;
-  border-right: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+  border-right: 1px solid black;
 `;
 
 const BlogSlider = styled(Slider)`
@@ -58,55 +59,38 @@ const BlogCard = styled.div`
   }
 `;
 
-function Blog(props) {
+function Blog() {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [uniqueTags, setUniqueTags] = useState([]);
 
-  const host = process.env.host;
+  const host = 'http://localhost:5002';
+
+
+  const fetchBlogs = async () => {
+    setLoading(true); // Ensure loading is set to true at the beginning
+  
+    const response = await fetch(`${host}/blog/blogs`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  
+    const data = await response.json();
+    setBlogs(data.blogPosts);
+    setLoading(false); // Set loading to false after fetching the data
+    setUniqueTags([...new Set(data.blogPosts.flatMap((blog) => blog.tag))]);
+  };  
 
   useEffect(() => {
-    const fetchBlogs = async () => {
-      try {
-        const url = `${host}/blog/blogs`;
-        const response = await fetch(url, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            "authtoken": localStorage.getItem("token")
-          },
-        });
-        const allblogs = await response.json();
-        setBlogs(allblogs);
-        setLoading(false);
-        extractUniqueTags(allblogs);
-      } catch (error) {
-        console.error('Error fetching blogs:', error.message);
-        setLoading(false);
-      }
-    };
-
     fetchBlogs();
     // eslint-disable-next-line
-  }, []);
-
-  useEffect(() => {
-    document.title = `${props.title}`;
-}, [props.title]);
+    }, []);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
-  };
-
-  const extractUniqueTags = (allBlogs) => {
-    const tagsSet = new Set();
-    allBlogs.forEach(blog => {
-      blog.tag.forEach(tag => {
-        tagsSet.add(tag.trim());
-      });
-    });
-    setUniqueTags(Array.from(tagsSet));
   };
 
   const filteredBlogs = blogs.filter(blog =>
@@ -116,10 +100,10 @@ function Blog(props) {
   return (
     <>
       <BlogContainer className='container'>
-        <Introduction array={blogs.map(blog => blog.title)} heading={"Read Blogs"} mode={props.mode} />
+        <Introduction array={blogs.map(blog => blog.title)} heading={"Read Blogs"} />
         <div style={{ height: '20vh', width: '100%' }}></div>
-        <SearchContainer mode={props.mode} className="mb-5">
-          <SearchLabel mode={props.mode}>Search</SearchLabel>
+        <SearchContainer className="mb-5">
+          <SearchLabel >Search</SearchLabel>
           <Input
             placeholder="Search blog..."
             value={searchQuery}
@@ -131,14 +115,14 @@ function Blog(props) {
               fontSize: '1.6vh',
               borderRadius: '0',
               border: 'none',
-              backgroundColor: `${props.mode === 'dark' ? 'black' : 'white'}`,
-              color: `${props.mode === 'dark' ? 'white' : 'black'}`,
+              backgroundColor: 'white',
+              color: 'black',
               outline: 'none',
             }}
           />
         </SearchContainer>
         {loading ? (
-          <div>Loading...</div>
+          <div><Loading/></div>
         ) : filteredBlogs.length === 0 ? (
           <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
           <BlogSlider
@@ -159,7 +143,7 @@ function Blog(props) {
               {
                 breakpoint: 1024,
                 settings: {
-                  slidesToShow: 2,
+                  slidesToShow: 3,
                   slidesToScroll: 1,
                 },
               },
@@ -167,10 +151,10 @@ function Blog(props) {
           >
             {filteredBlogs.map((blog) => (
               <div className="col" key={blog._id}>
-                <Link to={`/blog/${blog.tag[0]}/${blog.permalink}`} style={{ textDecoration: 'none' }}>
-                  <BlogCard style={{ background: props.mode === 'dark' ? 'linear-gradient(125deg, #0E1213, #000000)' : 'white', border: `${props.mode === 'dark' ? 'white' : 'black'} 0.25px solid` }}>
+                <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
+                <BlogCard style={{border: '1px black solid'}}>
                     {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
-                    <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
+                    <div className="card-body my-3" style={{ color: '#191919' }}>
                       <h2 style={{ fontSize: '2.5vh', fontWeight: 'bold', marginBottom: '1vh', height: '6vh' }}>{blog.title}</h2>
                       <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '9vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
                       <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
@@ -194,8 +178,8 @@ function Blog(props) {
         )}
         <br /><br />
       </BlogContainer>
-      {uniqueTags.map((tag, index) => (
-        <CategorySection key={index} tag={tag} />
+      {uniqueTags.map((tag) => (
+        <CategorySection key={tag} tag={tag} />
       ))}
       <br /><br />
     </>
