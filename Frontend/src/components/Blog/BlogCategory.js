@@ -1,13 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Input } from 'antd';
 import styled from 'styled-components';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import { Link, useParams } from 'react-router-dom';
 import Loading from '../Loading';
 import blogContext from '../context/blogs/blogContext';
 import Introduction from '../Introduction';
+import 'bootstrap/dist/css/bootstrap.min.css';  // Import Bootstrap CSS
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -37,22 +35,14 @@ const SearchLabel = styled.div`
   border-right: 1px solid black;
 `;
 
-const BlogSlider = styled(Slider)`
-  .slick-slide div {
-    margin: 0 auto;
-  }
-`;
-
 const BlogCard = styled.div`
-  width: 90%;
-  margin: 0 auto;
   background-color: #fff;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
   padding: 3vh;
   transition: transform 0.3s ease-in-out;
   border-radius: 2vh;
-  border: none;
+  border: 1px black solid;
 
   &:hover {
     transform: scale(1.03);
@@ -64,19 +54,19 @@ const BlogCategory = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const { tag } = useParams();
-  const context = useContext(blogContext);
-  const { fetchcategoryblog } = context;
+  const { fetchCategoryBlog } = useContext(blogContext);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       setLoading(true);
-      const allblogs = await fetchcategoryblog(tag);
-      setBlogs(allblogs.foundBlogs);
+      const allblogs = await fetchCategoryBlog(tag);
+      setBlogs(allblogs);
       setLoading(false);
     };
 
     fetchBlogs();
-  }, [tag, fetchcategoryblog]);
+    // eslint-disable-next-line
+  }, [tag]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -114,37 +104,14 @@ const BlogCategory = () => {
       ) : filteredBlogs.length < 2 ? (
         <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}> Not Enough Blogs to Show</p>
       ) : (
-        <BlogSlider
-          infinite
-          speed={1000}
-          slidesToShow={3}
-          slidesToScroll={1}
-          autoplay
-          autoplaySpeed={2500}
-          responsive={[
-            {
-              breakpoint: 768,
-              settings: {
-                slidesToShow: 1,
-                slidesToScroll: 1,
-              },
-            },
-            {
-              breakpoint: 1024,
-              settings: {
-                slidesToShow: 2,
-                slidesToScroll: 1,
-              },
-            },
-          ]}
-        >
+        <div className="row">
           {filteredBlogs.map((blog) => (
-            <div className="col" key={blog._id}>
+            <div className="col-12 col-md-6 col-lg-4 mb-4" key={blog._id}>
               <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
-                <BlogCard style={{ border: '1px black solid' }}>
+                <BlogCard>
                   <div className="card-body my-3" style={{ color: '#191919' }}>
                     <h2 style={{ fontSize: '2.5vh', fontWeight: 'bold', marginBottom: '1vh', height: '6vh' }}>{blog.title}</h2>
-                    <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '9vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
+                    <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '12vh' }}>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
                     <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
                     <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
                       {blog.dateCreated === blog.lastUpdated ? (
@@ -162,7 +129,7 @@ const BlogCategory = () => {
               </Link>
             </div>
           ))}
-        </BlogSlider>
+        </div>
       )}
       <br /><br />
     </BlogContainer>

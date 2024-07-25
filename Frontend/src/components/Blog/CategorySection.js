@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { Link } from 'react-router-dom';
+import blogContext from '../context/blogs/blogContext';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -33,26 +34,14 @@ const BlogCard = styled.div`
 
 const CategorySection = (props) => {
     const [blogs, setBlogs] = useState([]);
-
-    const host = 'http://localhost:5002';
+    const { fetchCategoryBlog } = useContext(blogContext);
     const tag = props.tag;
 
     useEffect(() => {
         const fetchBlogs = async () => {
             try {
-                const url = `${host}/blog/blogs`;
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "authtoken": localStorage.getItem("token"),
-                    },
-                });
-                const data = await response.json();
-                const allblogs = data.blogPosts;
-
+                const allblogs = await fetchCategoryBlog(tag);
                 const filteredBlogs = allblogs.filter((blog) => blog.tag.includes(tag));
-
                 setBlogs(filteredBlogs);
             } catch (error) {
                 console.error('Error fetching blogs:', error.message);
@@ -60,7 +49,7 @@ const CategorySection = (props) => {
         };
 
         fetchBlogs();
-    }, [tag]); // <-- Include tag as a dependency
+    }, [tag, fetchCategoryBlog]);
 
     return (
         <BlogContainer className='container'>
@@ -68,7 +57,10 @@ const CategorySection = (props) => {
                 <></>
             ) : (
                 <>
-                    <h2 className='container' style={{ fontWeight: 'bold', fontSize: '4vh', marginBottom: '5vh' }}>{tag}</h2>
+                    <div className="d-flex flex-row" style={{ justifyContent: 'space-between' }}>
+                        <h2 className='container' style={{ fontWeight: 'bold', fontSize: '4vh', marginBottom: '5vh' }}>{tag}</h2>
+                        <Link to={`/blog/tag/${tag}`} className="btn btn-outline-dark" style={{ width: '15vh', height: 'fit-content' }}>View All</Link>
+                    </div>
                     <BlogSlider
                         infinite={true}
                         speed={1000}
@@ -96,10 +88,10 @@ const CategorySection = (props) => {
                         {blogs.map((blog) => (
                             <div className="col" key={blog._id}>
                                 <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
-                                    <BlogCard style={{border: '1px black solid'}}>
+                                    <BlogCard style={{ border: '1px black solid' }}>
                                         <div className="card-body my-3" style={{ color: props.mode === 'dark' ? 'white' : '#191919' }}>
                                             <h2 style={{ fontSize: '2.5vh', fontWeight: 'bold', marginBottom: '1vh', height: '6vh' }}>{blog.title}</h2>
-                                            <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '9vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
+                                            <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '12vh' }}>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
                                             <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
                                             <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
                                                 {blog.dateCreated === blog.lastUpdated ? (
@@ -119,8 +111,8 @@ const CategorySection = (props) => {
                         ))}
                     </BlogSlider>
                 </>
-)}
-    </BlogContainer>
+            )}
+        </BlogContainer>
     );
 };
 

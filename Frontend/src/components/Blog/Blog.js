@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import Introduction from '../Introduction';
 import { Input } from 'antd';
 import styled from 'styled-components';
@@ -8,6 +8,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import CategorySection from './CategorySection';
 import { Link } from 'react-router-dom';
 import Loading from '../Loading';
+import BlogContext from '../context/blogs/blogContext'; // Import the context
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -60,34 +61,17 @@ const BlogCard = styled.div`
 `;
 
 function Blog() {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { blogs, loading } = useContext(BlogContext); // Use context
   const [searchQuery, setSearchQuery] = useState('');
   const [uniqueTags, setUniqueTags] = useState([]);
 
-  const host = 'http://localhost:5002';
 
-
-  const fetchBlogs = async () => {
-    setLoading(true); // Ensure loading is set to true at the beginning
-  
-    const response = await fetch(`${host}/blog/blogs`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-  
-    const data = await response.json();
-    setBlogs(data.blogPosts);
-    setLoading(false); // Set loading to false after fetching the data
-    setUniqueTags([...new Set(data.blogPosts.flatMap((blog) => blog.tag))]);
-  };  
 
   useEffect(() => {
-    fetchBlogs();
-    // eslint-disable-next-line
-    }, []);
+    if (blogs.length > 0) {
+      setUniqueTags([...new Set(blogs.flatMap((blog) => blog.tag))]);
+    }
+  }, [blogs]);
 
   const handleSearch = (e) => {
     setSearchQuery(e.target.value);
@@ -124,7 +108,8 @@ function Blog() {
         {loading ? (
           <div><Loading/></div>
         ) : filteredBlogs.length === 0 ? (
-          <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>) : (
+          <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>
+        ) : (
           <BlogSlider
             infinite={true}
             speed={1000}
@@ -152,12 +137,12 @@ function Blog() {
             {filteredBlogs.map((blog) => (
               <div className="col" key={blog._id}>
                 <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
-                <BlogCard style={{border: '1px black solid'}}>
+                  <BlogCard style={{border: '1px black solid'}}>
                     {/* <img src={blog.preview} className="card-img-top" alt={`${blog.title} Preview`} /> */}
                     <div className="card-body my-3" style={{ color: '#191919' }}>
                       <h2 style={{ fontSize: '2.5vh', fontWeight: 'bold', marginBottom: '1vh', height: '6vh' }}>{blog.title}</h2>
-                      <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '9vh' }}>{blog.summary ? blog.summary.slice(0, 140) : ""}...</p>
-                      <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>Author: {blog.author}</p>
+                      <p className="card-text" style={{ fontSize: '2vh', marginBottom: '1.5vh', height: '12vh' }}>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
+                      <p style={{ fontSize: '1.5vh', marginBottom: '1.5vh' }}>Author: {blog.author}</p>
                       <p style={{ fontSize: '1.5vh', marginBottom: '1vh' }}>
                         {blog.dateCreated === blog.lastUpdated ? (
                           `Published on: ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`

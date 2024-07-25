@@ -25,15 +25,17 @@ import ManageBlog from "./components/AdminPanel/manageblog/ManageBlogs";
 import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
 import NotFound from "./components/NotFound";
 import BlogCategory from "./components/Blog/BlogCategory";
+import AuthState from "./components/context/auth/AuthState";
 
 function App() {
   document.body.style.background = 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
-  
+
   return (
     <div>
       <Router>
-        <BlogState>
-          <Navbar />
+        <AuthState>
+          <BlogState>
+            <Navbar />
             <Routes>
               <Route exact path="/" element={<Home title='Home - Sainty' />} />
 
@@ -69,8 +71,9 @@ function App() {
               <Route exact path="*" element={<NotFound title='404 Error - Sainty' />} />
 
             </Routes>
-          <Footer />
-        </BlogState>
+            <Footer />
+          </BlogState>
+        </AuthState>
       </Router>
     </div>
   );

@@ -10,18 +10,16 @@ const BlogContainer = styled.div`
 `;
 
 const BlogCard = styled.div`
-  background-color: ${(props) => (props.mode === 'dark' ? '#000' : '#fff')};
+  background-color: #fff;
   border-radius: 8px;
-  box-shadow: ${(props) =>
-        props.mode === 'dark' ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)'};
+  box-shadow: '0 4px 8px rgba(0, 0, 0, 0.2)';
   margin-bottom: 5vh;
   padding: 4vh;
   transition: transform 0.3s ease-in-out;
 
   &:hover {
     transform: scale(1.02);
-    box-shadow: ${(props) =>
-        props.mode === 'dark' ? '0 4px 8px rgba(255, 255, 255, 0.2)' : '0 4px 8px rgba(0, 0, 0, 0.2)'};
+    box-shadow: '0 4px 8px rgba(0, 0, 0, 0.2)';
   }
 `;
 
@@ -30,10 +28,9 @@ const SearchContainer = styled.div`
   align-items: center;
   width: 100%;
   border-radius: 5px;
-  border: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+  border: 1px solid black;
   overflow: hidden;
-  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
-  margin-bottom: 20px;
+  background-color: white;
 `;
 
 const SearchInput = styled(Input)`
@@ -43,14 +40,14 @@ const SearchInput = styled(Input)`
   font-size: 1.6vh;
   border: none;
   border-radius: 0;
-  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
-  color: ${({ mode }) => (mode === 'dark' ? 'white' : 'black')};
+  background-color: white;
+  color: black;
   outline: none;
 `;
 
 const SearchLabel = styled.div`
-  background-color: ${({ mode }) => (mode === 'dark' ? 'black' : 'white')};
-  color: ${({ mode }) => (mode === 'dark' ? 'white' : 'black')};
+  background-color: white;
+  color: black;
   height: 100%;
   min-width: 7vh;
   font-weight: bold;
@@ -59,60 +56,38 @@ const SearchLabel = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 1.5vh;
-  border-right: ${({ mode }) => `1px solid ${mode === 'dark' ? 'white' : 'black'}`};
+  border-right: black;
 `;
 
 const ManageBlog = (props) => {
-    const [blogs, setBlogs] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
     const [showModal, setShowModal] = useState(false);
     const [blogIdToDelete, setBlogIdToDelete] = useState(null);
-    const navigate=useNavigate();
+    const navigate = useNavigate();
 
-    const context = useContext(blogContext)
-
-    const { deleteBlog } = context;
-    const host = 'http://localhost:5002';
-
+    const context = useContext(blogContext);
+    const { blogs, fetchBlogs, deleteBlog } = context;
 
     useEffect(() => {
-        const fetchBlogs = async () => {
-            try {
-                const response = await fetch(`${host}/blog/blogs`, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                });
-                const allBlogs = await response.json();
-                setBlogs(allBlogs.blogPosts);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching blogs:', error.message);
-                setLoading(false);
-            }
-        };
-
-        fetchBlogs();
+        fetchBlogs(); // Fetch blogs using context method
         // eslint-disable-next-line
     }, []);
 
-    const handledelete = (blogId) => {
+    const handleDelete = (blogId) => {
         setBlogIdToDelete(blogId);
         setShowModal(true);
-    }
+    };
 
     const handleDeleteConfirm = () => {
         deleteBlog(blogIdToDelete);
         setShowModal(false);
-        window.location.reload()
-    }
-
-    const handleedit = (permalink) => {
-        navigate(`/admin/editblog/${permalink}`)
+        // Optional: Refresh the list without reload
+        fetchBlogs();
     };
-    
+
+    const handleEdit = (permalink) => {
+        navigate(`/admin/editblog/${permalink}`);
+    };
 
     const handleSearch = (e) => {
         setSearchQuery(e.target.value);
@@ -122,14 +97,13 @@ const ManageBlog = (props) => {
         blog.title.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
-    const operations = ["Add a new blog", "Edit a blog", "Delete a blog"]
+    const operations = ["Add a new blog", "Edit a blog", "Delete a blog"];
 
     return (
         <>
             {showModal &&
                 <>
                     <div className="modal-backdrop fade show"></div>
-                    <div className="modal-backdrop fade show"></div> {/* Add this overlay div */}
                     <div className="modal fade show d-flex align-items-center justify-content-center" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered" style={{ width: '100%', padding: '2vh' }}>
                             <div className="modal-content" style={{ padding: '2vh' }}>
@@ -141,7 +115,6 @@ const ManageBlog = (props) => {
                                     <button type="button" className="btn btn-outline-dark" style={{ flex: 1, marginRight: '0.5rem' }} onClick={() => setShowModal(false)}>Cancel</button>
                                     <button type="button" className="btn btn-dark" style={{ flex: 1, marginLeft: '0.5rem' }} onClick={handleDeleteConfirm}>Confirm</button>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -165,10 +138,8 @@ const ManageBlog = (props) => {
                         mode={props.mode}
                     />
                 </SearchContainer>
-                {loading ? (
-                    <div>Loading...</div>
-                ) : filteredBlogs.length === 0 ? (
-                    <p style={{fontSize: '3vh', fontWeight: 'bold', textAlign: 'center'}}>No blogs to display</p>
+                {blogs.length === 0 ? (
+                    <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>
                 ) : (
                     filteredBlogs.map((blog) => (
                         <BlogCard key={blog._id}>
@@ -177,8 +148,8 @@ const ManageBlog = (props) => {
                                 <p className="card-text" style={{ margin: '0', fontSize: '2vh' }}>{blog.summary}</p>
                             </div>
                             <div className="d-flex">
-                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleedit(blog.permalink)}  style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
-                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handledelete(blog._id)} style={{ margin: '4vh 0 4vh 1vh' }}>&times; Delete</button>
+                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleEdit(blog.permalink)} style={{ margin: '4vh 1vh 4vh 0' }}>&#9998; Edit</button>
+                                <button type="submit" className="btn btn-outline-dark flex-grow-1" onClick={() => handleDelete(blog._id)} style={{ margin: '4vh 0 4vh 1vh' }}>&times; Delete</button>
                             </div>
                         </BlogCard>
                     ))

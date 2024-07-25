@@ -1,68 +1,77 @@
 import React, { useEffect, useState } from 'react';
 import blogContext from './blogContext';
-import { useNavigate } from 'react-router-dom';
 
 const BlogState = (props) => {
-    const navigate = useNavigate();
 
     const [blogs, setBlogs] = useState([]);
-    const [fetchComplete, setFetchComplete] = useState(false);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    const host = 'http://localhost:5002';
+    // const host = 'http://localhost:5002';
+    const host = 'https://hey-sainty-backend.vercel.app';
+
+    const commonHeaders = {
+        "Content-Type": "application/json",
+        "authtoken": localStorage.getItem("token")
+    };
 
     const fetchBlogs = async () => {
+        setLoading(true);
+        setError(null);
         try {
             const url = `${host}/blog/blogs`;
             const response = await fetch(url, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")
-                },
+                headers: commonHeaders,
             });
 
-            // Log the response to check its content
-            const text = await response.text();
+            if (!response.ok) {
+                throw new Error('Failed to fetch blogs');
+            }
 
-            // Try to parse the response as JSON
-            const blogData = JSON.parse(text);
-            setBlogs(blogData);
-            setFetchComplete(true);
+            const blogData = await response.json();
+            setBlogs(blogData.blogPosts);
         } catch (error) {
+            setError(error.message);
             console.error("Error fetching blogs:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
-    const fetchcategoryblog = async ( tag ) => {
-        try{
+    const fetchCategoryBlog = async (tag) => {
+        setLoading(true);
+        setError(null);
+        try {
             const url = `${host}/blog/tag/${tag}`;
             const response = await fetch(url, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
+                headers: commonHeaders,
             });
-            if(!response.ok){
-                throw new Error('Failed to fetch blogs');
+
+            if (!response.ok) {
+                throw new Error('Failed to fetch category blogs');
             }
-            const blogs=await response.json();
-            return blogs;
-        }
-        catch(error){
-            console.error("Error fetching blogs : ", error)
+
+            const blogs = await response.json();
+            return blogs.foundBlogs;
+        } catch (error) {
+            setError(error.message);
+            console.error("Error fetching category blogs:", error);
             throw error;
+        } finally {
+            setLoading(false);
         }
     };
 
     const fetchBlog = async (permalink) => {
+        setLoading(true);
+        setError(null);
         try {
             const url = `${host}/blog/${permalink}`;
             const response = await fetch(url, {
                 method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")
-                },
+                headers: commonHeaders,
             });
 
             if (!response.ok) {
@@ -70,29 +79,31 @@ const BlogState = (props) => {
             }
 
             const blog = await response.json();
-            return blog;
+            return blog.foundBlog;
         } catch (error) {
+            setError(error.message);
             console.error("Error fetching blog:", error);
             throw error;
+        } finally {
+            setLoading(false);
         }
     };
 
     useEffect(() => {
-        if (!fetchComplete) {
+        if (blogs.length === 0) {
             fetchBlogs();
         }
         // eslint-disable-next-line
-    }, [fetchComplete, navigate]);
+    }, []);
 
     const newBlog = async (title, summary, content, tag, permalink) => {
+        setLoading(true);
+        setError(null);
         try {
             const url = `${host}/blog/newblog`;
             const response = await fetch(url, {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")
-                },
+                headers: commonHeaders,
                 body: JSON.stringify({ title, summary, content, tag, permalink }),
             });
 
@@ -100,40 +111,43 @@ const BlogState = (props) => {
                 throw new Error('Failed to add new blog');
             }
 
-            const blog = await response.json();
-            const blogdata=blog.savedPost;
-            setBlogs([...blogs, blogdata]);
+            const { savedPost } = await response.json();
+            setBlogs([...blogs, savedPost]);
         } catch (error) {
+            setError(error.message);
             console.error("Error adding blog:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const deleteBlog = async (id) => {
+        setLoading(true);
+        setError(null);
         try {
             const url = `${host}/blog/deleteblog/${id}`;
             await fetch(url, {
                 method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")
-                },
+                headers: commonHeaders,
             });
 
             setBlogs(blogs.filter(blog => blog._id !== id));
         } catch (error) {
+            setError(error.message);
             console.error("Error deleting blog:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     const editBlog = async (id, title, summary, content, tag) => {
+        setLoading(true);
+        setError(null);
         try {
             const url = `${host}/blog/editblog/${id}`;
             await fetch(url, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    "authtoken": localStorage.getItem("token")
-                },
+                headers: commonHeaders,
                 body: JSON.stringify({ title, summary, content, tag }),
             });
 
@@ -141,12 +155,15 @@ const BlogState = (props) => {
                 blog._id === id ? { ...blog, title, summary, content, tag } : blog
             ));
         } catch (error) {
+            setError(error.message);
             console.error("Error editing blog:", error);
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
-        <blogContext.Provider value={{ blogs, fetchcategoryblog, newBlog, deleteBlog, editBlog, fetchBlog }}>
+        <blogContext.Provider value={{ blogs, fetchBlogs, loading, error, fetchCategoryBlog, newBlog, deleteBlog, editBlog, fetchBlog }}>
             {props.children}
         </blogContext.Provider>
     );

@@ -16,7 +16,7 @@ const BlogPost = () => {
         const fetchBlogDetails = async () => {
             try {
                 const blogDetails = await context.fetchBlog(permalink);
-                setBlogPost(blogDetails.foundBlog); // Set initial blog state here
+                setBlogPost(blogDetails); // Set initial blog state here
                 setLoading(false)
             } catch (error) {
                 console.error('Error fetching blog details:', error);
@@ -24,7 +24,8 @@ const BlogPost = () => {
         };
 
         fetchBlogDetails();
-    }, [permalink, context]);
+        // eslint-disable-next-line
+    }, [permalink]);
 
 
     if (loading) {

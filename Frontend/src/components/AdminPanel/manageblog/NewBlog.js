@@ -7,35 +7,14 @@ import blogContext from '../../context/blogs/blogContext';
 const NewBlog = () => {
     const [blog, setBlog] = useState({ title: "", summary: "", content: "", tag: "", permalink: "" });
     const [msg, setMsg] = useState('');
-    const [blogs, setBlogs] = useState([]);
     const [showModal, setShowModal] = useState(false);
     const navigate = useNavigate();
-    const context = useContext(blogContext);
-
-    const host = 'http://localhost:5002';
+    const { blogs, newBlog, fetchBlogs } = useContext(blogContext);
 
     useEffect(() => {
-        // Check if user is logged in, if not, redirect to login
         if (!localStorage.getItem('token')) {
             navigate('/login');
         }
-
-        const fetchBlogs = async () => {
-            try {
-                const url = `${host}/blog/blogs`;
-                const response = await fetch(url, {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "authtoken": localStorage.getItem("token")
-                    },
-                });
-                const allBlogs = await response.json();
-                setBlogs(allBlogs.blogPosts);
-            } catch (error) {
-                console.error('Error fetching blogs:', error.message);
-            }
-        };
 
         fetchBlogs();
         // eslint-disable-next-line
@@ -44,13 +23,10 @@ const NewBlog = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            // Validation
             if (blog.title === '' || blog.summary === '' || blog.permalink === '') {
                 setMsg("All fields are required");
                 return;
-            }
-            // Check if summary exceeds 250 characters
-            else if (blog.summary.length > 150 || blog.summary.length < 125) {
+            } else if (blog.summary.length > 150 || blog.summary.length < 125) {
                 setMsg("Summary should be between 125 to 150 characters");
                 return;
             } else {
@@ -59,7 +35,7 @@ const NewBlog = () => {
                     setMsg('Permalink is already used');
                     return;
                 } else {
-                    context.newBlog(blog.title, blog.summary, blog.content, blog.tag, blog.permalink);
+                    await newBlog(blog.title, blog.summary, blog.content, blog.tag, blog.permalink);
                     setMsg('');
                     setShowModal(true);
                     setBlog({ title: '', summary: '', content: '', tag: '', permalink: '' });
@@ -77,10 +53,8 @@ const NewBlog = () => {
 
     return (
         <>
-
             {showModal &&
                 <>
-                    <div className="modal-backdrop fade show"></div> {/* Add this overlay div */}
                     <div className="modal-backdrop fade show"></div> {/* Add this overlay div */}
                     <div className="modal fade show d-flex align-items-center justify-content-center" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div className="modal-dialog modal-dialog-centered" style={{ width: '100%', padding: '2vh' }}>
@@ -89,14 +63,13 @@ const NewBlog = () => {
                                     <h1 className="modal-title" style={{ fontWeight: 'bolder', fontSize: '3.5vh' }}>Yeah...</h1>
                                 </div>
                                 <div className="modal-body">
-                                    <p style={{ fontSize: '2.5vh' }}>Blog has been added succesfully</p>
+                                    <p style={{ fontSize: '2.5vh' }}>Blog has been added successfully</p>
                                 </div>
                                 <div className="modal-footer" style={{ display: 'flex', width: '100%' }}>
                                     <Link to='/admin/manageblog' style={{ width: '100%' }}>
                                         <button type="button" className="btn btn-outline-dark" style={{ width: '100%' }}>Go to Manage Blogs</button>
                                     </Link>
                                 </div>
-
                             </div>
                         </div>
                     </div>
@@ -137,7 +110,7 @@ const NewBlog = () => {
                 </div>
             </div>
         </>
-    )
+    );
 }
 
 export default NewBlog;

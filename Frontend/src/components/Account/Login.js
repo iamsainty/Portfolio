@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import authContext from '../context/auth/authContext';
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ username: "", password: "" });
     const [msg, setMsg] = useState('');
     const navigate = useNavigate();
-
-    const host = 'http://localhost:5002';
+    const { login } = useContext(authContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setMsg('');  // Clear any previous messages
         try {
             if (credentials.username === '') {
                 setMsg('Enter your username');
@@ -24,26 +25,16 @@ const Login = () => {
                 setMsg('Enter your password');
                 return;
             }
-            const response = await fetch(`${host}/auth/login`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({ username: credentials.username, password: credentials.password }),
-            });
-            const userdata = await response.json();
-            console.log(userdata)
-            if (response.ok) {
-                localStorage.setItem('token', userdata.token); // Use token instead of authtoken
-                navigate('/admin');
-            } else {
-                setMsg(userdata.message);
+            const error = await login(credentials.username, credentials.password);
+            if (error) {
+                setMsg(error);
             }
         } catch (error) {
             console.error('Error during login:', error);
             setMsg('An error occurred. Please try again later.');
         }
     };
+
     useEffect(() => {
         const fetchUser = async () => {
             if (localStorage.getItem('token')) {
@@ -58,21 +49,82 @@ const Login = () => {
     };
 
     return (
-        <div className="container" style={{ paddingTop: '35vh', paddingBottom: '25vh' }}>
-            <div className="row align-items-center justify-content-center">
-                <div style={{ maxWidth: '45vh' }}>
-                    <h1 style={{ fontSize: '5vh', fontWeight: 'bolder', paddingTop: '0vh', paddingBottom: '3vh' }}>
+        <div className="container d-flex align-items-center justify-content-center" style={{ height: '100vh'}}>
+            <div className="row align-items-center justify-content-center" style={{maxWidth: '95%', width: '60vh'}}>
+                <div style={{
+                    maxWidth: '400px',
+                    width: '100%',
+                    padding: '2rem',
+                    borderRadius: '8px',
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+                    backgroundColor: '#fff'
+                }}>
+                    <h1 style={{
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        marginBottom: '1rem',
+                        textAlign: 'center',
+                        color: '#333'
+                    }}>
                         Login
                     </h1>
                     <form onSubmit={handleSubmit}>
                         <div className="mb-3">
-                            <input type="text" className="form-control" id="username" onChange={handleChange} value={credentials.username} name='username' placeholder='Username' style={{ border: '1px black solid', padding: '1vh' }} aria-describedby="usernameHelp" />
+                            <input
+                                type="text"
+                                className="form-control"
+                                id="username"
+                                onChange={handleChange}
+                                value={credentials.username}
+                                name='username'
+                                placeholder='Username'
+                                style={{
+                                    border: '1px solid #ccc',
+                                    borderRadius: '4px',
+                                    padding: '0.75rem',
+                                    marginBottom: '1rem'
+                                }}
+                                aria-describedby="usernameHelp"
+                            />
                         </div>
                         <div className="mb-3">
-                            <input type="password" className="form-control" id="password" onChange={handleChange} value={credentials.password} placeholder='Your password' style={{ border: '1px black solid' }} name='password' />
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="password"
+                                onChange={handleChange}
+                                value={credentials.password}
+                                placeholder='Your password'
+                                style={{
+                                    border: '1px solid #ccc',
+                                    borderRadius: '4px',
+                                    padding: '0.75rem'
+                                }}
+                                name='password'
+                            />
                         </div>
-                        <div style={{ color: 'red', paddingBottom: '1vh' }}>{msg}</div>
-                        <button type="submit" className="btn btn-outline-dark btn-block" style={{ width: '100%' }}>Login</button>
+                        <div style={{ color: 'red', paddingBottom: '1rem', textAlign: 'center' }}>{msg}</div>
+                        <button
+                            type="submit"
+                            className="btn btn-dark"
+                            style={{
+                                width: '100%',
+                                padding: '0.75rem',
+                                borderRadius: '4px',
+                                border: 'none',
+                                color: '#fff',
+                                backgroundColor: '#333'
+                            }}
+                        >
+                            Login
+                        </button>
+                        <p style={{
+                            fontSize: '1rem',
+                            textAlign: 'center',
+                            marginTop: '1.5rem'
+                        }}>
+                            Don't have an account? <Link to='/register' style={{ color: '#333', textDecoration: 'underline' }}>Register now</Link>
+                        </p>
                     </form>
                 </div>
             </div>
