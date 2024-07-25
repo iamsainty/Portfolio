@@ -6,7 +6,7 @@ const Register = () => {
     const [msg, setMsg] = useState('');
     let navigate = useNavigate();
 
-    const host = process.env.host;
+    const host = 'http://localhost:5002';
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -29,10 +29,9 @@ const Register = () => {
             },
             body: JSON.stringify({ name, username, password }),
         });
-        const json = await response.json();
-        console.log(json);
-        if (json.success) {
-            localStorage.setItem('token', json.authtoken);
+        const userdata = await response.json();
+        if (userdata.success) {
+            localStorage.setItem('token', userdata.token);
             navigate('/admin');
             window.location.reload();
         } else {
