@@ -1,28 +1,34 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import authContext from '../context/auth/authContext';
+import Loading from '../Loading';
 
 const Login = () => {
     const [credentials, setCredentials] = useState({ username: "", password: "" });
     const [msg, setMsg] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
     const { login } = useContext(authContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setMsg('');  // Clear any previous messages
+        setLoading(true); // Set loading state
         try {
             if (credentials.username === '') {
                 setMsg('Enter your username');
+                setLoading(false); // Clear loading state
                 return;
             }
             const pattern = /^[a-z0-9]+$/;
             if (!pattern.test(credentials.username)) {
                 setMsg('Username should contain only lowercase alphabets and numbers');
+                setLoading(false); // Clear loading state
                 return;
             }
             if (credentials.password === '') {
                 setMsg('Enter your password');
+                setLoading(false); // Clear loading state
                 return;
             }
             const error = await login(credentials.username, credentials.password);
@@ -32,6 +38,8 @@ const Login = () => {
         } catch (error) {
             console.error('Error during login:', error);
             setMsg('An error occurred. Please try again later.');
+        } finally {
+            setLoading(false); // Clear loading state
         }
     };
 
@@ -104,20 +112,24 @@ const Login = () => {
                             />
                         </div>
                         <div style={{ color: 'red', paddingBottom: '1rem', textAlign: 'center' }}>{msg}</div>
-                        <button
-                            type="submit"
-                            className="btn btn-dark"
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                borderRadius: '4px',
-                                border: 'none',
-                                color: '#fff',
-                                backgroundColor: '#333'
-                            }}
-                        >
-                            Login
-                        </button>
+                        {loading ? (
+                            <Loading />
+                        ) : (
+                            <button
+                                type="submit"
+                                className="btn btn-dark"
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    borderRadius: '4px',
+                                    border: 'none',
+                                    color: '#fff',
+                                    backgroundColor: '#333'
+                                }}
+                            >
+                                Login
+                            </button>
+                        )}
                         <p style={{
                             fontSize: '1rem',
                             textAlign: 'center',

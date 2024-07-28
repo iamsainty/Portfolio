@@ -6,6 +6,7 @@ import Experience from './Experience';
 import Education from './Education';
 import Certifications from './Certifications';
 import Contact from './Contact';
+import Blog from './Blog';
 
 export default function Home(props) {
 
@@ -24,6 +25,7 @@ export default function Home(props) {
               <Experience />
               <Education />
               <Certifications />
+              <Blog />
               <Contact />
           </div>
       </>

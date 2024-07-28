@@ -6,6 +6,8 @@
 .env.test.local
 .env.production.local
 
+media/
+
 .vercel
 
 /backend/node_modules/

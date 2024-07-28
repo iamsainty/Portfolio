@@ -1,6 +1,9 @@
 const mongoose = require('mongoose');
 
 const blogPostSchema = new mongoose.Schema({
+  coverimage: {
+    type: String,
+  },
   author: {
     type: String,
     required: true

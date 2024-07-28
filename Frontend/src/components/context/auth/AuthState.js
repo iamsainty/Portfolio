@@ -16,7 +16,7 @@ const AuthState = (props) => {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
-                    "auth-token": localStorage.getItem('token')
+                    "token": localStorage.getItem('token')
                 }
             });
             const data = await response.json();
@@ -40,7 +40,6 @@ const AuthState = (props) => {
                 body: JSON.stringify({ username, password }),
             });
             const data = await response.json();
-            console.log(data)
             if (response.ok) {
                 setUser(data.user);
                 localStorage.setItem('token', data.token);
@@ -71,7 +70,7 @@ const AuthState = (props) => {
                 navigate('/admin');
             } else {
                 console.error('Error registering', data);
-                return data.error || 'Registration failed';
+                return data.message || 'Registration failed';
             }
         } catch (error) {
             console.error('Error registering', error);

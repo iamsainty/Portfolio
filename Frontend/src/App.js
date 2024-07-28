@@ -16,7 +16,7 @@ import {
   Route,
 } from "react-router-dom";
 import Login from "./components/Account/Login";
-import Register from "./components/Account/Register";
+// import Register from "./components/Account/Register";
 import BlogPost from "./components/Blog/BlogPost";
 import Dashboard from "./components/AdminPanel/Dashboard";
 import NewBlog from "./components/AdminPanel/manageblog/NewBlog";
@@ -41,7 +41,7 @@ function App() {
 
               {/* Routes for authentication */}
               <Route exact path="/login" element={<Login title='Login - Sainty' />} />
-              <Route exact path="/register" element={<Register title='Register - Sainty' />} />
+              {/* <Route exact path="/register" element={<Register title='Register - Sainty' />} /> */}
 
               {/* Routes for webpages */}
               <Route exact path="/projects" element={<Projects title='Projects - Sainty' />} />
@@ -49,9 +49,9 @@ function App() {
               <Route exact path="/blog" element={<Blog title='Blog - Sainty' />} />
               <Route exact path="/your-portfolio" element={<YourPortfolio title='Your Portfolio - Sainty' />} />
 
-              {/* Dynamic routes with parameters :id to show blogs*/}
-              <Route exact path="/blog/tag/:tag" element={<BlogCategory title='Blog - Sainty' />} />
-              <Route exact path="/blog/:permalink" element={<BlogPost title='Blog - Sainty' />} />
+              {/* Dynamic routes with parameters to show blogs*/}
+              <Route exact path="/blog/tag/:tag" element={<BlogCategory />} />
+              <Route exact path="/blog/:permalink" element={<BlogPost />} />
 
               {/* Routes for admin panel operations */}
               <Route exact path="/admin" element={<Dashboard title='Admin - Sainty' />} />

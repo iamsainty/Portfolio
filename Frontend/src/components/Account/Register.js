@@ -1,10 +1,12 @@
 import React, { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import authContext from '../context/auth/authContext';
+import Loading from '../Loading';
 
 const Register = () => {
     const [credentials, setCredentials] = useState({ name: "", username: "", password: "", cnfpassword: "" });
     const [msg, setMsg] = useState('');
+    const [loading, setLoading] = useState(false);
     const { register } = useContext(authContext);
 
     const handleSubmit = async (e) => {
@@ -21,6 +23,8 @@ const Register = () => {
             return;
         }
 
+        setLoading(true); // Set loading state
+
         try {
             const error = await register(name, username, password);
             if (error) {
@@ -29,6 +33,8 @@ const Register = () => {
         } catch (error) {
             console.error('Error during registration:', error);
             setMsg('An error occurred. Please try again later.');
+        } finally {
+            setLoading(false); // Clear loading state
         }
     };
 
@@ -98,7 +104,6 @@ const Register = () => {
                                 id="password"
                                 onChange={handleChange}
                                 value={credentials.password}
-                                name='password'
                                 placeholder='Your Password'
                                 style={{
                                     border: '1px solid #ccc',
@@ -106,6 +111,7 @@ const Register = () => {
                                     padding: '0.75rem',
                                     marginBottom: '1rem'
                                 }}
+                                name='password'
                             />
                         </div>
                         <div className="mb-3">
@@ -115,37 +121,40 @@ const Register = () => {
                                 id="cnfpassword"
                                 onChange={handleChange}
                                 value={credentials.cnfpassword}
-                                name='cnfpassword'
                                 placeholder='Confirm Password'
                                 style={{
                                     border: '1px solid #ccc',
                                     borderRadius: '4px',
-                                    padding: '0.75rem',
-                                    marginBottom: '1rem'
+                                    padding: '0.75rem'
                                 }}
+                                name='cnfpassword'
                             />
                         </div>
-                        <div style={{ color: 'red', textAlign: 'center', marginBottom: '1rem' }}>{msg}</div>
-                        <button
-                            type="submit"
-                            className="btn btn-dark"
-                            style={{
-                                width: '100%',
-                                padding: '0.75rem',
-                                borderRadius: '4px',
-                                border: 'none',
-                                color: '#fff',
-                                backgroundColor: '#333'
-                            }}
-                        >
-                            Register
-                        </button>
+                        <div style={{ color: 'red', paddingBottom: '1rem', textAlign: 'center' }}>{msg}</div>
+                        {loading ? (
+                            <Loading />
+                        ) : (
+                            <button
+                                type="submit"
+                                className="btn btn-dark"
+                                style={{
+                                    width: '100%',
+                                    padding: '0.75rem',
+                                    borderRadius: '4px',
+                                    border: 'none',
+                                    color: '#fff',
+                                    backgroundColor: '#333'
+                                }}
+                            >
+                                Register
+                            </button>
+                        )}
                         <p style={{
                             fontSize: '1rem',
                             textAlign: 'center',
                             marginTop: '1.5rem'
                         }}>
-                            Have an account? <Link to='/login' style={{ color: '#333', textDecoration: 'underline' }}>Login now</Link>
+                            Already have an account? <Link to='/login' style={{ color: '#333', textDecoration: 'underline' }}>Login now</Link>
                         </p>
                     </form>
                 </div>
