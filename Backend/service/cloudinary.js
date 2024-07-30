@@ -10,21 +10,24 @@ cloudinary.config({
     api_secret: process.env.cloudinary_api_secret
 });
 
+
 const uploadImage = async (localurl) => {
     try {
         if (!localurl) {
             return null;
         }
-        // uploading file on cloudinary
+        console.log('Uploading file to Cloudinary:', localurl); // Debugging line
         const response = await cloudinary.uploader.upload(localurl, {
             resource_type: 'image'
         });
-        // file is uploaded successfully
+        console.log('Cloudinary upload response:', response); // Debugging line
         return response;
     } catch (error) {
         await fs.unlink(localurl).catch(err => console.error(`Failed to delete local file: ${err.message}`));
+        console.error('Cloudinary upload error:', error); // Debugging line
         return null;
     }
 }
+
 
 module.exports = { uploadImage };

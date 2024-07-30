@@ -6,7 +6,6 @@
 .env.test.local
 .env.production.local
 
-media/
 
 .vercel
 
