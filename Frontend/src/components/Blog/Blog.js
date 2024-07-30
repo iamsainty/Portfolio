@@ -126,9 +126,6 @@ function Blog(props) {
     // eslint-disable-next-line
   }, [page]);
 
-  // const host = 'http://localhost:5002';
-  const host = 'https://hey-sainty-backend.vercel.app';
-
 
   return (
     <BlogContainer className='container'>
@@ -146,7 +143,7 @@ function Blog(props) {
                 <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
                   <BlogCard>
                     <img
-                      src={`${host}/media/blogcovers/${blog.coverimage}`}
+                      src={`${blog.coverimage}`}
                       alt={`${blog.title} Preview`}
                       onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
                     />

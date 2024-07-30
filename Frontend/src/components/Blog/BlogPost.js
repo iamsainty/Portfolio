@@ -164,9 +164,6 @@ const BlogPost = () => {
     const context = useContext(blogContext);
     const { blogs, fetchBlog } = context;
 
-      // const host = 'http://localhost:5002';
-  const host = 'https://hey-sainty-backend.vercel.app';
-
     useEffect(() => {
         const fetchBlogDetails = async () => {
             try {
@@ -246,7 +243,7 @@ const BlogPost = () => {
                 </Col>
                 <Col md={6} style={{marginTop: '4vh'}}>
                     <CoverImage
-                        src={`${host}/media/blogcovers/${blogPost.coverimage}`}
+                        src={`${blogPost.coverimage}`}
                         alt={`${blogPost.title} Preview`}
                         onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
                     />
@@ -263,7 +260,7 @@ const BlogPost = () => {
                             <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }} key={blog._id}>
                                 <BlogCard>
                                     <img
-                                        src={`${host}/media/blogcovers/${blog.coverimage}`}
+                                        src={`${blog.coverimage}`}
                                         alt={`${blog.title} Preview`}
                                         onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
                                     />

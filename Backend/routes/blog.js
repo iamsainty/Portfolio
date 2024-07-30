@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const upload = require('../middleware/blogcoverupload'); // Import the upload middleware
 const userdetails = require('../middleware/userdetails'); // Assuming you have userdetails middleware
+const { uploadImage } = require('../service/cloudinary');
 const User = require('../models/User');
 const BlogPost = require('../models/BlogPost');
 const fs = require('fs');
@@ -70,7 +71,17 @@ router.get('/:permalink', async (req, res) => {
 router.post('/newblog', upload.single('coverimage'), userdetails, async (req, res) => {
     try {
         const { title, summary, content, tag, permalink } = req.body;
-        const coverimage = req.file ? req.file.filename : null; // Get the filename from the uploaded file
+        const localPath = req.file ? path.resolve(req.file.path) : null;
+        let coverimage = null;
+
+        if (localPath) {
+            const uploadResponse = await uploadImage(localPath);
+            if (uploadResponse) {
+                coverimage = uploadResponse.secure_url;
+                fs.unlinkSync(localPath); // Remove the file from local storage
+            }
+        }
+
         const user = await User.findById(req.user.id);
         const blogPost = new BlogPost({
             coverimage,
@@ -79,18 +90,18 @@ router.post('/newblog', upload.single('coverimage'), userdetails, async (req, re
             summary,
             content,
             tag: tag.split(',').map(tag => tag.trim()), // Split and trim tags
-            permalink
+            permalink,
         });
         const savedPost = await blogPost.save();
         res.json({ savedPost });
     } catch (error) {
-        console.log(error);
+        console.error(error);
         res.status(500).send("Some Error occurred");
     }
 });
 
 
-// Update a blog post
+
 // Edit a blog post
 router.put('/editblog/:permalink', userdetails, upload.single('coverimage'), async (req, res) => {
     try {
@@ -105,13 +116,24 @@ router.put('/editblog/:permalink', userdetails, upload.single('coverimage'), asy
         };
 
         if (req.file) {
-            updatedFields.coverimage = req.file.filename;
+            const localPath = path.resolve(req.file.path);
+            const uploadResponse = await uploadImage(localPath);
+            if (uploadResponse) {
+                updatedFields.coverimage = uploadResponse.secure_url;
+                fs.unlinkSync(localPath); // Remove the file from local storage
+            }
         }
 
-        const updatedPost = await BlogPost.findOneAndUpdate({ permalink: req.params.permalink }, { $set: updatedFields }, { new: true });
+        const updatedPost = await BlogPost.findOneAndUpdate(
+            { permalink: req.params.permalink },
+            { $set: updatedFields },
+            { new: true }
+        );
+
         if (!updatedPost) {
             return res.status(404).json({ message: "Blog post not found" });
         }
+
         res.json(updatedPost);
     } catch (error) {
         console.error(error);

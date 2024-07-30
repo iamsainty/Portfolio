@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import blogContext from '../../context/blogs/blogContext';
+import Loading from '../../Loading'; // Assuming this is your custom loading component
 import styled from 'styled-components';
 
 const Container = styled.div`
@@ -26,19 +27,21 @@ const FormButton = styled.button`
 const EditBlog = () => {
   const { permalink } = useParams();
   const [blog, setBlog] = useState({ title: "", summary: "", content: "", tag: "", permalink: "", coverimage: null });
-  const navigate = useNavigate();
   const [msg, setMsg] = useState('');
-  const context = useContext(blogContext);
   const [showModal, setShowModal] = useState(false);
-  
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const context = useContext(blogContext);
+
   useEffect(() => {
     if (!localStorage.getItem('token')) {
       navigate('/login');
       return;
     }
-    
+
     const fetchBlogDetails = async () => {
       try {
+        setLoading(true);
         const blogDetails = await context.fetchBlog(permalink);
         setBlog({
           ...blogDetails,
@@ -47,21 +50,26 @@ const EditBlog = () => {
       } catch (error) {
         console.error('Error fetching blog details:', error);
         setMsg('Error fetching blog details. Please try again later.');
+      } finally {
+        setLoading(false);
       }
     };
-    
+
     fetchBlogDetails();
     // eslint-disable-next-line
   }, [permalink]);
-  
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       if (blog.title === '' || blog.summary === '' || blog.permalink === '') {
         setMsg("All fields are required");
+        setLoading(false);
         return;
       } else if (blog.summary.length > 150 || blog.summary.length < 125) {
         setMsg("Summary should be between 125 to 150 characters");
+        setLoading(false);
         return;
       }
 
@@ -84,11 +92,14 @@ const EditBlog = () => {
     } catch (error) {
       console.error('Error updating blog:', error);
       setMsg('An error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleChange = (value) => {
-    setBlog({ ...blog, content: value });
+  const handleChange = (event, editor) => {
+    const data = editor.getData();
+    setBlog({ ...blog, content: data });
   };
 
   const handleFileChange = (e) => {
@@ -97,6 +108,7 @@ const EditBlog = () => {
 
   return (
     <>
+      {loading && <Loading />}
       {showModal && (
         <>
           <div className="modal-backdrop fade show"></div>
@@ -141,12 +153,23 @@ const EditBlog = () => {
                 placeholder='Summary'
               />
               <div className="mb-3">
-                <ReactQuill
-                  theme="snow"
-                  value={blog.content}
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={blog.content}
                   onChange={handleChange}
-                  placeholder="Write your blog content here..."
-                  style={{ border: '1px black solid', minHeight: '200px' }}
+                  config={{
+                    toolbar: {
+                      items: [
+                        'heading', '|',
+                        'bold', 'italic', 'underline', 'code', 'codeBlock', 'htmlEmbed', '|',
+                        'link', 'blockQuote', 'insertTable', '|',
+                        'undo', 'redo'
+                      ]
+                    },
+                    htmlEmbed: {
+                      showPreviews: true
+                    }
+                  }}
                 />
               </div>
               <FormControl

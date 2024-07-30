@@ -127,9 +127,6 @@ function BlogCategory() {
   }, [tag, page]);
 
 
-    // const host = 'http://localhost:5002';
-  const host = 'https://hey-sainty-backend.vercel.app';
-
   return (
     <BlogContainer className='container'>
       <Introduction array={tagblogs.map(blog => blog.title)} heading={tag} />
@@ -146,7 +143,7 @@ function BlogCategory() {
               <Link key={blog._id} to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
                 <BlogCard>
                 <img
-                      src={`${host}/media/blogcovers/${blog.coverimage}`}
+                      src={`${blog.coverimage}`}
                       alt={`${blog.title} Preview`}
                       onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
                     />                  <div className="card-body">

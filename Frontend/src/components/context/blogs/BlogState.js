@@ -53,7 +53,6 @@ const BlogState = (props) => {
         try {
             const limit = 3; // Number of blogs to fetch per page
             const url = `${host}/blog/tag/${tag}?page=${page}&limit=${limit}`;
-            console.log(`Fetching URL: ${url}`);
             const response = await fetch(url, {
                 method: "GET",
                 headers: commonHeaders,
@@ -68,7 +67,7 @@ const BlogState = (props) => {
             if (page === 1) {
                 setTagblogs(foundBlogs.foundBlogs);
             } else {
-                setTagblogs(prevBlogs => [...prevBlogs, ...foundBlogs.blogPosts]);
+                setTagblogs(prevBlogs => [...prevBlogs, ...foundBlogs.foundBlogs]);
             }
             const totaltagblog = foundBlogs.totalBlogs;
             setTotaltagBlog(totaltagblog);

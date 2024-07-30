@@ -6,6 +6,7 @@ import { RiBarChartFill } from 'react-icons/ri';
 import Loading from '../Loading';
 import BlogContext from '../context/blogs/blogContext';
 import defaultblogcover from '../../media/Default/DefaultBlog.png';
+import Slider from 'react-slick';
 
 const BlogContainer = styled.div`
   margin-top: 50px;
@@ -37,7 +38,7 @@ const BlogCard = styled.div`
   }
 
   h2 {
-    font-size: 2.5vh; // Increased font size for better readability
+    font-size: 2.5vh;
     font-weight: bold;
     margin-bottom: 1.5vh;
   }
@@ -50,7 +51,7 @@ const BlogCard = styled.div`
 
   .tags-icon {
     margin-right: 1vh;
-    font-size: 1.8vh; // Increased icon size for better visibility
+    font-size: 1.8vh;
   }
 
   .tags {
@@ -76,20 +77,6 @@ const BlogCard = styled.div`
   }
 `;
 
-const GridContainer = styled.div`
-  display: grid;
-  gap: 30px; // Increased gap for better spacing
-  grid-template-columns: repeat(3, 1fr);
-
-  @media (max-width: 1024px) {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 const ViewAllButton = styled(Link)`
   display: block;
   margin: 30px auto;
@@ -100,28 +87,61 @@ const ViewAllButton = styled(Link)`
   text-decoration: none;
 `;
 
+const BlogSlider = styled(Slider)`
+  .slick-slide {
+    padding: 0 10px;
+  }
+
+  .slick-dots {
+    bottom: -30px;
+  }
+`;
+
 function Blog() {
     const { blogs, loading } = useContext(BlogContext);
-      // const host = 'http://localhost:5002';
-  const host = 'https://hey-sainty-backend.vercel.app';
 
     const recentBlogs = blogs.slice(0, 3);
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 3,
+        slidesToScroll: 1,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                },
+            },
+            {
+                breakpoint: 1024,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                },
+            },
+        ],
+    };
 
     return (
         <BlogContainer className='container'>
             {loading ? (
                 <div><Loading /></div>
             ) : recentBlogs.length === 0 ? (
-                <p style={{ fontSize: '3vh', fontWeight: 'bold', textAlign: 'center' }}>No blogs to display</p>
+                <></>
             ) : (
                 <>
-                    <GridContainer>
+                    <h2 className='text-center my-5' style={{ fontSize: '5vh', fontWeight: 'bold', color: 'black' }}>Blogs</h2>
+                    <BlogSlider {...settings}>
                         {recentBlogs.map((blog) => (
                             <div key={blog._id}>
                                 <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }}>
                                     <BlogCard>
                                         <img
-                                            src={`${host}/media/blogcovers/${blog.coverimage}`}
+                                            src={`${blog.coverimage}`}
                                             alt={`${blog.title} Preview`}
                                             onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
                                         />
@@ -153,7 +173,7 @@ function Blog() {
                                 </Link>
                             </div>
                         ))}
-                    </GridContainer>
+                    </BlogSlider>
                     <ViewAllButton className='btn btn-outline-dark' to="/blog">View all blogs</ViewAllButton>
                 </>
             )}

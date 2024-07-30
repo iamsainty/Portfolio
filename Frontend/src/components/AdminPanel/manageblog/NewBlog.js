@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import blogContext from '../../context/blogs/blogContext';
 import Loading from '../../Loading'; // Assuming this is your custom loading component
 
@@ -80,8 +80,9 @@ const NewBlog = () => {
         }
     };
 
-    const handleChange = (content) => {
-        setBlog({ ...blog, content });
+    const handleChange = (event, editor) => {
+        const data = editor.getData();
+        setBlog({ ...blog, content: data });
     };
 
     const handleTagChange = (e) => {
@@ -128,16 +129,24 @@ const NewBlog = () => {
                                 <input type="text" className="form-control" id="summary" onChange={(e) => setBlog({ ...blog, summary: e.target.value })} value={blog.summary} name='summary' placeholder='Summary' style={{ border: '1px black solid', padding: '1vh' }} />
                             </div>
                             <div className="mb-3">
-                                <ReactQuill
-                                    theme="snow"
-                                    value={blog.content}
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={blog.content}
                                     onChange={handleChange}
-                                    placeholder="Write your blog content here..."
-                                    style={{ border: '1px black solid', minHeight: '200px' }}
+                                    config={{
+                                        toolbar: {
+                                            items: [
+                                                'heading', '|',
+                                                'bold', 'italic', 'underline', 'code', 'codeBlock', '|',
+                                                'link', 'blockQuote', 'insertTable', '|',
+                                                'undo', 'redo'
+                                            ]
+                                        }
+                                    }}
                                 />
                             </div>
                             <div className="mb-3">
-                                <input type="text" className="form-control" id="tag" onChange={handleTagChange} value={blog.tag.join(', ')} name='tag' placeholder='tag (separated by comma)' style={{ border: '1px black solid', padding: '1vh' }} />
+                                <input type="text" className="form-control" id="tag" onChange={handleTagChange} value={blog.tag.join(', ')} name='tag' placeholder='Tag (separated by comma)' style={{ border: '1px black solid', padding: '1vh' }} />
                             </div>
                             <div className="mb-3">
                                 <input type="text" className="form-control" id="permalink" onChange={(e) => setBlog({ ...blog, permalink: e.target.value })} value={blog.permalink} name='permalink' placeholder='Permalink' style={{ border: '1px black solid', padding: '1vh' }} />
