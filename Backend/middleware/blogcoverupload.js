@@ -4,7 +4,7 @@ const path = require('path');
 // Configure multer storage
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.resolve(__dirname, '../media/blogcovers'));
+        cb(null, path.resolve(__dirname, 'media'));
     },
     filename: (req, file, cb) => {
         // Ensure the filename is unique by using permalink and extension
