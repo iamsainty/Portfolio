@@ -5,7 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const AuthState = (props) => {
     const navigate = useNavigate();
 
-    const host = 'https://hey-sainty-backend.vercel.app';
+    // const host = 'https://hey-sainty-backend.vercel.app';
+    const host = 'http://localhost:5002';
 
     const [user, setUser] = useState(null);
 
@@ -16,7 +17,7 @@ const AuthState = (props) => {
                 method: 'GET',
                 headers: {
                     "Content-Type": "application/json",
-                    "token": localStorage.getItem('token')
+                    "token": localStorage.getItem('hey-sainty-token')
                 }
             });
             const data = await response.json();
@@ -42,7 +43,7 @@ const AuthState = (props) => {
             const data = await response.json();
             if (response.ok) {
                 setUser(data.user);
-                localStorage.setItem('token', data.token);
+                localStorage.setItem('hey-sainty-token', data.token);
                 navigate('/admin');
             } else {
                 console.error('Error logging in', data);
@@ -66,7 +67,7 @@ const AuthState = (props) => {
             const data = await response.json();
             if (response.ok) {
                 setUser(data.user);
-                localStorage.setItem('token', data.token);
+                localStorage.setItem('hey-sainty-token', data.token);
                 navigate('/admin');
             } else {
                 console.error('Error registering', data);

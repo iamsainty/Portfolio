@@ -115,7 +115,7 @@ const ManageBlog = (props) => {
     }, [page]);
 
     useEffect(() => {
-        if (!localStorage.getItem('token')) {
+        if (!localStorage.getItem('hey-sainty-token')) {
           navigate('/login');
         }
     }, [navigate]);

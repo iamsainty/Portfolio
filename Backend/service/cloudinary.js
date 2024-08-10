@@ -18,9 +18,9 @@ const uploadImage = async (localurl) => {
         }
         console.log('Uploading file to Cloudinary:', localurl); // Debugging line
         const response = await cloudinary.uploader.upload(localurl, {
+            folder: 'coverimage',
             resource_type: 'image'
         });
-        console.log('Cloudinary upload response:', response); // Debugging line
         return response;
     } catch (error) {
         await fs.unlink(localurl).catch(err => console.error(`Failed to delete local file: ${err.message}`));

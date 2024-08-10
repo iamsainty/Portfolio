@@ -34,7 +34,7 @@ const EditBlog = () => {
   const context = useContext(blogContext);
 
   useEffect(() => {
-    if (!localStorage.getItem('token')) {
+    if (!localStorage.getItem('hey-sainty-token')) {
       navigate('/login');
       return;
     }

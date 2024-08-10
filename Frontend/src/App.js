@@ -46,10 +46,10 @@ function App() {
               {/* Routes for webpages */}
               <Route exact path="/projects" element={<Projects title='Projects - Sainty' />} />
               <Route exact path="/certifications" element={<Certificates title='Certificates - Sainty' />} />
-              <Route exact path="/blog" element={<Blog title='Blog - Sainty' />} />
               <Route exact path="/your-portfolio" element={<YourPortfolio title='Your Portfolio - Sainty' />} />
 
-              {/* Dynamic routes with parameters to show blogs*/}
+              {/* Blog Routes */}
+              <Route exact path="/blog" element={<Blog title='Blog - Sainty' />} />
               <Route exact path="/blog/tag/:tag" element={<BlogCategory />} />
               <Route exact path="/blog/:permalink" element={<BlogPost />} />
 

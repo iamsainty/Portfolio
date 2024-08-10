@@ -14,7 +14,7 @@ const NewBlog = () => {
     const { newBlog, fetchBlog } = useContext(blogContext);
 
     useEffect(() => {
-        if (!localStorage.getItem('token')) {
+        if (!localStorage.getItem('hey-sainty-token')) {
             navigate('/login');
         }
     }, [navigate]);

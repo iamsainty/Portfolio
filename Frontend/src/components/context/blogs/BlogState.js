@@ -9,11 +9,11 @@ const BlogState = (props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    // const host = 'http://localhost:5002';
-    const host = 'https://hey-sainty-backend.vercel.app';
+   const host = 'http://localhost:5002';
+    //  const host = 'https://hey-sainty-backend.vercel.app';
 
     const commonHeaders = {
-        "token": localStorage.getItem("token")
+        "token": localStorage.getItem("hey-sainty-token")
     };
 
     const fetchBlogs = async (page = 1, limit = 3) => {
@@ -40,7 +40,6 @@ const BlogState = (props) => {
             setTotalBlog(totalBlog);
         } catch (error) {
             setError(error.message);
-            console.error("Error fetching blogs:", error);
         } finally {
             setLoading(false);
         }
@@ -73,7 +72,6 @@ const BlogState = (props) => {
             setTotaltagBlog(totaltagblog);
         } catch (error) {
             setError(error.message);
-            console.error("Error fetching category blogs:", error);
             throw error;
         } finally {
             setLoading(false);
@@ -100,7 +98,6 @@ const BlogState = (props) => {
             return blog.foundBlog;
         } catch (error) {
             setError(error.message);
-            console.error("Error fetching blog:", error);
             throw error;
         } finally {
             setLoading(false);
@@ -123,7 +120,7 @@ const BlogState = (props) => {
             const response = await fetch(url, {
                 method: "POST",
                 headers: {
-                    "token": localStorage.getItem('token')
+                    "token": localStorage.getItem('hey-sainty-token')
                 },
                 body: formData,
             });
@@ -136,7 +133,6 @@ const BlogState = (props) => {
             setBlogs([...blogs, savedPost]);
         } catch (error) {
             setError(error.message);
-            console.error("Error adding blog:", error);
             return error;
         } finally {
             setLoading(false);
@@ -154,7 +150,7 @@ const BlogState = (props) => {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
-                    "token": localStorage.getItem('token')
+                    "token": localStorage.getItem('hey-sainty-token')
                 }
             });
     
@@ -165,7 +161,6 @@ const BlogState = (props) => {
             setBlogs(blogs.filter(blog => blog._id !== id));
         } catch (error) {
             setError(error.message);
-            console.error("Error deleting blog:", error);
             return error;
         } finally {
             setLoading(false);
@@ -181,7 +176,7 @@ const BlogState = (props) => {
           const response = await fetch(url, {
             method: "PUT", // Ensure using PUT method to update resource
             headers: {
-              "token": localStorage.getItem('token')
+              "token": localStorage.getItem('hey-sainty-token')
             },
             body: formData, // Send formData directly without setting Content-Type
           });
@@ -198,7 +193,6 @@ const BlogState = (props) => {
           ));
         } catch (error) {
           setError(error.message);
-          console.error("Error editing blog:", error);
           return error; // Return the error for further handling
         } finally {
           setLoading(false);

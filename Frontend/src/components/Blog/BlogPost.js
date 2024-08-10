@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
-import blogContext from '../context/blogs/blogContext';
-import { Container, Row, Col } from 'react-bootstrap';
-import defaultblogcover from '../../media/Default/DefaultBlog.png';
-import styled from 'styled-components';
-import Loading from '../Loading';
-import NotFound from '../NotFound'; // Import the NotFound component
-import { FaTag } from 'react-icons/fa';
-import { RiBarChartFill } from 'react-icons/ri';
+import React, { useState, useEffect, useContext } from "react";
+import { useParams, Link } from "react-router-dom";
+import blogContext from "../context/blogs/blogContext";
+import { Container, Row, Col } from "react-bootstrap";
+import defaultblogcover from "../../media/Default/DefaultBlog.png";
+import styled from "styled-components";
+import Loading from "../Loading";
+import NotFound from "../NotFound"; // Import the NotFound component
+import { FaTag } from "react-icons/fa";
+import { RiBarChartFill } from "react-icons/ri";
 
 const BlogContainer = styled(Container)`
   margin-top: 10vh;
@@ -50,7 +50,7 @@ const MoreBlogsSection = styled.div`
   border-top: 1px solid #ddd;
 `;
 
-const MoreBlogsTitle = styled.h2`
+const MoreBlogsTitle = styled.h1`
   font-size: 3vh;
   margin-bottom: 3vh;
   color: #333;
@@ -155,150 +155,183 @@ const ViewMoreButton = styled(Link)`
 `;
 
 const BlogPost = () => {
-    const [blogPost, setBlogPost] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [recentBlogsLoading, setRecentBlogsLoading] = useState(true);
-    const [recentBlogs, setRecentBlogs] = useState([]);
-    const [error, setError] = useState(null); // Add error state
-    const { permalink } = useParams();
-    const context = useContext(blogContext);
-    const { blogs, fetchBlog } = context;
+  const [blogPost, setBlogPost] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [recentBlogsLoading, setRecentBlogsLoading] = useState(true);
+  const [recentBlogs, setRecentBlogs] = useState([]);
+  const [error, setError] = useState(null); // Add error state
+  const { permalink } = useParams();
+  const context = useContext(blogContext);
+  const { blogs, fetchBlog } = context;
 
-    useEffect(() => {
-        const fetchBlogDetails = async () => {
-            try {
-                setLoading(true);
-                const blogDetails = await fetchBlog(permalink);
-                setBlogPost(blogDetails);
-                setLoading(false);
-            } catch (error) {
-                console.error('Error fetching blog details:', error);
-                setError('Blog not found');
-                setLoading(false);
-            }
-        };
-
-        fetchBlogDetails();
-        // eslint-disable-next-line
-    }, [permalink]);
-
-    useEffect(() => {
-        if (blogPost) {
-            document.title = `${blogPost.title} - Sainty`;
-        }
-        // eslint-disable-next-line
-    }, [blogPost]);
-
-    useEffect(() => {
-        const fetchRecentBlogs = async () => {
-            try {
-                setRecentBlogsLoading(true);
-                setRecentBlogs(blogs);
-                setRecentBlogsLoading(false);
-            } catch (error) {
-                console.error('Error fetching recent blogs:', error);
-                setRecentBlogsLoading(false);
-            }
-        };
-
-        fetchRecentBlogs();
-    }, [blogs]);
-
-    const renderMetaInfo = (label, value) => (
-        <MetaInfo>
-            {label}: {value}
-        </MetaInfo>
-    );
-
-    if (loading) {
-        return <Loading />;
+  
+  useEffect(() => {
+    const fetchBlogDetails = async () => {
+      try {
+        setLoading(true);
+        const blogDetails = await fetchBlog(permalink);
+        setBlogPost(blogDetails);
+        setLoading(false);
+      } catch (error) {
+        setError("Blog not found");
+        setLoading(false);
+      }
+    };
+    
+    fetchBlogDetails();
+    // eslint-disable-next-line
+  }, [permalink]);
+  
+  useEffect(() => {
+    if (blogPost) {
+      document.title = `${blogPost.title} - Sainty`;
     }
+    // eslint-disable-next-line
+  }, [blogPost]);
+  
+  useEffect(() => {
+    const fetchRecentBlogs = async () => {
+      try {
+        setRecentBlogsLoading(true);
+        setRecentBlogs(blogs);
+        setRecentBlogsLoading(false);
+      } catch (error) {
+        setRecentBlogsLoading(false);
+      }
+    };
+    
+    fetchRecentBlogs();
+  }, [blogs]);
+  
+  const renderMetaInfo = (label, value) => (
+    <MetaInfo>
+      {label}: {value}
+    </MetaInfo>
+  );
+  
+  if (loading) {
+    return <Loading />;
+  }
+  
+  if (error) {
+    return <NotFound />; // Show NotFound component if there is an error
+  }
 
-    if (error) {
-        return <NotFound />; // Show NotFound component if there is an error
-    }
+  if (!blogPost) {
+    return <div>Blog post not found</div>;
+  }
 
-    if (!blogPost) {
-        return <div>Blog post not found</div>;
-    }
-
-    return (
-        <BlogContainer>
-            <Row className="mb-4">
-                <Col md={6} className="d-flex align-items-center">
-                    <div>
-                        <Title>{blogPost.title}</Title>
-                        {renderMetaInfo('Author', blogPost.author)}
-                        {renderMetaInfo('Date Created', new Date(blogPost.dateCreated).toLocaleDateString())}
-                        {renderMetaInfo('Views', blogPost.views)}
-                        <div className="tags-container" style={{display: 'flex', alignItems: 'center'}}>
-                            <FaTag className="tags-icon" />
-                            <div className="tags">
-                                {blogPost.tag.map((tag) => (
-                                    <Tag to={`/blog/tag/${tag}`} key={tag} className="tag">{tag}</Tag>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </Col>
-                <Col md={6} style={{marginTop: '4vh'}}>
-                    <CoverImage
-                        src={`${blogPost.coverimage}`}
-                        alt={`${blogPost.title} Preview`}
-                        onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
-                    />
-                </Col>
-            </Row>
-            <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
-            <MoreBlogsSection>
-                <MoreBlogsTitle>Recent Blogs</MoreBlogsTitle>
-                {recentBlogsLoading ? (
-                    <Loading />
-                ) : (
-                    <GridContainer>
-                        {recentBlogs.map((blog) => (
-                            <Link to={`/blog/${blog.permalink}`} style={{ textDecoration: 'none' }} key={blog._id}>
-                                <BlogCard>
-                                    <img
-                                        src={`${blog.coverimage}`}
-                                        alt={`${blog.title} Preview`}
-                                        onError={(e) => { e.target.onerror = null; e.target.src = defaultblogcover; }}
-                                    />
-                                    <div className="card-body">
-                                        <h2>{blog.title}</h2>
-                                        <div className="tags-container">
-                                            <FaTag className="tags-icon" />
-                                            <div className="tags">
-                                                {blog.tag.map((tag) => (
-                                                    <Tag to={`/blog/tag/${tag}`} key={tag} className="tag">{tag}</Tag>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        <p>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
-                                        <p>Author: {blog.author}</p>
-                                        <p>
-                                            {blog.dateCreated === blog.lastUpdated ? (
-                                                `Published on: ${new Date(blog.dateCreated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                                            ) : (
-                                                `Last updated on: ${new Date(blog.lastUpdated).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`
-                                            )}
-                                        </p>
-                                        <p style={{ display: 'inline-flex', alignItems: 'center' }}>
-                                            <RiBarChartFill style={{ marginRight: '1vh' }} />
-                                            {blog.views} views
-                                        </p>
-                                    </div>
-                                </BlogCard>
-                            </Link>
+  return (
+    <BlogContainer>
+      <Row className="mb-4">
+        <Col md={6} className="d-flex align-items-center">
+          <div>
+            <Title>{blogPost.title}</Title>
+            {renderMetaInfo("Author", blogPost.author)}
+            {renderMetaInfo(
+              "Date Created",
+              new Date(blogPost.dateCreated).toLocaleDateString()
+            )}
+            {renderMetaInfo("Views", blogPost.views)}
+            <div
+              className="tags-container"
+              style={{ display: "flex", alignItems: "center" }}
+            >
+              <FaTag className="tags-icon" />
+              <div className="tags">
+                {blogPost.tag.map((tag) => (
+                  <Tag to={`/blog/tag/${tag}`} key={tag} className="tag">
+                    {tag}
+                  </Tag>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Col>
+        <Col md={6} style={{ marginTop: "4vh" }}>
+          <CoverImage
+            src={`${blogPost.coverimage}`}
+            alt={`${blogPost.title} Preview`}
+            onError={(e) => {
+              e.target.onerror = null;
+              e.target.src = defaultblogcover;
+            }}
+          />
+        </Col>
+      </Row>
+      <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+      <MoreBlogsSection>
+        <MoreBlogsTitle>Recent Blogs</MoreBlogsTitle>
+        {recentBlogsLoading ? (
+          <Loading />
+        ) : (
+          <GridContainer>
+            {recentBlogs.map((blog) => (
+              <Link
+                to={`/blog/${blog.permalink}`}
+                style={{ textDecoration: "none" }}
+                key={blog._id}
+              >
+                <BlogCard>
+                  <img
+                    src={`${blog.coverimage}`}
+                    alt={`${blog.title} Preview`}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = defaultblogcover;
+                    }}
+                  />
+                  <div className="card-body">
+                    <h2>{blog.title}</h2>
+                    <div className="tags-container">
+                      <FaTag className="tags-icon" />
+                      <div className="tags">
+                        {blog.tag.map((tag) => (
+                          <Tag
+                            to={`/blog/tag/${tag}`}
+                            key={tag}
+                            className="tag"
+                          >
+                            {tag}
+                          </Tag>
                         ))}
-                    </GridContainer>
-                )}
-                <ViewMoreButton to='/blog' className='btn btn-outline-dark'>
-                    View More Blogs
-                </ViewMoreButton>
-            </MoreBlogsSection>
-        </BlogContainer>
-    );
+                      </div>
+                    </div>
+                    <p>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
+                    <p>Author: {blog.author}</p>
+                    <p>
+                      {blog.dateCreated === blog.lastUpdated
+                        ? `Published on: ${new Date(
+                            blog.dateCreated
+                          ).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}`
+                        : `Last updated on: ${new Date(
+                            blog.lastUpdated
+                          ).toLocaleDateString("en-GB", {
+                            day: "numeric",
+                            month: "short",
+                            year: "numeric",
+                          })}`}
+                    </p>
+                    <p style={{ display: "inline-flex", alignItems: "center" }}>
+                      <RiBarChartFill style={{ marginRight: "1vh" }} />
+                      {blog.views} views
+                    </p>
+                  </div>
+                </BlogCard>
+              </Link>
+            ))}
+          </GridContainer>
+        )}
+        <ViewMoreButton to="/blog" className="btn btn-outline-dark">
+          View More Blogs
+        </ViewMoreButton>
+      </MoreBlogsSection>
+    </BlogContainer>
+  );
 };
 
 export default BlogPost;

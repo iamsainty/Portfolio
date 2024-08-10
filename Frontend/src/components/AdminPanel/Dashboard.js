@@ -48,7 +48,7 @@ const Dashboard = (props) => {
 
   useEffect(() => {
     const fetchUser = async () => {
-      if (!localStorage.getItem('token')) {
+      if (!localStorage.getItem('hey-sainty-token')) {
         navigate('/login');
       }
     };
@@ -60,7 +60,7 @@ const Dashboard = (props) => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.removeItem('hey-sainty-token');
     navigate('/login');
   };
 

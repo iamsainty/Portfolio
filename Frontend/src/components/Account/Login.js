@@ -45,7 +45,7 @@ const Login = () => {
 
     useEffect(() => {
         const fetchUser = async () => {
-            if (localStorage.getItem('token')) {
+            if (localStorage.getItem('hey-sainty-token')) {
                 navigate('/admin');
             }
         };
