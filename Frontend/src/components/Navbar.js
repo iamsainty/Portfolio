@@ -1,32 +1,53 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import React from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-
-    return (
-        <div>
-            <nav className={`navbar fixed-top navbar-expand-lg navbar-light bg-light`}>
-                <div className="container-fluid">
-                    <Link className="navbar-brand" to="/" style={{ paddingLeft: '2vh' }}><b>Priyanshu</b></Link>
-
-
-                    <div className="collapse navbar-collapse" id="navbarNav">
-                        <ul className="navbar-nav" style={{ fontSize: '2vh', paddingLeft: '1vh' }}>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" aria-current="page" to="/">Home</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/about">About</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/projects">Projects</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/certifications">Certifications</Link></li>
-                            <li className="nav-item" style={{ paddingLeft: '1vh' }}>
-                                <Link className="nav-link" to="/blog">Blog</Link></li>
-                        </ul>
-                    </div>
-                </div>
-
-            </nav>
-        </div>
-    )
+  return (
+    <div className="d-flex mt-5" style={{ justifyContent: "center" }}>
+      <nav
+        style={{
+          padding: "1.75vh 5vh",
+          border: "1px solid black",
+          width: "fit-content",
+          borderRadius: "5vh",
+        }}
+      >
+        <Link
+          className="mx-3"
+          to="/"
+          style={{ color: "black", textDecoration: "none" }}
+        >
+          Home
+        </Link>
+        <Link
+          className="mx-3"
+          to="/about"
+          style={{ color: "black", textDecoration: "none" }}
+        >
+          About
+        </Link>
+        <Link
+          className="mx-3"
+          to="/projects"
+          style={{ color: "black", textDecoration: "none" }}
+        >
+          Projects
+        </Link>
+        <Link
+          className="mx-3"
+          to="/certifications"
+          style={{ color: "black", textDecoration: "none" }}
+        >
+          Certifications
+        </Link>
+        <Link
+          className="mx-3"
+          to="/blog"
+          style={{ color: "black", textDecoration: "none" }}
+        >
+          Blog
+        </Link>
+      </nav>
+    </div>
+  );
 }
