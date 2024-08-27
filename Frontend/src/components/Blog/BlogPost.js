@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import blogContext from "../context/blogs/blogContext";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container } from "react-bootstrap";
 import defaultblogcover from "../../media/Default/DefaultBlog.png";
 import styled from "styled-components";
 import Loading from "../Loading";
@@ -15,33 +15,34 @@ const BlogContainer = styled(Container)`
   border-radius: 10px;
 `;
 
-const Title = styled.h1`
-  font-weight: bold;
-  margin-bottom: 2vh;
-  font-size: 4vh;
-  color: #333;
-`;
-
-const MetaInfo = styled.p`
-  font-size: 2vh;
-  display: flex;
-  align-items: center;
-  color: #555;
-`;
-
 const Content = styled.div`
-  font-size: 2.5vh;
+  font-size: 1.25rem;
   text-align: justify;
   margin-top: 3vh;
   color: #444;
   line-height: 1.6;
-`;
 
-const CoverImage = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  margin-bottom: 2vh;
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-weight: bold;
+  }
+
+  a {
+    color: black;
+  }
+
+  code {
+    background-color: #e5e5e5;
+    color: black;
+    padding: 3px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 1rem;
+  }
 `;
 
 const MoreBlogsSection = styled.div`
@@ -164,7 +165,8 @@ const BlogPost = () => {
   const context = useContext(blogContext);
   const { blogs, fetchBlog } = context;
 
-  
+  document.body.style.background = "white";
+
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
@@ -177,18 +179,18 @@ const BlogPost = () => {
         setLoading(false);
       }
     };
-    
+
     fetchBlogDetails();
     // eslint-disable-next-line
   }, [permalink]);
-  
+
   useEffect(() => {
     if (blogPost) {
       document.title = `${blogPost.title} - Sainty`;
     }
     // eslint-disable-next-line
   }, [blogPost]);
-  
+
   useEffect(() => {
     const fetchRecentBlogs = async () => {
       try {
@@ -199,20 +201,14 @@ const BlogPost = () => {
         setRecentBlogsLoading(false);
       }
     };
-    
+
     fetchRecentBlogs();
   }, [blogs]);
-  
-  const renderMetaInfo = (label, value) => (
-    <MetaInfo>
-      {label}: {value}
-    </MetaInfo>
-  );
-  
+
   if (loading) {
     return <Loading />;
   }
-  
+
   if (error) {
     return <NotFound />; // Show NotFound component if there is an error
   }
@@ -223,43 +219,35 @@ const BlogPost = () => {
 
   return (
     <BlogContainer>
-      <Row className="mb-4">
-        <Col md={6} className="d-flex align-items-center">
-          <div>
-            <Title>{blogPost.title}</Title>
-            {renderMetaInfo("Author", blogPost.author)}
-            {renderMetaInfo(
-              "Date Created",
-              new Date(blogPost.dateCreated).toLocaleDateString()
-            )}
-            {renderMetaInfo("Views", blogPost.views)}
-            <div
-              className="tags-container"
-              style={{ display: "flex", alignItems: "center" }}
-            >
-              <FaTag className="tags-icon" />
-              <div className="tags">
-                {blogPost.tag.map((tag) => (
-                  <Tag to={`/blog/tag/${tag}`} key={tag} className="tag">
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
-            </div>
-          </div>
-        </Col>
-        <Col md={6} style={{ marginTop: "4vh" }}>
-          <CoverImage
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="col-12 col-md-8">
+          <img
             src={`${blogPost.coverimage}`}
             alt={`${blogPost.title} Preview`}
             onError={(e) => {
               e.target.onerror = null;
               e.target.src = defaultblogcover;
             }}
+            width={"100%"}
+            height={"auto"}
           />
-        </Col>
-      </Row>
-      <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+          <h1 style={{ marginTop: "5vh" }}>{blogPost.title}</h1>
+          <hr />
+          <div
+            className="d-lg-flex"
+            style={{ justifyContent: "space-between" }}
+          >
+            <span>By : {blogPost.author}</span>
+            <br className="d-lg-none" />
+            <span>
+              Date Published :{" "}
+              {new Date(blogPost.dateCreated).toLocaleDateString()}
+            </span>
+          </div>
+          <hr />
+          <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+        </div>
+      </div>
       <MoreBlogsSection>
         <MoreBlogsTitle>Recent Blogs</MoreBlogsTitle>
         {recentBlogsLoading ? (
