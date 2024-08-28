@@ -23,6 +23,7 @@ app.use('/media', express.static(path.join(__dirname, './media')));
 // Routes
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
+app.use('/project', require('./routes/project'))
 app.use('/', (req, res) => {
   res.json({ Success: "Backend is working perfectly" });
 });
