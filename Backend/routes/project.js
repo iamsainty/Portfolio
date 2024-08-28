@@ -1,5 +1,6 @@
 const express = require("express");
 const Project = require("../models/Projects");
+const { uploadProjectPreview } = require("../service/cloudinary");
 const router = express.Router();
 
 router.get("/projects", async (req, res) => {
@@ -32,9 +33,20 @@ router.post("/newproject", async (req, res) => {
       status,
       liveurl,
       githuburl,
-      imageurl,
       blogurl,
     } = req.body;
+
+    const localPath = req.file ? path.resolve(req.file.path) : null;
+    let imageurl = null;
+
+    if (localPath) {
+      const uploadResponse = await uploadProjectPreview(localPath);
+      if (uploadResponse) {
+        imageurl = uploadResponse.secure_url;
+        fs.unlinkSync(localPath); // Remove the file from local storage
+      }
+    }
+
     const newProject = new Project({
       title,
       description,
@@ -79,7 +91,6 @@ router.put("/updateproject/:id", async (req, res) => {
       status,
       liveurl,
       githuburl,
-      imageurl,
       blogurl,
     } = req.body;
     const updatedProject = await Project.findByIdAndUpdate(
@@ -94,7 +105,6 @@ router.put("/updateproject/:id", async (req, res) => {
           status,
           liveurl,
           githuburl,
-          imageurl,
           blogurl,
         },
       },

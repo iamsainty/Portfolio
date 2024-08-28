@@ -10,13 +10,12 @@ cloudinary.config({
     api_secret: process.env.cloudinary_api_secret
 });
 
-
-const uploadImage = async (localurl) => {
+// uploading blog covers
+const uploadBlogCover = async (localurl) => {
     try {
         if (!localurl) {
             return null;
         }
-        console.log('Uploading file to Cloudinary:', localurl); // Debugging line
         const response = await cloudinary.uploader.upload(localurl, {
             folder: 'coverimage',
             resource_type: 'image'
@@ -24,10 +23,26 @@ const uploadImage = async (localurl) => {
         return response;
     } catch (error) {
         await fs.unlink(localurl).catch(err => console.error(`Failed to delete local file: ${err.message}`));
-        console.error('Cloudinary upload error:', error); // Debugging line
+        return null;
+    }
+}
+
+// uploading project previews
+const uploadProjectPreview = async (localurl) => {
+    try {
+        if (!localurl) {
+            return null;
+        }
+        const response = await cloudinary.uploader.upload(localurl, {
+            folder: 'projectpreview',
+            resource_type: 'image'
+            });
+            return response;
+    } catch (error) {
+        await fs.unlink(localurl).catch(err => console.error(`Failed to delete local file: ${err.message}`));
         return null;
     }
 }
 
 
-module.exports = { uploadImage };
+module.exports = { uploadBlogCover, uploadProjectPreview };
