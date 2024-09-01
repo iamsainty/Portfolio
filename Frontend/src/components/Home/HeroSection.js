@@ -9,7 +9,7 @@ import styled from "styled-components";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 90vh;
   justify-content: center;
   align-items: center;
   padding-top: 15vh;
