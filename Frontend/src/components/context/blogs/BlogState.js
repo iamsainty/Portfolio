@@ -9,8 +9,8 @@ const BlogState = (props) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-   const host = 'http://localhost:5002';
-    //  const host = 'https://hey-sainty-backend.vercel.app';
+//    const host = 'http://localhost:5002';
+     const host = 'https://hey-sainty-backend.vercel.app';
 
     const commonHeaders = {
         "token": localStorage.getItem("hey-sainty-token")
@@ -122,7 +122,7 @@ const BlogState = (props) => {
                 headers: {
                     "token": localStorage.getItem('hey-sainty-token')
                 },
-                body: formData,
+                body: JSON.stringify(formData),
             });
     
             if (!response.ok) {

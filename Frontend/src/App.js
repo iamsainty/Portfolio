@@ -26,14 +26,18 @@ import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
 import NotFound from "./components/NotFound";
 import BlogCategory from "./components/Blog/BlogCategory";
 import AuthState from "./components/context/auth/AuthState";
+import AddProject from "./components/AdminPanel/manageproject/AddProject";
+import MyProjects from "./components/AdminPanel/manageproject/MyProjects";
+import EditProject from "./components/AdminPanel/manageproject/EditProject";
+import ProjectState from "./components/context/projects/ProjectState";
 
 function App() {
-  document.body.style.background = 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
 
   return (
     <div>
       <Router>
         <AuthState>
+          <ProjectState>
           <BlogState>
             <Navbar />
             <Routes>
@@ -61,6 +65,11 @@ function App() {
               <Route exact path="/admin/manageblog" element={<ManageBlog title='Delete Blog -Sainty' />} />
               <Route exact path="/admin/editblog/:permalink" element={<EditBlog title='Edit Blog -Sainty' />} />
 
+              {/* Routes for managing projects */}
+              <Route exact path="/admin/addproject" element={<AddProject title='New Project -Sainty' />} />
+              <Route exact path="/admin/myprojects" element={<MyProjects title='Delete Project -Sainty' />} />
+              <Route exact path="/admin/editproject/:id" element={<EditProject title='Edit Project -Sainty' />} />
+
               {/* Routes for legal Pages */}
               <Route exact path="/about" element={<About title='About - Sainty' />} />
               <Route exact path="/disclaimer" element={<Disclaimer title='Disclaimer - Sainty' />} />
@@ -73,6 +82,7 @@ function App() {
             </Routes>
             <Footer />
           </BlogState>
+          </ProjectState>
         </AuthState>
       </Router>
     </div>
