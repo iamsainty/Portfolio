@@ -28,7 +28,6 @@ import BlogCategory from "./components/Blog/BlogCategory";
 import AuthState from "./components/context/auth/AuthState";
 
 function App() {
-  document.body.style.background = 'linear-gradient(125deg, #DEE4EA, #F9FCFF, #E1D8E8)';
 
   return (
     <div>
