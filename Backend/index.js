@@ -21,6 +21,7 @@ app.use(express.urlencoded({ limit: '10mb', extended: true })); // For URL-encod
 app.use('/media', express.static(path.join(__dirname, './media')));
 
 // Routes
+app.use('/firebaseauth', require('./routes/firebaseAuth'));
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
 app.use('/', (req, res) => {
