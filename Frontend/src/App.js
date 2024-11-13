@@ -26,17 +26,26 @@ import EditBlog from "./components/AdminPanel/manageblog/EditBlog";
 import NotFound from "./components/NotFound";
 import BlogCategory from "./components/Blog/BlogCategory";
 import AuthState from "./components/context/auth/AuthState";
+import FirebaseAuthState from "./components/context/firebaseAuth/FirebaseAuthState";
+import SignIn from "./components/FirebaseAuth/SignIn";
+import SignUp from "./components/FirebaseAuth/SignUp";
 
 function App() {
 
   return (
     <div>
       <Router>
+        <FirebaseAuthState>
+
         <AuthState>
           <BlogState>
             <Navbar />
             <Routes>
               <Route exact path="/" element={<Home title='Home - Sainty' />} />
+
+              {/* Routes for user authentication */}
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
 
               {/* Routes for authentication */}
               <Route exact path="/login" element={<Login title='Login - Sainty' />} />
@@ -73,6 +82,7 @@ function App() {
             <Footer />
           </BlogState>
         </AuthState>
+        </FirebaseAuthState>
       </Router>
     </div>
   );
