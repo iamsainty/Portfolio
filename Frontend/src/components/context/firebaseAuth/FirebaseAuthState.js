@@ -41,7 +41,6 @@ const FirebaseAuthState = (props) => {
       if(data.success){
         localStorage.setItem( "userToken", data.token);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
@@ -60,7 +59,6 @@ const FirebaseAuthState = (props) => {
       if(data.success){
         localStorage.setItem( "userToken", data.token);
       }
-      console.log(data);
     } catch (error) {
       console.error(error);
     }
