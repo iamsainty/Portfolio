@@ -1,95 +1,120 @@
-import React, { useState, useContext } from "react";
-import styled from "styled-components";
-import { auth, googleProvider } from "../FirebaseAuth/FirebaseConfig";
 import {
-  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithPopup,
+  updateProfile,
 } from "firebase/auth";
+import React, { useContext, useEffect, useState } from "react";
+import styled from "styled-components";
+import { auth, googleProvider } from "../FirebaseAuth/FirebaseConfig";
+import { Button, Modal } from "react-bootstrap";
 import firebaseAuthContext from "../context/firebaseAuth/firebaseAuthContext";
+import { useNavigate } from "react-router-dom";
 import { FcGoogle } from "react-icons/fc";
-import { Modal, Button } from "react-bootstrap";
 import { IoCloseOutline } from "react-icons/io5";
 
-const SignInModal = ({ show, closeSignInModal }) => {
+function SignUpModal({ show, closeSignUpModal }) {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { signin } = useContext(firebaseAuthContext);
+  const navigate = useNavigate();
 
-  const handleSignIn = async (e) => {
+  const { signup } = useContext(firebaseAuthContext);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (localStorage.getItem("userToken")) {
+        navigate("/");
+      }
+    };
+    fetchUser();
+  }, [navigate]);
+
+  // Handle sign-up with email and password
+  const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(
+      // Create a user with email and password
+      const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
         password
       );
       const user = userCredential.user;
 
-      if (!user.emailVerified) {
-        await sendEmailVerification(user);
-      }
+      // Update the user's profile with the name
+      await updateProfile(user, { displayName: name });
 
-      signin(user.email);
-      closeSignInModal();
+      // Send email verification
+      await sendEmailVerification(user);
+
+      signup(
+        user.displayName,
+        user.email,
+        user.emailVerified,
+        user.uid,
+        user.photoURL
+      );
+
+      setLoading(false);
+
       window.location.reload();
-    } catch (error) {
-      handleError(error.code);
+    } catch (err) {
+      setError(err.message);
+      setLoading(false);
     }
-    setLoading(false);
   };
 
-  const handleGoogleSignIn = async () => {
+  // Handle Google sign-up
+  const handleGoogleSignUp = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      signin(user.email);
-      closeSignInModal();
+
+      signup(
+        user.displayName,
+        user.email,
+        user.emailVerified,
+        user.uid,
+        user.photoURL
+      );
       window.location.reload();
     } catch (error) {
-      setError(error.code);
+      setError(error.message);
     }
   };
-
-  const handleError = (errorCode) => {
-    let message = "";
-    switch (errorCode) {
-      case "auth/invalid-email":
-        message = "The email address is badly formatted.";
-        break;
-      case "auth/user-disabled":
-        message = "Your account has been disabled.";
-        break;
-      case "auth/invalid-credential":
-        message = "Invalid credential.";
-        break;
-      case "auth/network-request-failed":
-        message = "Network error. Please check your connection.";
-        break;
-      default:
-        message = "An unknown error occurred. Please try again.";
-        break;
-    }
-    setError(message);
-  };
-
   return (
-    <Modal show={show} onHide={closeSignInModal} centered>
+    <Modal
+      show={show}
+      onHide={closeSignUpModal}
+      backdrop={true}
+      keyboard={true}
+      centered
+    >
       <Content>
         <Modal.Body>
           <ModalHeader>
-            <ModalTitle>Sign In</ModalTitle>
+            <ModalTitle>Sign Up</ModalTitle>
             <IoCloseOutline
               size={35}
-              onClick={closeSignInModal}
+              onClick={closeSignUpModal}
               style={{ cursor: "pointer" }}
             />
-          </ModalHeader>{" "}
-          <Form onSubmit={handleSignIn}>
+          </ModalHeader>
+
+          <Form onSubmit={handleSignUp}>
+            <Input
+              type="text"
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              required
+            />
             <Input
               type="email"
               id="email"
@@ -110,23 +135,25 @@ const SignInModal = ({ show, closeSignInModal }) => {
             {error && <ErrorMessage>{error}</ErrorMessage>}
 
             <SubmitButton type="submit" disabled={loading}>
-              {loading ? "Signing In..." : "Sign In"}
+              {loading ? "Signing Up..." : "Sign Up"}
             </SubmitButton>
           </Form>
+
           <DividerContainer>
             <DividerLine />
-            <DividerText>Or sign in with</DividerText>
+            <DividerText>Or sign up with</DividerText>
             <DividerLine />
           </DividerContainer>
-          <GoogleButton onClick={handleGoogleSignIn}>
+
+          <GoogleButton onClick={handleGoogleSignUp}>
             <FcGoogle />
-            Sign in with Google
+            Sign up with Google
           </GoogleButton>
         </Modal.Body>
       </Content>
     </Modal>
   );
-};
+}
 
 const Content = styled.div`
   padding: 25px;
@@ -135,7 +162,6 @@ const Content = styled.div`
   }
 `;
 
-// Styled components for modal content
 const ModalHeader = styled.div`
   display: flex;
   justify-content: center;
@@ -240,4 +266,4 @@ const ErrorMessage = styled.p`
   font-size: 14px;
 `;
 
-export default SignInModal;
+export default SignUpModal;

@@ -8,6 +8,8 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import styled from "styled-components";
 import { signOut } from "firebase/auth";
 import { auth } from "./FirebaseAuth/FirebaseConfig";
+import SignInModal from "./AuthModal/SignInModal";
+import SignUpModal from "./AuthModal/SignUpModal";
 
 // Styled Components
 const NavbarWrapper = styled.nav`
@@ -180,12 +182,18 @@ export default function Navbar() {
   const [show, setShow] = useState(false);
   const [hovered, setHovered] = useState(false);
 
+  const [signInModal, setSignInModal] = useState(false);
+  const [signUpModal, setSignUpModal] = useState(false);
+
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const { user, fetchUserDetails } = useContext(firebaseAuthContext);
+
+  console.log(user);
+  
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -201,8 +209,8 @@ export default function Navbar() {
   }, []);
 
   const handleManageProfile = () => {
-    navigate('/profile');
-  }
+    navigate("/profile");
+  };
 
   const handleLogout = async () => {
     try {
@@ -215,11 +223,13 @@ export default function Navbar() {
   };
 
   const handleSignIn = () => {
-    navigate("/signin");
+    setSignInModal(true);
   };
+  const closeSignInModal = () => setSignInModal(false);
+  const closeSignUpModal = () => setSignUpModal(false);
 
   const handleSignUp = () => {
-    navigate("/signup");
+    setSignUpModal(true);
   };
 
   return (
@@ -266,7 +276,9 @@ export default function Navbar() {
               <UserName hovered={hovered}>{user.name.slice(0, 16)}...</UserName>
             </UserProfile>
             <HoverMenu hovered={hovered}>
-              <HoverMenuItem hovered={hovered} onClick={handleManageProfile}>Manage Profile</HoverMenuItem>
+              <HoverMenuItem hovered={hovered} onClick={handleManageProfile}>
+                Manage Profile
+              </HoverMenuItem>
               <HoverMenuItem hovered={hovered} onClick={handleLogout}>
                 Logout
               </HoverMenuItem>
@@ -288,6 +300,8 @@ export default function Navbar() {
                   Sign Up
                 </AccountMenuItem>
               </AccountButton>
+              {signInModal && <SignInModal show={signInModal} closeSignInModal={closeSignInModal} />}
+              {signUpModal && <SignUpModal show={signUpModal} closeSignUpModal={closeSignUpModal} />}
             </AccountContainer>
           </>
         )}
