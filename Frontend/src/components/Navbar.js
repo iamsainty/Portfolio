@@ -79,7 +79,7 @@ const AccountContainer = styled.div`
 const UserProfile = styled.div`
   display: flex;
   align-items: center;
-  padding: 10px;
+  padding: 7.55px;
   overflow: hidden;
   cursor: pointer;
 `;
@@ -95,8 +95,8 @@ const AccountText = styled.div`
 `;
 
 const ProfileImage = styled.img`
-  width: 35px;
-  height: 35px;
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
   object-fit: cover;
 `;
@@ -272,15 +272,15 @@ export default function Navbar() {
             onMouseLeave={() => setHovered(false)}
           >
             <UserProfile hovered={hovered}>
-              {user.profilePictureUrl ? (
-                <ProfileImage
-                  src={user.profilePictureUrl}
-                  alt={user.name}
-                  hovered={hovered}
-                />
-              ) : (
-                <IoPersonCircleSharp size={40} />
-              )}
+              <ProfileImage
+                src={
+                  user.profilePictureUrl
+                    ? user.profilePictureUrl
+                    : require("../media/Default/DefaultProfile.png")
+                }
+                alt={user.name}
+                hovered={hovered}
+              />
               <UserName hovered={hovered}>{user.name.slice(0, 16)}...</UserName>
             </UserProfile>
             <HoverMenu hovered={hovered}>
