@@ -2,8 +2,8 @@ import { useState } from "react";
 import firebaseAuthContext from "./firebaseAuthContext";
 
 const FirebaseAuthState = (props) => {
-  const host = "http://localhost:5002";
-  //  const host = 'https://hey-sainty-backend.vercel.app';
+  // const host = "http://localhost:5002";
+   const host = 'https://hey-sainty-backend.vercel.app';
 
   const [user, setUser] = useState(null);
 

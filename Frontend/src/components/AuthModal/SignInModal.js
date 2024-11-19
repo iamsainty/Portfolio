@@ -52,7 +52,7 @@ const SignInModal = ({ show, closeSignInModal }) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      await signin(user.email);
+      await signin(user.email, user.emailVerified);
       closeSignInModal();
       window.location.reload();
     } catch (error) {
