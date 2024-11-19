@@ -13,7 +13,7 @@ import SignUpModal from "./AuthModal/SignUpModal";
 
 // Styled Components
 const NavbarWrapper = styled.nav`
-  padding: 0.5rem 1rem;
+  padding: 0.75rem;
   background-color: #f8f9fa;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 `;
@@ -52,23 +52,28 @@ const NavbarLink = styled(Link)`
 `;
 
 const UserContainer = styled.div`
-  position: absolute;
-  right: 20px;
   border: 1px solid black;
   border-radius: ${({ hovered }) => (hovered ? "2vh" : "5vh")};
-  width: ${({ hovered }) => (hovered ? "250px" : "55px")};
+  width: 250px;
   height: ${({ hovered }) => (hovered ? "135px" : "55px")};
   transition: border-radius 0.2s ease, width 0.3s ease, height 0.3s ease;
+  @media (min-width: 768px) {
+    width: ${({ hovered }) => (hovered ? "250px" : "55px")};
+    position: absolute;
+    right: 20px;
+  }
 `;
 
 const AccountContainer = styled.div`
-  position: absolute;
-  right: 20px;
   border: 1px solid black;
   border-radius: ${({ hovered }) => (hovered ? "2vh" : "5vh")};
   width: ${({ hovered }) => (hovered ? "225px" : "150px")};
   height: ${({ hovered }) => (hovered ? "120px" : "55px")};
   transition: border-radius 0.2s ease, width 0.3s ease, height 0.3s ease;
+  @media (min-width: 768px) {
+    position: absolute;
+    right: 20px;
+  }
 `;
 
 const UserProfile = styled.div`
@@ -153,17 +158,21 @@ const ModalNav = styled.nav`
   display: flex;
   flex-direction: column;
   text-align: center;
-  padding: 2rem 1rem;
+`;
+
+const ModalAccount = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: center;
 `;
 
 const ModalLink = styled(Link)`
-  margin: 1.5rem 0;
+  margin: 1rem 0;
   color: #333;
   text-decoration: none;
   font-size: 1.25rem;
   font-weight: 400;
   &:hover {
-    color: #007bff;
     text-decoration: underline;
   }
 `;
@@ -193,7 +202,6 @@ export default function Navbar() {
   const { user, fetchUserDetails } = useContext(firebaseAuthContext);
 
   console.log(user);
-  
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -237,7 +245,7 @@ export default function Navbar() {
       {/* Navbar */}
       <NavbarWrapper className="navbar d-lg-none fixed-top">
         <div className="container-fluid d-flex justify-content-between align-items-center">
-          <NavbarBrand to="/">Priyanshu</NavbarBrand>
+          <NavbarBrand to="/">Sainty</NavbarBrand>
           <NavbarButton
             className="d-lg-none"
             onClick={handleShow}
@@ -300,8 +308,18 @@ export default function Navbar() {
                   Sign Up
                 </AccountMenuItem>
               </AccountButton>
-              {signInModal && <SignInModal show={signInModal} closeSignInModal={closeSignInModal} />}
-              {signUpModal && <SignUpModal show={signUpModal} closeSignUpModal={closeSignUpModal} />}
+              {signInModal && (
+                <SignInModal
+                  show={signInModal}
+                  closeSignInModal={closeSignInModal}
+                />
+              )}
+              {signUpModal && (
+                <SignUpModal
+                  show={signUpModal}
+                  closeSignUpModal={closeSignUpModal}
+                />
+              )}
             </AccountContainer>
           </>
         )}
@@ -314,7 +332,14 @@ export default function Navbar() {
         dialogClassName="modal-fullscreen"
         style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
       >
-        <Modal.Body>
+        <Modal.Body
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+          }}
+        >
           <ModalNav>
             <ModalLink to="/" onClick={handleClose}>
               Home
@@ -332,6 +357,74 @@ export default function Navbar() {
               Blog
             </ModalLink>
           </ModalNav>
+          <ModalAccount>
+            {user ? (
+              <>
+                {/* <p>Logged in as: {user.name}</p> */}
+                <UserContainer
+                  hovered={hovered}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <UserProfile hovered={hovered}>
+                    {user.profilePictureUrl ? (
+                      <ProfileImage
+                        src={user.profilePictureUrl}
+                        alt={user.name}
+                        hovered={true}
+                      />
+                    ) : (
+                      <IoPersonCircleSharp size={40} />
+                    )}
+                    <UserName hovered={true}>
+                      {user.name.slice(0, 16)}...
+                    </UserName>
+                  </UserProfile>
+                  <HoverMenu hovered={hovered}>
+                    <HoverMenuItem
+                      hovered={hovered}
+                      onClick={handleManageProfile}
+                    >
+                      Manage Profile
+                    </HoverMenuItem>
+                    <HoverMenuItem hovered={hovered} onClick={handleLogout}>
+                      Logout
+                    </HoverMenuItem>
+                  </HoverMenu>
+                </UserContainer>
+              </>
+            ) : (
+              <>
+                <AccountContainer
+                  hovered={hovered}
+                  onMouseEnter={() => setHovered(true)}
+                  onMouseLeave={() => setHovered(false)}
+                >
+                  <AccountText hovered={hovered}>Who's There?</AccountText>
+                  <AccountButton hovered={hovered}>
+                    <AccountMenuItem hovered={hovered} onClick={handleSignIn}>
+                      Sign In
+                    </AccountMenuItem>
+                    <AccountMenuItem hovered={hovered} onClick={handleSignUp}>
+                      Sign Up
+                    </AccountMenuItem>
+                  </AccountButton>
+                  {signInModal && (
+                    <SignInModal
+                      show={signInModal}
+                      closeSignInModal={closeSignInModal}
+                    />
+                  )}
+                  {signUpModal && (
+                    <SignUpModal
+                      show={signUpModal}
+                      closeSignUpModal={closeSignUpModal}
+                    />
+                  )}
+                </AccountContainer>
+              </>
+            )}
+          </ModalAccount>
         </Modal.Body>
         <Modal.Footer
           style={{

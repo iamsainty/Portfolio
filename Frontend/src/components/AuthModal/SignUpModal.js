@@ -52,7 +52,7 @@ function SignUpModal({ show, closeSignUpModal }) {
       // Send email verification
       await sendEmailVerification(user);
 
-      signup(
+      await signup(
         user.displayName,
         user.email,
         user.emailVerified,
@@ -75,7 +75,7 @@ function SignUpModal({ show, closeSignUpModal }) {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
 
-      signup(
+      await signup(
         user.displayName,
         user.email,
         user.emailVerified,

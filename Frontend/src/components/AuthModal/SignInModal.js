@@ -34,7 +34,7 @@ const SignInModal = ({ show, closeSignInModal }) => {
         await sendEmailVerification(user);
       }
 
-      signin(user.email);
+      await signin(user.email);
       closeSignInModal();
       window.location.reload();
     } catch (error) {
@@ -47,7 +47,7 @@ const SignInModal = ({ show, closeSignInModal }) => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      signin(user.email);
+      await signin(user.email);
       closeSignInModal();
       window.location.reload();
     } catch (error) {
