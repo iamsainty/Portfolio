@@ -20,6 +20,8 @@ function SignUpModal({ show, closeSignUpModal }) {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  const [notVerified, setNotVerified] = useState(false);
+
   const navigate = useNavigate();
 
   const { signup } = useContext(firebaseAuthContext);
@@ -62,7 +64,9 @@ function SignUpModal({ show, closeSignUpModal }) {
 
       setLoading(false);
 
-      window.location.reload();
+      if (!user.emailVerified) {
+        setNotVerified(true);
+      }
     } catch (err) {
       setError(err.message);
       setLoading(false);
@@ -97,58 +101,77 @@ function SignUpModal({ show, closeSignUpModal }) {
     >
       <Content>
         <Modal.Body>
-          <ModalHeader>
-            <ModalTitle>Sign Up</ModalTitle>
-            <IoCloseOutline
-              size={35}
-              onClick={closeSignUpModal}
-              style={{ cursor: "pointer" }}
-            />
-          </ModalHeader>
+          {notVerified ? (
+            <>
+              <ModalHeader>
+                <ModalTitle>Verify Your Email</ModalTitle>
+                <IoCloseOutline
+                  size={35}
+                  onClick={closeSignUpModal}
+                  style={{ cursor: "pointer" }}
+                />
+              </ModalHeader>
+              <Message>
+                A verification email has been sent to your email address. Verify
+                you email to proceed.
+              </Message>
+            </>
+          ) : (
+            <>
+              <ModalHeader>
+                <ModalTitle>Sign Up</ModalTitle>
+                <IoCloseOutline
+                  size={35}
+                  onClick={closeSignUpModal}
+                  style={{ cursor: "pointer" }}
+                />
+              </ModalHeader>
 
-          <Form onSubmit={handleSignUp}>
-            <Input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              placeholder="Enter your name"
-              required
-            />
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+              <Form onSubmit={handleSignUp}>
+                <Input
+                  type="text"
+                  id="name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Enter your name"
+                  required
+                />
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+                <Input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
 
-            {error && <ErrorMessage>{error}</ErrorMessage>}
+                {error && <ErrorMessage>{error}</ErrorMessage>}
 
-            <SubmitButton type="submit" disabled={loading}>
-              {loading ? "Signing Up..." : "Sign Up"}
-            </SubmitButton>
-          </Form>
+                <SubmitButton type="submit" disabled={loading}>
+                  {loading ? "Signing Up..." : "Sign Up"}
+                </SubmitButton>
+              </Form>
 
-          <DividerContainer>
-            <DividerLine />
-            <DividerText>Or sign up with</DividerText>
-            <DividerLine />
-          </DividerContainer>
+              <DividerContainer>
+                <DividerLine />
+                <DividerText>Or sign up with</DividerText>
+                <DividerLine />
+              </DividerContainer>
 
-          <GoogleButton onClick={handleGoogleSignUp}>
-            <FcGoogle />
-            Sign up with Google
-          </GoogleButton>
+              <GoogleButton onClick={handleGoogleSignUp}>
+                <FcGoogle />
+                Sign up with Google
+              </GoogleButton>
+            </>
+          )}
         </Modal.Body>
       </Content>
     </Modal>
@@ -162,6 +185,9 @@ const Content = styled.div`
   }
 `;
 
+const Message = styled.div`
+  font-size: 18px;
+`;
 const ModalHeader = styled.div`
   display: flex;
   justify-content: center;

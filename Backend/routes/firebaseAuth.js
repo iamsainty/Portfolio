@@ -24,21 +24,23 @@ router.post("/signup", async (req, res) => {
 
     const token = jwt.sign({ id: user._id, role: "user" }, JWT_SECRET);
 
-    res.status(201).json({ success: true, token });
+    res.status(201).json({ success: true, token, user });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error creating user" });
   }
 });
 
-router.post("signin", async (req, res) => {
+router.post("/signin", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, emailVerified } = req.body;
     const user = await userData.findOne({ email: email });
     if (!user) {
       return res.status(401).json({ success: false });
     }
+    user.emailVerified = emailVerified;
+    await user.save();
     const token = jwt.sign({ id: user._id, role: "user" }, JWT_SECRET);
-    res.status(200).json({ success: true, token });
+    res.status(200).json({ success: true, token, user });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error signing in user" });
   }

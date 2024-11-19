@@ -16,6 +16,7 @@ const SignInModal = ({ show, closeSignInModal }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const [notVerified, setNotVerified] = useState(false);
 
   const { signin } = useContext(firebaseAuthContext);
 
@@ -30,13 +31,17 @@ const SignInModal = ({ show, closeSignInModal }) => {
       );
       const user = userCredential.user;
 
+      await user.reload();
+      
+
       if (!user.emailVerified) {
         await sendEmailVerification(user);
+        setNotVerified(true);
+      } else {
+        await signin(user.email, user.emailVerified);
+        closeSignInModal();
+        window.location.reload();
       }
-
-      await signin(user.email);
-      closeSignInModal();
-      window.location.reload();
     } catch (error) {
       handleError(error.code);
     }
@@ -81,47 +86,66 @@ const SignInModal = ({ show, closeSignInModal }) => {
     <Modal show={show} onHide={closeSignInModal} centered>
       <Content>
         <Modal.Body>
-          <ModalHeader>
-            <ModalTitle>Sign In</ModalTitle>
-            <IoCloseOutline
-              size={35}
-              onClick={closeSignInModal}
-              style={{ cursor: "pointer" }}
-            />
-          </ModalHeader>{" "}
-          <Form onSubmit={handleSignIn}>
-            <Input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              required
-            />
-            <Input
-              type="password"
-              id="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              required
-            />
+          {notVerified ? (
+            <>
+              <ModalHeader>
+                <ModalTitle>Verify Your Email</ModalTitle>
+                <IoCloseOutline
+                  size={35}
+                  onClick={closeSignInModal}
+                  style={{ cursor: "pointer" }}
+                />
+              </ModalHeader>
+              <Message>
+                A verification email has been sent to your email address. Verify
+                you email to proceed.
+              </Message>
+            </>
+          ) : (
+            <>
+              <ModalHeader>
+                <ModalTitle>Sign In</ModalTitle>
+                <IoCloseOutline
+                  size={35}
+                  onClick={closeSignInModal}
+                  style={{ cursor: "pointer" }}
+                />
+              </ModalHeader>{" "}
+              <Form onSubmit={handleSignIn}>
+                <Input
+                  type="email"
+                  id="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Enter your email"
+                  required
+                />
+                <Input
+                  type="password"
+                  id="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Enter your password"
+                  required
+                />
 
-            {error && <ErrorMessage>{error}</ErrorMessage>}
+                {error && <ErrorMessage>{error}</ErrorMessage>}
 
-            <SubmitButton type="submit" disabled={loading}>
-              {loading ? "Signing In..." : "Sign In"}
-            </SubmitButton>
-          </Form>
-          <DividerContainer>
-            <DividerLine />
-            <DividerText>Or sign in with</DividerText>
-            <DividerLine />
-          </DividerContainer>
-          <GoogleButton onClick={handleGoogleSignIn}>
-            <FcGoogle />
-            Sign in with Google
-          </GoogleButton>
+                <SubmitButton type="submit" disabled={loading}>
+                  {loading ? "Signing In..." : "Sign In"}
+                </SubmitButton>
+              </Form>
+              <DividerContainer>
+                <DividerLine />
+                <DividerText>Or sign in with</DividerText>
+                <DividerLine />
+              </DividerContainer>
+              <GoogleButton onClick={handleGoogleSignIn}>
+                <FcGoogle />
+                Sign in with Google
+              </GoogleButton>
+            </>
+          )}
         </Modal.Body>
       </Content>
     </Modal>
@@ -133,6 +157,10 @@ const Content = styled.div`
   @media (max-width: 768px) {
     padding: 10px;
   }
+`;
+
+const Message = styled.div`
+  font-size: 18px;
 `;
 
 // Styled components for modal content

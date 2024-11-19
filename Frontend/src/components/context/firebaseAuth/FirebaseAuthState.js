@@ -28,17 +28,17 @@ const FirebaseAuthState = (props) => {
     }
   };
 
-  const signin = async (email) => {
+  const signin = async (email, emailVerified) => {
     try {
       const response = await fetch(`${host}/firebaseauth/signin`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email, emailVerified }),
       });
       const data = await response.json();
-      if(data.success){
+      if(data.success && data.user && data.user.emailVerified){
         localStorage.setItem( "userToken", data.token);
       }
     } catch (error) {
@@ -56,7 +56,7 @@ const FirebaseAuthState = (props) => {
         body: JSON.stringify({ name, email, emailVerified, uid, profilePictureUrl }),
       });
       const data = await response.json();
-      if(data.success){
+      if(data.success && data.user && data.user.emailVerified){
         localStorage.setItem( "userToken", data.token);
       }
     } catch (error) {
