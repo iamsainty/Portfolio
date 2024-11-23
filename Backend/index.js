@@ -24,6 +24,7 @@ app.use('/media', express.static(path.join(__dirname, './media')));
 app.use('/firebaseauth', require('./routes/firebaseAuth'));
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
+app.use('/comment', require(('./routes/comment')));
 app.use('/', (req, res) => {
   res.json({ Success: "Backend is working perfectly" });
 });
