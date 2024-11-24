@@ -27,7 +27,7 @@ const CommentState = (props) => {
     }
   };
 
-  const newComment = async (blogid, comment) => {
+  const newComment = async (blogId, comment) => {
     try {
       const url = `${host}/comment/new-comment`;
       const response = await fetch(url, {
@@ -36,11 +36,11 @@ const CommentState = (props) => {
           "Content-Type": "application/json",
           userToken: localStorage.getItem("userToken"),
         },
-        body: JSON.stringify({ blogid, comment }),
+        body: JSON.stringify({ blogId, comment }),
       });
       const data = await response.json();
       if (data.success) {
-        setComments([...comments, data.comment]);
+        setComments([...comments, data.savedComment]);
       }
     } catch (error) {
       console.error(error);

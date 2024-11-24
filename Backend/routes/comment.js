@@ -2,11 +2,13 @@ const express = require("express");
 const router = express.Router();
 
 const BlogComment = require("../models/BlogComment");
+const validateUserToken = require("../middleware/validateUserToken");
 
 // route to add a comment
-router.post("/new-comment", async (req, res) => {
+router.post("/new-comment", validateUserToken, async (req, res) => {
   try {
-    const { blogId, userId, comment } = req.body;
+    const { blogId, comment } = req.body;
+    const userId = req.user.id;
     const newComment = new BlogComment({
       blogId,
       userId,

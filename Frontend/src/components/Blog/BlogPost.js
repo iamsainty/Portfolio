@@ -8,6 +8,7 @@ import Loading from "../Loading";
 import NotFound from "../NotFound"; // Import the NotFound component
 import { FaTag } from "react-icons/fa";
 import { RiBarChartFill } from "react-icons/ri";
+import CommentSection from "./Comment/CommentSection";
 
 const BlogContainer = styled(Container)`
   margin-top: 10vh;
@@ -246,6 +247,9 @@ const BlogPost = () => {
           </div>
           <hr />
           <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+          <hr style={{ margin: "5vh 0" }} />
+          <h3 style={{fontWeight : 'bolder', fontSize: '35px'}}>Comments</h3>
+          <CommentSection blogId={blogPost._id} />
         </div>
       </div>
       <MoreBlogsSection>
