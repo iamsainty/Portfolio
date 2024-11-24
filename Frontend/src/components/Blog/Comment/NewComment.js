@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from "react";
 import firebaseAuthContext from "../../context/firebaseAuth/firebaseAuthContext";
 import styled from "styled-components";
 import commentContext from "../../context/comment/commentContext";
+import SignInModal from "../../AuthModal/SignInModal";
+import SignUpModal from "../../AuthModal/SignUpModal";
 
 const CommentBox = styled.div`
   display: flex;
@@ -75,16 +77,16 @@ const Heading = styled.h4`
 const Text = styled.p``;
 
 const ButtonGroup = styled.div`
-display: flex;
-gap : 20px;
+  display: flex;
+  gap: 20px;
 `;
 
 const Button = styled.button`
   color: black;
   background-color: white;
-  padding : 5px 15px;
-  border-radius : 10px;
-  border : 1px solid #999;
+  padding: 5px 15px;
+  border-radius: 10px;
+  border: 1px solid #999;
 `;
 
 function NewComment({ blogId }) {
@@ -93,6 +95,20 @@ function NewComment({ blogId }) {
 
   const [comment, setComment] = useState("");
   const [error, setError] = useState(null);
+
+  const [signInModal, setSignInModal] = useState(false);
+  const [signUpModal, setSignUpModal] = useState(false);
+
+  const handleSignIn = () => {
+    setSignInModal(true);
+  };
+
+  const handleSignUp = () => {
+    setSignUpModal(true);
+  };
+
+  const closeSignInModal = () => setSignInModal(false);
+  const closeSignUpModal = () => setSignUpModal(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -139,10 +155,19 @@ function NewComment({ blogId }) {
         <Heading>Have something to share?</Heading>
         <Text>Join the conversation by signing in below!</Text>
         <ButtonGroup>
-
-        <Button className="btn btn-outline-dark">Sign In</Button>
-        <Button className="btn btn-outline-dark">Sign Up</Button>
+          <Button className="btn btn-outline-dark" onClick={handleSignIn}>
+            Sign In
+          </Button>
+          <Button className="btn btn-outline-dark" onClick={handleSignUp}>
+            Sign Up
+          </Button>
         </ButtonGroup>
+        {signInModal && (
+          <SignInModal show={signInModal} closeSignInModal={closeSignInModal} />
+        )}
+        {signUpModal && (
+          <SignUpModal show={signUpModal} closeSignUpModal={closeSignUpModal} />
+        )}
       </AccountBox>
     </>
   );
