@@ -2,10 +2,12 @@ import { useState } from "react";
 import firebaseAuthContext from "./firebaseAuthContext";
 
 const FirebaseAuthState = (props) => {
-  // const host = "http://localhost:5002";
-   const host = 'https://hey-sainty-backend.vercel.app';
+  const host = "http://localhost:5002";
+  // const host = "https://hey-sainty-backend.vercel.app";
 
   const [user, setUser] = useState(null);
+
+  const [userById, setUserById] = useState(null);
 
   const fetchUserDetails = async () => {
     try {
@@ -28,6 +30,28 @@ const FirebaseAuthState = (props) => {
     }
   };
 
+  const fetchUserDetailsById = async (userId) => {
+    try {
+      const url = `${host}/firebaseauth/userdatabyid/${userId}`;
+      const response = await fetch(url, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        const user = data.user;
+        setUserById(user);
+        console.log(user);
+        
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const signin = async (email, emailVerified) => {
     try {
       const response = await fetch(`${host}/firebaseauth/signin`, {
@@ -38,8 +62,8 @@ const FirebaseAuthState = (props) => {
         body: JSON.stringify({ email, emailVerified }),
       });
       const data = await response.json();
-      if(data.success && data.user && data.user.emailVerified){
-        localStorage.setItem( "userToken", data.token);
+      if (data.success && data.user && data.user.emailVerified) {
+        localStorage.setItem("userToken", data.token);
       }
     } catch (error) {
       console.error(error);
@@ -53,11 +77,17 @@ const FirebaseAuthState = (props) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ name, email, emailVerified, uid, profilePictureUrl }),
+        body: JSON.stringify({
+          name,
+          email,
+          emailVerified,
+          uid,
+          profilePictureUrl,
+        }),
       });
       const data = await response.json();
-      if(data.success && data.user && data.user.emailVerified){
-        localStorage.setItem( "userToken", data.token);
+      if (data.success && data.user && data.user.emailVerified) {
+        localStorage.setItem("userToken", data.token);
       }
     } catch (error) {
       console.error(error);
@@ -65,7 +95,16 @@ const FirebaseAuthState = (props) => {
   };
 
   return (
-    <firebaseAuthContext.Provider value={{ user, fetchUserDetails, signin, signup }}>
+    <firebaseAuthContext.Provider
+      value={{
+        user,
+        fetchUserDetails,
+        userById,
+        fetchUserDetailsById,
+        signin,
+        signup,
+      }}
+    >
       {props.children}
     </firebaseAuthContext.Provider>
   );

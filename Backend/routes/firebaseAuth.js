@@ -61,4 +61,21 @@ router.get("/userdata", validateUserToken, async (req, res) => {
   }
 });
 
+router.get("/userdatabyid/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+    const user = await userData.findById(id);
+    if (!user) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    res
+      .status(500)
+      .json({ success: false, message: "Error fetching user data" });
+  }
+});
+
 module.exports = router;
