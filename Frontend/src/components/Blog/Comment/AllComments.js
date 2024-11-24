@@ -21,8 +21,6 @@ function AllComments({ blogId }) {
     // eslint-disable-next-line
   }, []);
 
-  console.log(comments);
-
   return (
     <>
       <SecHeading>Recent comments</SecHeading>

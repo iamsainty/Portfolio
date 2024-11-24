@@ -47,8 +47,6 @@ function Comment({ comment, userId }) {
     // eslint-disable-next-line
   }, []);
 
-  console.log(userById);
-
   if (!userById) {
     return <div>Loading...</div>;
   }

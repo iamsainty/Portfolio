@@ -201,8 +201,6 @@ export default function Navbar() {
 
   const { user, fetchUserDetails } = useContext(firebaseAuthContext);
 
-  console.log(user);
-
   useEffect(() => {
     const fetchDetails = async () => {
       try {

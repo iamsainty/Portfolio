@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 const AuthState = (props) => {
     const navigate = useNavigate();
 
-    // const host = 'https://hey-sainty-backend.vercel.app';
-    const host = 'http://localhost:5002';
+    const host = 'https://hey-sainty-backend.vercel.app';
+    // const host = 'http://localhost:5002';
 
     const [user, setUser] = useState(null);
 

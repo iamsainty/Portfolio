@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import commentContext from "./commentContext";
 
 const CommentState = (props) => {
-  // const host = 'https://hey-sainty-backend.vercel.app';
-  const host = "http://localhost:5002";
+  const host = 'https://hey-sainty-backend.vercel.app';
+//   const host = "http://localhost:5002";
 
   const [comments, setComments] = useState([]);
 
