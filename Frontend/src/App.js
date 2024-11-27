@@ -26,6 +26,7 @@ import FirebaseAuthState from "./components/context/firebaseAuth/FirebaseAuthSta
 import SignIn from "./components/FirebaseAuth/SignIn";
 import SignUp from "./components/FirebaseAuth/SignUp";
 import CommentState from "./components/context/comment/CommentState";
+import UserProfile from "./components/User/UserProfile";
 
 function App() {
   return (
@@ -131,6 +132,13 @@ function App() {
                     element={
                       <GDPRCompliance title="GDPR Compliance - Sainty" />
                     }
+                  />
+
+                  {/* Routes for user */}
+                  <Route
+                    exact
+                    path="/profile"
+                    element={<UserProfile title="Profile - Sainty" />}
                   />
 
                   {/* Handling error page */}
