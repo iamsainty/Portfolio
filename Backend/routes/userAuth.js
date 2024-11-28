@@ -13,7 +13,9 @@ router.post("/signup", async (req, res) => {
 
     const userExist = await userData.findOne({ email });
     if (userExist) {
-      return res.status(400).json({success : false, message: "User already exist" });
+      return res
+        .status(400)
+        .json({ success: false, message: "User already exist" });
     }
 
     const salt = await bcrypt.genSalt(10);
@@ -40,13 +42,17 @@ router.post("/signin", async (req, res) => {
     const user = await userData.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ success: false, message: "Email doesn't exist" });
+      return res
+        .status(401)
+        .json({ success: false, message: "Email doesn't exist" });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
 
-    if( !isValidPassword ) {
-      return res.status(401).json({ success: false, message: "Invalid password" });
+    if (!isValidPassword) {
+      return res
+        .status(401)
+        .json({ success: false, message: "Invalid password" });
     }
 
     const token = jwt.sign({ id: user._id, role: "user" }, JWT_SECRET);
@@ -64,11 +70,11 @@ router.get("/userdata", validateUserToken, async (req, res) => {
     if (!user) {
       return res
         .status(404)
-        .json({ tokenValid: false, message: "User not found" });
+        .json({ success: false, message: "User not found" });
     }
-    res.status(200).json({ tokenValid: true, user });
+    res.status(200).json({ success: true, user });
   } catch (error) {
-    res.status(500).json({ tokenValid: false });
+    res.status(500).json({ success: false });
   }
 });
 
