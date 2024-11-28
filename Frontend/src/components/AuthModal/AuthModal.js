@@ -75,6 +75,7 @@ const Input = styled.input`
 `;
 
 const ErrorText = styled.p`
+  margin: 0;
   color: red;
   font-size: 14px;
 `;
@@ -232,18 +233,65 @@ function AuthModal({ show, closeModal }) {
     inputs.current[lastIndex].focus();
   };
 
+  const validEmail = (email) => {
+    // Regular expression for email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
   const handleSignIn = async () => {
-    await signin(email, password);
-    if (error === null) {
-      closeModal();
+    setErr(null);
+
+    if (!email || !password) {
+      setErr("Please fill all the fields");
+      return;
+    }
+
+    if (!validEmail(email)) {
+      setErr("Enter a valid email");
+      return;
+    }
+
+    if (password.length < 6) {
+      setErr("Password should be at least 6 characters long");
+      return;
+    }
+
+    try {
+      await signin(email, password);
+      if (!error) {
+        closeModal();
+      } else {
+        setErr("Invalid email or password");
+      }
+    } catch (err) {
+      setErr("Failed to sign in. Please try again later.");
     }
   };
 
   const handleSignUp = async () => {
-    await sendOtp(email);
-    setErr(error);
-    if (err === null) {
+    setErr(null);
+
+    if (!name || !email || !password) {
+      setErr("Please fill all the fields");
+      return;
+    }
+
+    if (!validEmail(email)) {
+      setErr("Enter a valid email");
+      return;
+    }
+
+    if (password.length < 6) {
+      setErr("Password should be at least 6 characters long");
+      return;
+    }
+
+    try {
+      await sendOtp(email);
       setCurrentPage("otp");
+    } catch (error) {
+      setErr("Failed to send OTP. Please try again.");
     }
   };
 
@@ -344,7 +392,7 @@ function AuthModal({ show, closeModal }) {
       case "otp":
         return (
           <Container>
-            <FormContainer style={{height : '90vh', justifyContent : 'center'}}>
+            <FormContainer style={{ height: "90vh", justifyContent: "center" }}>
               <ModalHeading>Verify your email</ModalHeading>
               <OtpText>
                 {" "}
@@ -368,8 +416,7 @@ function AuthModal({ show, closeModal }) {
                 Verify
               </SubmitButton>
             </FormContainer>
-            <CloseButton>
-            </CloseButton>
+            <CloseButton></CloseButton>
           </Container>
         );
       default:
