@@ -2,11 +2,13 @@ import { useState } from "react";
 import userAuthContext from "./userAuthContext";
 
 const UserAuthState = (props) => {
-  const host = "https://hey-sainty-backend.vercel.app";
-  // const host = "http://localhost:5002";
+  // const host = "https://hey-sainty-backend.vercel.app";
+  const host = "http://localhost:5002";
 
   const [user, setUser] = useState(null);
   const [userById, setUserById] = useState(null);
+
+  const [otpSent, setOtpSent] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -105,6 +107,28 @@ const UserAuthState = (props) => {
     }
   };
 
+  const sendOtp = async (email) => {
+    try {
+      const response = await fetch(`${host}/user-auth/send-otp`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setOtpSent(data.otp);
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+        console.error(error);
+    }
+  };
+
   return (
     <userAuthContext.Provider
       value={{
@@ -115,6 +139,8 @@ const UserAuthState = (props) => {
         fetchUserDetailsById,
         signin,
         signup,
+        otpSent,
+        sendOtp
       }}
     >
       {props.children}
