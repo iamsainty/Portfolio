@@ -6,6 +6,7 @@ const userData = require("../models/UserData");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const validateUserToken = require("../middleware/validateUserToken");
+const sendOTP = require("../service/sendOtp");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -60,6 +61,26 @@ router.post("/signin", async (req, res) => {
     res.status(200).json({ success: true, token, user });
   } catch (error) {
     res.status(500).json({ success: false, message: "Error signing in user" });
+  }
+});
+
+router.post("/send-otp", async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    const otp = Math.floor(1000 + Math.random() * 9000);
+
+    const otpSent = await sendOTP(email, otp);
+
+    if (otpSent) {
+      return res
+        .status(200)
+        .json({ success: true, otp, message: "OTP sent successfully" });
+    } else {
+      return res.status(400).json({ success: false, message: "Error sending OTP" });
+    }
+  } catch (error) {
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 });
 
