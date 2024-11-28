@@ -7,10 +7,6 @@ const userDataSchema = new mongoose.Schema({
   email: {
     type: String,
   },
-  emailVerified: {
-    type: Boolean,
-    default: false,
-  },
   password: {
     type: String,
   },
@@ -18,11 +14,8 @@ const userDataSchema = new mongoose.Schema({
     type: String,
     default: "user",
   },
-  uid: {
+  profilePictureUrl: {
     type: String,
-  },
-  profilePictureUrl : {
-    type : String
   }
 });
 
