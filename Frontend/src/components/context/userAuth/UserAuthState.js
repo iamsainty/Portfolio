@@ -107,14 +107,14 @@ const UserAuthState = (props) => {
     }
   };
 
-  const sendOtp = async (email) => {
+  const sendOtp = async (name, email) => {
     try {
       const response = await fetch(`${host}/user-auth/send-otp`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ name, email }),
       });
 
       const data = await response.json();

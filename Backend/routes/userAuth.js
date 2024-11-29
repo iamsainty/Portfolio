@@ -66,7 +66,7 @@ router.post("/signin", async (req, res) => {
 
 router.post("/send-otp", async (req, res) => {
   try {
-    const { email } = req.body;
+    const { name, email } = req.body;
 
     const user = await userData.findOne({ email });
     if (user) {
@@ -75,7 +75,7 @@ router.post("/send-otp", async (req, res) => {
 
     const otp = Math.floor(1000 + Math.random() * 9000);
 
-    const otpSent = await sendOTP(email, otp);
+    const otpSent = await sendOTP(name, email, otp);
 
     if (otpSent) {
       return res

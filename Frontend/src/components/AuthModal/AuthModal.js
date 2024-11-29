@@ -299,7 +299,7 @@ function AuthModal({ show, closeModal, type }) {
     }
 
     try {
-      await sendOtp(email);
+      await sendOtp(name, email);
       setCurrentPage("otp");
     } catch (error) {
       setErr("Failed to send OTP. Please try again.");
