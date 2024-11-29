@@ -8,8 +8,7 @@ import { IoPersonCircleSharp } from "react-icons/io5";
 import styled from "styled-components";
 import { signOut } from "firebase/auth";
 import { auth } from "./FirebaseAuth/FirebaseConfig";
-import SignInModal from "./AuthModal/SignInModal";
-import SignUpModal from "./AuthModal/SignUpModal";
+import AuthModal from "./AuthModal/AuthModal";
 
 // Styled Components
 const NavbarWrapper = styled.nav`
@@ -88,7 +87,7 @@ const AccountText = styled.div`
   display: flex;
   align-items: center;
   padding: 0 20px;
-  justify-content: start;
+  justify-content: center;
   height: 55px;
   overflow: hidden;
   cursor: pointer;
@@ -231,11 +230,14 @@ export default function Navbar() {
   const handleSignIn = () => {
     setSignInModal(true);
   };
-  const closeSignInModal = () => setSignInModal(false);
-  const closeSignUpModal = () => setSignUpModal(false);
 
   const handleSignUp = () => {
     setSignUpModal(true);
+  };
+
+  const closeModal = () => {
+    setSignInModal(false);
+    setSignUpModal(false);
   };
 
   return (
@@ -307,15 +309,17 @@ export default function Navbar() {
                 </AccountMenuItem>
               </AccountButton>
               {signInModal && (
-                <SignInModal
+                <AuthModal
                   show={signInModal}
-                  closeSignInModal={closeSignInModal}
+                  closeModal={closeModal}
+                  type={"signIn"}
                 />
               )}
               {signUpModal && (
-                <SignUpModal
+                <AuthModal
                   show={signUpModal}
-                  closeSignUpModal={closeSignUpModal}
+                  closeModal={closeModal}
+                  type={"signUp"}
                 />
               )}
             </AccountContainer>
@@ -408,15 +412,17 @@ export default function Navbar() {
                     </AccountMenuItem>
                   </AccountButton>
                   {signInModal && (
-                    <SignInModal
+                    <AuthModal
                       show={signInModal}
-                      closeSignInModal={closeSignInModal}
+                      closeModal={closeModal}
+                      type={"signIn"}
                     />
                   )}
                   {signUpModal && (
-                    <SignUpModal
+                    <AuthModal
                       show={signUpModal}
-                      closeSignUpModal={closeSignUpModal}
+                      closeModal={closeModal}
+                      type={"signUp"}
                     />
                   )}
                 </AccountContainer>

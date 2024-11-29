@@ -3,7 +3,7 @@ import { Button, Modal } from "react-bootstrap";
 // import { FcGoogle } from "react-icons/fc";
 import styled from "styled-components";
 import userAuthContext from "../context/userAuth/userAuthContext";
-import { IoIosCloseCircleOutline } from "react-icons/io";
+import { IoCloseOutline } from "react-icons/io5";
 
 const Content = styled.div`
   height: 100vh;
@@ -37,6 +37,17 @@ const ModalHeading = styled.h2`
 const Container = styled.div`
   height: 100vh;
   margin: 0;
+`;
+
+const CloseContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border: 1px solid black;
+  border-radius : 100%;
+  padding: 10px;
+  cursor : pointer;
 `;
 
 const CloseButton = styled.div`
@@ -175,8 +186,8 @@ const OTPInput = styled.input`
   }
 `;
 
-function AuthModal({ show, closeModal }) {
-  const [currentPage, setCurrentPage] = useState("signIn");
+function AuthModal({ show, closeModal, type }) {
+  const [currentPage, setCurrentPage] = useState(type);
 
   const { signin, signup, sendOtp, otpSent, error } =
     useContext(userAuthContext);
@@ -342,7 +353,14 @@ function AuthModal({ show, closeModal }) {
               </SwitchPage>
             </FormContainer>
             <CloseButton>
-              <IoIosCloseCircleOutline size={50} />
+              <CloseContainer>
+                <IoCloseOutline
+                  onClick={() => {
+                    closeModal();
+                  }}
+                  size={30}
+                />
+              </CloseContainer>
             </CloseButton>
           </Container>
         );
@@ -385,7 +403,14 @@ function AuthModal({ show, closeModal }) {
               </SwitchPage>
             </FormContainer>
             <CloseButton>
-              <IoIosCloseCircleOutline size={50} />
+              <CloseContainer>
+                <IoCloseOutline
+                  onClick={() => {
+                    closeModal();
+                  }}
+                  size={30}
+                />
+              </CloseContainer>
             </CloseButton>
           </Container>
         );

@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from "react";
-import firebaseAuthContext from "../../context/firebaseAuth/firebaseAuthContext";
 import styled from "styled-components";
+import userAuthContext from "../../context/userAuth/userAuthContext";
 
 const CommentBox = styled.div`
   border: 1px solid #bbb;
@@ -35,7 +35,7 @@ const UserText = styled.p`
 const CommentText = styled.div``;
 
 function Comment({ comment, userId }) {
-  const { userById, fetchUserDetailsById } = useContext(firebaseAuthContext);
+  const { userById, fetchUserDetailsById } = useContext(userAuthContext);
 
   useEffect(() => {
     const fetchUserById = async () => {

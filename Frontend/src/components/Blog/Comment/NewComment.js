@@ -1,9 +1,8 @@
 import React, { useContext, useEffect, useState } from "react";
-import firebaseAuthContext from "../../context/firebaseAuth/firebaseAuthContext";
 import styled from "styled-components";
 import commentContext from "../../context/comment/commentContext";
-import SignInModal from "../../AuthModal/SignInModal";
-import SignUpModal from "../../AuthModal/SignUpModal";
+import AuthModal from "../../AuthModal/AuthModal";
+import userAuthContext from "../../context/userAuth/userAuthContext";
 
 const CommentBox = styled.div`
   display: flex;
@@ -90,7 +89,7 @@ const Button = styled.button`
 `;
 
 function NewComment({ blogId }) {
-  const { user, fetchUserDetails } = useContext(firebaseAuthContext);
+  const { user, fetchUserDetails } = useContext(userAuthContext);
   const { newComment } = useContext(commentContext);
 
   const [comment, setComment] = useState("");
@@ -107,8 +106,10 @@ function NewComment({ blogId }) {
     setSignUpModal(true);
   };
 
-  const closeSignInModal = () => setSignInModal(false);
-  const closeSignUpModal = () => setSignUpModal(false);
+  const closeModal = () => {
+    setSignInModal(false);
+    setSignUpModal(false);
+  }
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -163,10 +164,12 @@ function NewComment({ blogId }) {
           </Button>
         </ButtonGroup>
         {signInModal && (
-          <SignInModal show={signInModal} closeSignInModal={closeSignInModal} />
+          <AuthModal show={signInModal} closeModal={closeModal}                   type={"signIn"}
+/>
         )}
         {signUpModal && (
-          <SignUpModal show={signUpModal} closeSignUpModal={closeSignUpModal} />
+          <AuthModal show={signUpModal} closeModal={closeModal}                   type={"signUp"}
+/>
         )}
       </AccountBox>
     </>

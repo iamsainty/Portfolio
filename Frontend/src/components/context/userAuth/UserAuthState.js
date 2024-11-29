@@ -2,8 +2,8 @@ import { useState } from "react";
 import userAuthContext from "./userAuthContext";
 
 const UserAuthState = (props) => {
-  // const host = "https://hey-sainty-backend.vercel.app";
-  const host = "http://localhost:5002";
+  const host = "https://hey-sainty-backend.vercel.app";
+  // const host = "http://localhost:5002";
 
   const [user, setUser] = useState(null);
   const [userById, setUserById] = useState(null);
