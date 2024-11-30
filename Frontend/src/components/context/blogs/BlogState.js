@@ -9,7 +9,7 @@ const BlogState = (props) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  //    const host = 'http://localhost:5002';
+    //  const host = 'http://localhost:5002';
   const host = "https://hey-sainty-backend.vercel.app";
 
   const commonHeaders = {
@@ -126,6 +126,9 @@ const BlogState = (props) => {
       formData.append("tags", tags);
       formData.append("permalink", permalink);
       formData.append("coverimage", coverimage);
+
+      console.log('content', content);
+      
 
       const url = `${host}/blog/newblog`;
       const response = await fetch(url, {

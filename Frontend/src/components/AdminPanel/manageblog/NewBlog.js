@@ -137,7 +137,6 @@ const NewBlog = () => {
   // fields are title, summary, content, tags, permalink
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [content, setContent] = useState("");
   const [tags, setTags] = useState([]);
   const [permalink, setPermalink] = useState("");
   const [coverimage, setCoverimage] = useState(null);
@@ -235,16 +234,11 @@ const NewBlog = () => {
 
       // Save editor content
       const savedData = await editorRef.current.save();
-      console.log(savedData);
-
-      setContent(JSON.stringify(savedData));
-
-      console.log(content);
 
       const error = await newBlog(
         title,
         summary,
-        content,
+        JSON.stringify(savedData),
         tags,
         permalink,
         coverimage

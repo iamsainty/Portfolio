@@ -69,7 +69,7 @@ router.post(
   userdetails,
   async (req, res) => {
     try {
-      const { title, summary, content, tag, permalink } = req.body;
+      const { title, summary, content, tags, permalink } = req.body;
       const localPath = req.file ? path.resolve(req.file.path) : null;
       let coverimage = null;
 
@@ -88,7 +88,7 @@ router.post(
         title,
         summary,
         content,
-        tag: tag.split(",").map((tag) => tag.trim()), // Split and trim tags
+        tag: tags, // Split and trim tags
         permalink,
       });
       const savedPost = await blogPost.save();
@@ -185,7 +185,5 @@ router.delete("/deleteblog/:id", userdetails, async (req, res) => {
     res.status(500).send("Some Error occurred");
   }
 });
-
-
 
 module.exports = router;
