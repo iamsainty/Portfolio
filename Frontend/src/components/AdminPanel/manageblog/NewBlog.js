@@ -1,167 +1,339 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { CKEditor } from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import blogContext from '../../context/blogs/blogContext';
-import Loading from '../../Loading'; // Assuming this is your custom loading component
+import React, { useEffect, useState, useContext, useRef } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import EditorJs from "@editorjs/editorjs";
+import Header from "@editorjs/header";
+import Paragraph from "@editorjs/paragraph";
+import List from "@editorjs/list";
+import Code from "@editorjs/code";
+import Quote from "@editorjs/quote";
+import LinkTool from "@editorjs/link";
+import Table from "@editorjs/table";
+import Delimiter from "@editorjs/delimiter";
+import InlineCode from "@editorjs/inline-code";
+import Raw from "@editorjs/raw";
+import blogContext from "../../context/blogs/blogContext";
+import Loading from "../../Loading"; // Assuming this is your custom loading component
+import styled from "styled-components";
+
+// Styled Components
+
+const Body = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 90vw;
+  gap: 25px;
+  margin-top: 10vh;
+`;
+
+const TitleInput = styled.input`
+  border: none;
+  font-size: 50px;
+  font-weight: 700;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const SummaryInput = styled.input`
+  border: none;
+  font-size: 20px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const TagsInput = styled.input`
+  border: none;
+  font-size: 20px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const PermalinkInput = styled.input`
+  border: none;
+  font-size: 20px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Input = styled.input`
+  border: none;
+  font-size: 15px;
+  width: 100%;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const Button = styled.div`
+  margin: 0;
+  width: 100%;
+`;
+
+const ErrorMsg = styled.div`
+  color: red;
+  padding-bottom: 1vh;
+`;
+
+const ModalBackdrop = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+`;
+
+const Modal = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1001;
+`;
+
+const ModalContent = styled.div`
+  padding: 2vh;
+  background-color: white;
+  border-radius: 5px;
+`;
+
+const ModalHeader = styled.div`
+  font-weight: bolder;
+  font-size: 3.5vh;
+`;
+
+const ModalBody = styled.div`
+  font-size: 2.5vh;
+`;
+
+const ModalFooter = styled.div`
+  width: 100%;
+`;
 
 const NewBlog = () => {
-    const [blog, setBlog] = useState({ title: "", summary: "", content: "", tag: [], permalink: "", coverimage: null });
-    const [msg, setMsg] = useState('');
-    const [showModal, setShowModal] = useState(false);
-    const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const { newBlog, fetchBlog } = useContext(blogContext);
+  // fields are title, summary, content, tags, permalink
+  const [title, setTitle] = useState("");
+  const [summary, setSummary] = useState("");
+  const [content, setContent] = useState("");
+  const [tags, setTags] = useState([]);
+  const [permalink, setPermalink] = useState("");
+  const [coverimage, setCoverimage] = useState(null);
 
-    useEffect(() => {
-        if (!localStorage.getItem('hey-sainty-token')) {
-            navigate('/login');
+  const [msg, setMsg] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+  const { newBlog, fetchBlog } = useContext(blogContext);
+
+  const editorRef = useRef(null);
+
+  useEffect(() => {
+    if (!localStorage.getItem("hey-sainty-token")) {
+      navigate("/login");
+    }
+  }, [navigate]);
+
+  useEffect(() => {
+    // Check if the editor is already initialized
+    if (editorRef.current) return; // Prevent multiple initializations
+
+    // Ensure the DOM element is available
+    const editorElement = document.getElementById("editorjs");
+
+    if (editorElement) {
+      const editor = new EditorJs({
+        holder: "editorjs",
+        tools: {
+          header: Header,
+          paragraph: Paragraph,
+          list: List,
+          code: Code,
+          quote: Quote,
+          linkTool: LinkTool,
+          table: Table,
+          delimiter: Delimiter,
+          inlineCode: InlineCode,
+          raw: Raw,
+        },
+        placeholder: "Start typing your blog content here...",
+      });
+
+      editorRef.current = editor;
+    }
+
+    // Cleanup function to destroy the editor when the component is unmounted or updated
+    return () => {
+      if (editorRef.current && editorRef.current.destroy) {
+        editorRef.current.destroy();
+        editorRef.current = null;
+      }
+    };
+  }, []); // Empty dependency array ensures it runs only once when the component mounts
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setMsg("");
+    try {
+      if (!title || !summary || !permalink) {
+        setMsg("All fields are required");
+        setLoading(false);
+        return;
+      }
+
+      if (summary.length > 150 || summary.length < 125) {
+        setMsg("Summary should be between 125 to 150 characters");
+        setLoading(false);
+        return;
+      }
+
+      if (!/^[a-z0-9-]+$/.test(permalink)) {
+        setMsg(
+          "Permalink can only contain lowercase letters, digits, and hyphens"
+        );
+        setLoading(false);
+        return;
+      }
+
+      try {
+        await fetchBlog(permalink);
+        setMsg("Permalink is already used");
+        setLoading(false);
+        return;
+      } catch (error) {
+        if (error.message !== "Failed to fetch blog") {
+          setMsg(
+            "An error occurred while checking the permalink. Please try again later."
+          );
+          setLoading(false);
+          return;
         }
-    }, [navigate]);
+      }
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setLoading(true);
-        setMsg(''); // Clear previous messages
-        try {
-            if (!blog.title || !blog.summary || !blog.permalink || !blog.content) {
-                setMsg("All fields are required");
-                setLoading(false);
-                return;
-            }
-            if (blog.summary.length > 150 || blog.summary.length < 125) {
-                setMsg("Summary should be between 125 to 150 characters");
-                setLoading(false);
-                return;
-            }
-            if (!/^[a-z0-9-]+$/.test(blog.permalink)) {
-                setMsg("Permalink can only contain lowercase letters, digits, and hyphens");
-                setLoading(false);
-                return;
-            }
+      // Save editor content
+      const savedData = await editorRef.current.save();
+      console.log(savedData);
 
-            // Check if the permalink already exists
-            try {
-                await fetchBlog(blog.permalink);
-                setMsg('Permalink is already used');
-                setLoading(false);
-                return;
-            } catch (error) {
-                if (error.message !== 'Failed to fetch blog') {
-                    setMsg('An error occurred while checking the permalink. Please try again later.');
-                    setLoading(false);
-                    return;
-                }
-            }
+      setContent(JSON.stringify(savedData));
 
-            const formData = new FormData();
-            formData.append('title', blog.title);
-            formData.append('summary', blog.summary);
-            formData.append('content', blog.content);
-            formData.append('tag', blog.tag.join(','));
-            formData.append('permalink', blog.permalink);
-            if (blog.coverimage) {
-                formData.append('coverimage', blog.coverimage);
-            }
+      console.log(content);
 
-            const error = await newBlog(formData);
-            if (!error) {
-                setMsg('');
-                setShowModal(true);
-                setBlog({ title: '', summary: '', content: '', tag: [], permalink: '', coverimage: null });
-            } else {
-                setMsg(error.message);
-            }
-        } catch (error) {
-            console.error('Error creating blog:', error);
-            setMsg('An error occurred. Please try again later.');
-        } finally {
-            setLoading(false);
-        }
-    };
+      const error = await newBlog(
+        title,
+        summary,
+        content,
+        tags,
+        permalink,
+        coverimage
+      );
+      if (!error) {
+        setMsg("");
+        setShowModal(true);
+      } else {
+        setMsg(error.message);
+      }
+    } catch (error) {
+      console.error("Error creating blog:", error);
+      setMsg("An error occurred. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    const handleChange = (event, editor) => {
-        const data = editor.getData();
-        setBlog({ ...blog, content: data });
-    };
+  const handleTagChange = (e) => {
+    const tags = e.target.value.split(",").map((tag) => tag.trim());
+    setTags(tags);
+  };
 
-    const handleTagChange = (e) => {
-        const tags = e.target.value.split(',').map(tag => tag.trim());
-        setBlog({ ...blog, tag: tags });
-    };
-
-    return (
+  return (
+    <>
+      {loading && <Loading />}
+      {showModal && (
         <>
-            {loading && <Loading />}
-            {showModal &&
-                <>
-                    <div className="modal-backdrop fade show"></div>
-                    <div className="modal fade show d-flex align-items-center justify-content-center" style={{ display: 'block' }} tabIndex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div className="modal-dialog modal-dialog-centered" style={{ width: '100%', padding: '2vh' }}>
-                            <div className="modal-content" style={{ padding: '2vh' }}>
-                                <div className="modal-header">
-                                    <h1 className="modal-title" style={{ fontWeight: 'bolder', fontSize: '3.5vh' }}>Yeah...</h1>
-                                </div>
-                                <div className="modal-body">
-                                    <p style={{ fontSize: '2.5vh' }}>Blog has been added successfully</p>
-                                </div>
-                                <div className="modal-footer" style={{ display: 'flex', width: '100%' }}>
-                                    <Link to='/admin/manageblog' style={{ width: '100%' }}>
-                                        <button type="button" className="btn btn-outline-dark" style={{ width: '100%' }}>Go to Manage Blogs</button>
-                                    </Link>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </>
-            }
-            <div className="container" style={{ paddingTop: '15vh', paddingBottom: '15vh' }}>
-                <div className="row align-items-center justify-content-center">
-                    <div>
-                        <h1 style={{ fontSize: '5vh', fontWeight: 'bolder', paddingTop: '0vh', paddingBottom: '3vh' }}>
-                            Add a new blog
-                        </h1>
-                        <form onSubmit={handleSubmit} encType="multipart/form-data">
-                            <div className="mb-3">
-                                <input type="text" className="form-control" id="title" onChange={(e) => setBlog({ ...blog, title: e.target.value })} value={blog.title} name='title' placeholder='Title' style={{ border: '1px black solid', padding: '1vh' }} />
-                            </div>
-                            <div className="mb-3">
-                                <input type="text" className="form-control" id="summary" onChange={(e) => setBlog({ ...blog, summary: e.target.value })} value={blog.summary} name='summary' placeholder='Summary' style={{ border: '1px black solid', padding: '1vh' }} />
-                            </div>
-                            <div className="mb-3">
-                                <CKEditor
-                                    editor={ClassicEditor}
-                                    data={blog.content}
-                                    onChange={handleChange}
-                                    config={{
-                                        toolbar: {
-                                            items: [
-                                                'heading', '|',
-                                                'bold', 'italic', 'underline', 'code', 'codeBlock', '|',
-                                                'link', 'blockQuote', 'insertTable', '|',
-                                                'undo', 'redo'
-                                            ]
-                                        }
-                                    }}
-                                />
-                            </div>
-                            <div className="mb-3">
-                                <input type="text" className="form-control" id="tag" onChange={handleTagChange} value={blog.tag.join(', ')} name='tag' placeholder='Tag (separated by comma)' style={{ border: '1px black solid', padding: '1vh' }} />
-                            </div>
-                            <div className="mb-3">
-                                <input type="text" className="form-control" id="permalink" onChange={(e) => setBlog({ ...blog, permalink: e.target.value })} value={blog.permalink} name='permalink' placeholder='Permalink' style={{ border: '1px black solid', padding: '1vh' }} />
-                            </div>
-                            <div className="mb-3">
-                                <input type="file" className="form-control" id="coverimage" onChange={(e) => setBlog({ ...blog, coverimage: e.target.files[0] })} name='coverimage' accept=".jpg, .png, .jpeg" style={{ border: '1px black solid', padding: '1vh' }} />
-                            </div>
-                            <div style={{ color: 'red', paddingBottom: '1vh' }}>{msg}</div>
-                            <button type="submit" className="btn btn-outline-dark btn-block" style={{ width: '100%' }}>Create Blog</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
+          <ModalBackdrop />
+          <Modal>
+            <ModalContent>
+              <ModalHeader>Yeah...</ModalHeader>
+              <ModalBody>Blog has been added successfully</ModalBody>
+              <ModalFooter>
+                <Link to="/admin/manageblog" style={{ width: "100%" }}>
+                  <Button className="btn btn-outline-dark">
+                    Go to Manage Blogs
+                  </Button>
+                </Link>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         </>
-    );
-}
+      )}
+      <Body>
+        <Container>
+          <TitleInput
+            type="text"
+            onChange={(e) => setTitle(e.target.value)}
+            value={title}
+            name="title"
+            placeholder="Blog Title (e.g., How to Code)"
+          />
+          <SummaryInput
+            type="text"
+            onChange={(e) => setSummary(e.target.value)}
+            value={summary}
+            name="summary"
+            placeholder="Brief Summary (125-150 characters)"
+          />
+          <div id="editorjs"></div>
+          <TagsInput
+            type="text"
+            onChange={handleTagChange}
+            value={tags.join(", ")}
+            name="tag"
+            placeholder="Enter tags, separated by commas"
+          />
+          <PermalinkInput
+            type="text"
+            onChange={(e) => setPermalink(e.target.value)}
+            value={permalink}
+            name="permalink"
+            placeholder="Custom permalink (e.g., my-first-blog)"
+          />
+          <Input
+            type="file"
+            onChange={(e) => setCoverimage(e.target.files[0])}
+            name="coverimage"
+            accept=".jpg, .png, .jpeg"
+          />
+          <ErrorMsg>{msg}</ErrorMsg>
+          <Button className="btn btn-outline-dark" onClick={handleSubmit}>
+            Create Blog
+          </Button>
+        </Container>
+      </Body>
+    </>
+  );
+};
 
 export default NewBlog;
