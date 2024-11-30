@@ -25,7 +25,7 @@ const blogPostSchema = new mongoose.Schema({
     required: true
   },
   content: {
-    type: String,
+    type: [],
     required: true
   },
   permalink:{
