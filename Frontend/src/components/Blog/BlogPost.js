@@ -16,34 +16,43 @@ const BlogContainer = styled(Container)`
   border-radius: 10px;
 `;
 
-const Content = styled.div`
-  font-size: 1.25rem;
-  text-align: justify;
-  margin-top: 3vh;
+const Section = styled.div`
+  margin: 4vh 0;
+  font-size: 18px;
+`;
+
+const CodeBlock = styled.code`
+  background-color: #f5f5f5;
+  color: #ffooff;
+  padding: 10px;
+  border-radius: 5px;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  display: block;
+`;
+
+const Quote = styled.blockquote`
+  font-style: italic;
+  border-left: 4px solid #ccc;
+  padding-left: 16px;
   color: #444;
-  line-height: 1.6;
+`;
 
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-weight: bold;
-  }
+const QuoteCaption = styled.p`
+  font-size: 16px;
+  color: #666;
+  margin-top: 1vh;
+`;
 
-  a {
-    color: black;
-  }
+const LinkTool = styled.a`
+  text-decoration: underline;
+  color: #0056b3;
+  font-weight: bold;
+`;
 
-  code {
-    background-color: #e5e5e5;
-    color: black;
-    padding: 3px;
-  }
-
-  @media (max-width: 768px) {
-    font-size: 1rem;
-  }
+const ListItem = styled.li`
+  margin-bottom: 1;
+  padding-left: 1;
 `;
 
 const MoreBlogsSection = styled.div`
@@ -84,7 +93,7 @@ const BlogCard = styled.div`
   }
 
   h2 {
-    font-size: 2.5vh; // Increased font size for better readability
+    font-size: 2.5vh;
     font-weight: bold;
     margin-bottom: 1.5vh;
   }
@@ -97,7 +106,7 @@ const BlogCard = styled.div`
 
   .tags-icon {
     margin-right: 1vh;
-    font-size: 1.8vh; // Increased icon size for better visibility
+    font-size: 1.8vh;
   }
 
   .tags {
@@ -166,6 +175,8 @@ const BlogPost = () => {
   const context = useContext(blogContext);
   const { blogs, fetchBlog } = context;
 
+  const [content, setContent] = useState();
+
   document.body.style.background = "white";
 
   useEffect(() => {
@@ -174,6 +185,7 @@ const BlogPost = () => {
         setLoading(true);
         const blogDetails = await fetchBlog(permalink);
         setBlogPost(blogDetails);
+        setContent(JSON.parse(blogDetails.content[0]).blocks);
         setLoading(false);
       } catch (error) {
         setError("Blog not found");
@@ -218,6 +230,8 @@ const BlogPost = () => {
     return <div>Blog post not found</div>;
   }
 
+  console.log(content);
+
   return (
     <BlogContainer>
       <div style={{ display: "flex", justifyContent: "center" }}>
@@ -231,8 +245,15 @@ const BlogPost = () => {
             }}
             width={"100%"}
             height={"auto"}
+            style={{
+              objectFit: "cover",
+              objectPosition: "center",
+              borderRadius: "15px",
+            }}
           />
-          <h1 style={{ marginTop: "5vh" }}>{blogPost.title}</h1>
+          <h1 style={{ marginTop: "5vh", fontWeight: "700" }}>
+            {blogPost.title}
+          </h1>
           <hr />
           <div
             className="d-lg-flex"
@@ -246,9 +267,48 @@ const BlogPost = () => {
             </span>
           </div>
           <hr />
-          <Content dangerouslySetInnerHTML={{ __html: blogPost.content }} />
+          {content.map((block) => {
+            return (
+              <Section>
+                {block.type === "paragraph" && <p> {block.data.text}</p>}
+                {block.type === "header" && (
+                  <h2 style={{ fontWeight: "600" }}>{block.data.text} </h2>
+                )}
+                {block.type === "list" && (
+                  <ol>
+                    {block.data.items.map((item) => {
+                      return (
+                        <>
+                          <ListItem
+                            dangerouslySetInnerHTML={{ __html: item }}
+                          />
+                        </>
+                      );
+                    })}
+                  </ol>
+                )}
+                {block.type === "code" && (
+                  <CodeBlock>{block.data.code}</CodeBlock>
+                )}
+                {block.type === "quote" && (
+                  <>
+                    <Quote
+                      dangerouslySetInnerHTML={{ __html: block.data.text }}
+                    />
+                    <QuoteCaption
+                      dangerouslySetInnerHTML={{ __html: block.data.caption }}
+                    />
+                  </>
+                )}
+                {block.type === "linkTool" && (
+                  <LinkTool href={block.data.link}>{block.data.link} </LinkTool>
+                )}
+                {block.type === "delimeter" && <hr />}
+              </Section>
+            );
+          })}
           <hr style={{ margin: "5vh 0" }} />
-          <h3 style={{fontWeight : 'bolder', fontSize: '35px'}}>Comments</h3>
+          <h3 style={{ fontWeight: "bolder", fontSize: "35px" }}>Comments</h3>
           <CommentSection blogId={blogPost._id} />
         </div>
       </div>
