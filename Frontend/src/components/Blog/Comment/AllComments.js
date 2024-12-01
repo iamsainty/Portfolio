@@ -8,6 +8,10 @@ const SecHeading = styled.h4`
   margin-top: 5vh;
 `;
 
+const NoCommentMsg = styled.p`
+  margin: 2.5vh 0;
+`;
+
 function AllComments({ blogId }) {
   const { comments, fetchComments } = useContext(commentContext);
 
@@ -24,17 +28,19 @@ function AllComments({ blogId }) {
   return (
     <>
       <SecHeading>Recent comments</SecHeading>
-      {comments.map((comment) => {
-        return (
-          <>
-            <Comment
-              key={comment._id}
-              comment={comment}
-              userId={comment.userId}
-            />
-          </>
-        );
-      })}
+      {comments.length > 0 ? (
+        comments.map((comment) => (
+          <Comment
+            key={comment._id}
+            comment={comment}
+            userId={comment.userId}
+          />
+        ))
+      ) : (
+        <NoCommentMsg>
+          No comments yet! Be the first to share your thoughts.
+        </NoCommentMsg>
+      )}
     </>
   );
 }
