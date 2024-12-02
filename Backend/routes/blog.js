@@ -88,7 +88,7 @@ router.post(
         title,
         summary,
         content,
-        tag: tags, // Split and trim tags
+        tag: tags.split(",").map((tag) => tag.trim()), // Split and trim tags
         permalink,
       });
       const savedPost = await blogPost.save();
