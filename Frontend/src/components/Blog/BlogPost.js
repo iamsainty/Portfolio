@@ -51,7 +51,7 @@ const LinkTool = styled.a`
 `;
 
 const ListItem = styled.li`
-  margin-bottom: 1;
+  margin: 1.5vh 0;
   padding-left: 1;
 `;
 
@@ -219,7 +219,18 @@ const BlogPost = () => {
   }, [blogs]);
 
   if (loading) {
-    return <Loading />;
+    return (
+      <div
+        style={{
+          height: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <Loading />;
+      </div>
+    );
   }
 
   if (error) {
@@ -270,7 +281,9 @@ const BlogPost = () => {
           {content.map((block) => {
             return (
               <Section>
-                {block.type === "paragraph" && <p> {block.data.text}</p>}
+                {block.type === "paragraph" && (
+                  <div dangerouslySetInnerHTML={{ __html: block.data.text }} />
+                )}
                 {block.type === "header" && (
                   <h2 style={{ fontWeight: "600" }}>{block.data.text} </h2>
                 )}
