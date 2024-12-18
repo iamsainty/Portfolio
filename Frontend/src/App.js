@@ -26,8 +26,8 @@ import FirebaseAuthState from "./components/context/firebaseAuth/FirebaseAuthSta
 import SignIn from "./components/FirebaseAuth/SignIn";
 import SignUp from "./components/FirebaseAuth/SignUp";
 import CommentState from "./components/context/comment/CommentState";
-import UserProfile from "./components/User/UserProfile";
 import UserAuthState from "./components/context/userAuth/UserAuthState";
+import ManageProfile from "./components/User/ManageProfile/ManageProfile";
 
 function App() {
   return (
@@ -148,7 +148,7 @@ function App() {
                     <Route
                       exact
                       path="/profile"
-                      element={<UserProfile title="Profile - Sainty" />}
+                      element={<ManageProfile title="Profile - Sainty" />}
                     />
 
                     {/* Handling error page */}
