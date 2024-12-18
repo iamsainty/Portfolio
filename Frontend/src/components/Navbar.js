@@ -3,12 +3,12 @@ import { Link, useNavigate } from "react-router-dom";
 import { Modal, Button } from "react-bootstrap";
 import { FaBars } from "react-icons/fa6";
 import { FaTimes } from "react-icons/fa";
-import firebaseAuthContext from "./context/firebaseAuth/firebaseAuthContext";
 import { IoPersonCircleSharp } from "react-icons/io5";
 import styled from "styled-components";
 import { signOut } from "firebase/auth";
 import { auth } from "./FirebaseAuth/FirebaseConfig";
 import AuthModal from "./AuthModal/AuthModal";
+import userAuthContext from "./context/userAuth/userAuthContext";
 
 // Styled Components
 const NavbarWrapper = styled.nav`
@@ -198,7 +198,7 @@ export default function Navbar() {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const { user, fetchUserDetails } = useContext(firebaseAuthContext);
+  const { user, fetchUserDetails } = useContext(userAuthContext);
 
   useEffect(() => {
     const fetchDetails = async () => {
