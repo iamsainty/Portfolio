@@ -41,8 +41,8 @@ function ManageProfile() {
         {activeSection === "My Profile" && <MyProfile />}
         {activeSection === "Edit Profile" && <EditProfile />}
         {activeSection === "Change Password" && <ChangePassword />}
-        {activeSection === "Notification Setting" && <NotificationSetting />}
-        {activeSection === "Account Setting" && <AccountSetting />}
+        {activeSection === "Notification Settings" && <NotificationSetting />}
+        {activeSection === "Account Settings" && <AccountSetting />}
       </ContentContainer>
     </Container>
   );
