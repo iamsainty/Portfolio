@@ -28,141 +28,144 @@ import SignUp from "./components/FirebaseAuth/SignUp";
 import CommentState from "./components/context/comment/CommentState";
 import UserAuthState from "./components/context/userAuth/UserAuthState";
 import ManageProfile from "./components/User/ManageProfile/ManageProfile";
+import UserState from "./components/context/user/UserState";
 
 function App() {
   return (
     <div>
       <Router>
         <CommentState>
-          <UserAuthState>
-            <FirebaseAuthState>
-              <AuthState>
-                <BlogState>
-                  <Navbar />
-                  <Routes>
-                    <Route
-                      exact
-                      path="/"
-                      element={<Home title="Home - Sainty" />}
-                    />
+          <UserState>
+            <UserAuthState>
+              <FirebaseAuthState>
+                <AuthState>
+                  <BlogState>
+                    <Navbar />
+                    <Routes>
+                      <Route
+                        exact
+                        path="/"
+                        element={<Home title="Home - Sainty" />}
+                      />
 
-                    {/* Routes for user authentication */}
-                    <Route path="/signin" element={<SignIn />} />
-                    <Route path="/signup" element={<SignUp />} />
+                      {/* Routes for user authentication */}
+                      <Route path="/signin" element={<SignIn />} />
+                      <Route path="/signup" element={<SignUp />} />
 
-                    {/* Routes for authentication */}
-                    <Route
-                      exact
-                      path="/login"
-                      element={<Login title="Login - Sainty" />}
-                    />
-                    {/* <Route exact path="/register" element={<Register title='Register - Sainty' />} /> */}
+                      {/* Routes for authentication */}
+                      <Route
+                        exact
+                        path="/login"
+                        element={<Login title="Login - Sainty" />}
+                      />
+                      {/* <Route exact path="/register" element={<Register title='Register - Sainty' />} /> */}
 
-                    {/* Routes for webpages */}
-                    <Route
-                      exact
-                      path="/projects"
-                      element={<Projects title="Projects - Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/certifications"
-                      element={<Certificates title="Certificates - Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/your-portfolio"
-                      element={
-                        <YourPortfolio title="Your Portfolio - Sainty" />
-                      }
-                    />
+                      {/* Routes for webpages */}
+                      <Route
+                        exact
+                        path="/projects"
+                        element={<Projects title="Projects - Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/certifications"
+                        element={<Certificates title="Certificates - Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/your-portfolio"
+                        element={
+                          <YourPortfolio title="Your Portfolio - Sainty" />
+                        }
+                      />
 
-                    {/* Blog Routes */}
-                    <Route
-                      exact
-                      path="/blog"
-                      element={<Blog title="Blog - Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/blog/tag/:tag"
-                      element={<BlogCategory />}
-                    />
-                    <Route
-                      exact
-                      path="/blog/:permalink"
-                      element={<BlogPost />}
-                    />
+                      {/* Blog Routes */}
+                      <Route
+                        exact
+                        path="/blog"
+                        element={<Blog title="Blog - Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/blog/tag/:tag"
+                        element={<BlogCategory />}
+                      />
+                      <Route
+                        exact
+                        path="/blog/:permalink"
+                        element={<BlogPost />}
+                      />
 
-                    {/* Routes for admin panel operations */}
-                    <Route
-                      exact
-                      path="/admin"
-                      element={<Dashboard title="Admin - Sainty" />}
-                    />
+                      {/* Routes for admin panel operations */}
+                      <Route
+                        exact
+                        path="/admin"
+                        element={<Dashboard title="Admin - Sainty" />}
+                      />
 
-                    {/* Routes for managing blogs */}
-                    <Route
-                      exact
-                      path="/admin/newblog"
-                      element={<NewBlog title="New Blog -Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/admin/manageblog"
-                      element={<ManageBlog title="Delete Blog -Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/admin/editblog/:permalink"
-                      element={<EditBlog title="Edit Blog -Sainty" />}
-                    />
+                      {/* Routes for managing blogs */}
+                      <Route
+                        exact
+                        path="/admin/newblog"
+                        element={<NewBlog title="New Blog -Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/admin/manageblog"
+                        element={<ManageBlog title="Delete Blog -Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/admin/editblog/:permalink"
+                        element={<EditBlog title="Edit Blog -Sainty" />}
+                      />
 
-                    {/* Routes for legal Pages */}
-                    <Route
-                      exact
-                      path="/about"
-                      element={<About title="About - Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/disclaimer"
-                      element={<Disclaimer title="Disclaimer - Sainty" />}
-                    />
-                    <Route
-                      exact
-                      path="/privacy-policy"
-                      element={
-                        <PrivacyPolicy title="Privacy Policy - Sainty" />
-                      }
-                    />
-                    <Route
-                      exact
-                      path="/gdpr-compliance"
-                      element={
-                        <GDPRCompliance title="GDPR Compliance - Sainty" />
-                      }
-                    />
+                      {/* Routes for legal Pages */}
+                      <Route
+                        exact
+                        path="/about"
+                        element={<About title="About - Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/disclaimer"
+                        element={<Disclaimer title="Disclaimer - Sainty" />}
+                      />
+                      <Route
+                        exact
+                        path="/privacy-policy"
+                        element={
+                          <PrivacyPolicy title="Privacy Policy - Sainty" />
+                        }
+                      />
+                      <Route
+                        exact
+                        path="/gdpr-compliance"
+                        element={
+                          <GDPRCompliance title="GDPR Compliance - Sainty" />
+                        }
+                      />
 
-                    {/* Routes for user */}
-                    <Route
-                      exact
-                      path="/profile"
-                      element={<ManageProfile title="Profile - Sainty" />}
-                    />
+                      {/* Routes for user */}
+                      <Route
+                        exact
+                        path="/profile"
+                        element={<ManageProfile title="Profile - Sainty" />}
+                      />
 
-                    {/* Handling error page */}
-                    <Route
-                      exact
-                      path="*"
-                      element={<NotFound title="404 Error - Sainty" />}
-                    />
-                  </Routes>
-                  <Footer />
-                </BlogState>
-              </AuthState>
-            </FirebaseAuthState>
-          </UserAuthState>
+                      {/* Handling error page */}
+                      <Route
+                        exact
+                        path="*"
+                        element={<NotFound title="404 Error - Sainty" />}
+                      />
+                    </Routes>
+                    <Footer />
+                  </BlogState>
+                </AuthState>
+              </FirebaseAuthState>
+            </UserAuthState>
+          </UserState>
         </CommentState>
       </Router>
     </div>

@@ -1,5 +1,6 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useContext, useEffect } from "react";
+import styled from "styled-components";
+import userContext from "../../context/user/userContext";
 
 const Container = styled.div`
   padding: 20px;
@@ -48,24 +49,39 @@ const UserDetail = styled.p`
 `;
 
 function MyProfile() {
-    const user = {
-        name: "John Doe",
-        email: "john.doe@example.com",
-        profilePictureUrl: "https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg"
+  const { user, fetchUserDetails } = useContext(userContext);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        await fetchUserDetails();
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
     };
 
-    return (
-        <Container>
-            <Heading>My Profile</Heading>
-            <ProfileWrapper>
-                <ProfileImage src={user.profilePictureUrl} alt="Profile" />
-                <UserInfo>
-                    <UserDetail><strong>Name:</strong> {user.name}</UserDetail>
-                    <UserDetail><strong>Email:</strong> {user.email}</UserDetail>
-                </UserInfo>
-            </ProfileWrapper>
-        </Container>
-    );
+    fetchDetails();
+    // eslint-disable-next-line
+  }, []);
+
+  return (
+    <Container>
+      <Heading>My Profile</Heading>
+      {user && (
+        <ProfileWrapper>
+          <ProfileImage src={user.profilePictureUrl} alt="Profile" />
+          <UserInfo>
+          <UserDetail>
+            <strong>Name:</strong> {user.name}
+          </UserDetail>
+          <UserDetail>
+            <strong>Email:</strong> {user.email}
+          </UserDetail>
+          </UserInfo>
+        </ProfileWrapper>
+      )}
+    </Container>
+  );
 }
 
 export default MyProfile;
