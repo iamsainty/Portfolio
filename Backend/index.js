@@ -25,6 +25,7 @@ app.use('/user-auth', require('./routes/userAuth'));
 app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
 app.use('/comment', require(('./routes/comment')));
+app.use('/user', require('./routes/user'));
 app.use('/', (req, res) => {
   res.json({ Success: "Backend is working perfectly" });
 });
