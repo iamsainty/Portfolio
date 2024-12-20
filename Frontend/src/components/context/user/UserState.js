@@ -37,7 +37,6 @@ const UserState = (props) => {
       const response = await fetch(`${host}/user/edit-profile`, {
         method: "PUT",
         headers: {
-          "Content-Type": "application/json",
           userToken: localStorage.getItem("userToken"),
         },
         body: formData,

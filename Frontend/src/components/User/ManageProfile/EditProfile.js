@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import userContext from "../../context/user/userContext";
 
 const Container = styled.div`
   padding: 20px;
@@ -67,15 +68,35 @@ const SaveButton = styled.div`
 `;
 
 function EditProfile() {
-  const [user, setUser] = useState({
-    name: "John Doe",
-    email: "john.doe@example.com",
-    profilePictureUrl:
-      "https://www.svgrepo.com/show/382097/female-avatar-girl-face-woman-user-9.svg",
-  });
+  const { user, editProfile, fetchUserDetails } = useContext(userContext);
 
-  const handleSave = () => {
-    console.log("Save button clicked");
+  const [name, setName] = useState('');
+  const [imageFile, setImageFile] = useState(null);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        await fetchUserDetails();
+        if (user) {
+          setName(user.name);
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchDetails();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      await editProfile(name, imageFile);
+      await fetchUserDetails();
+      
+    } catch (error) {
+      console.error("Error editing profile:", error);
+    }
   };
 
   const handleProfilePictureClick = () => {
@@ -84,34 +105,36 @@ function EditProfile() {
   };
 
   const handleProfilePictureChange = (e) => {
-    const file = e.target.files[0];
-    setUser({ ...user, profilePictureUrl: URL.createObjectURL(file) });
+    setImageFile(e.target.files[0]);
+    user.profilePictureUrl = URL.createObjectURL(e.target.files[0]);
   };
 
   return (
     <Container>
       <Heading>Edit Profile</Heading>
-      <ContentWrapper>
-        <ProfilePicture
-          src={user.profilePictureUrl}
-          alt="Profile Image"
-          onClick={handleProfilePictureClick}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          style={{ display: "none" }}
-          onChange={handleProfilePictureChange}
-          id="profile-picture-input"
-        />
-        <Input
-          type="text"
-          placeholder="Name"
-          value={user.name}
-          onChange={(e) => setUser({ ...user, name: e.target.value })}
-        />
-        <SaveButton onClick={handleSave}>Save Changes</SaveButton>
-      </ContentWrapper>
+      {user && (
+        <ContentWrapper>
+          <ProfilePicture
+            src={user.profilePictureUrl}
+            alt="Profile Image"
+            onClick={handleProfilePictureClick}
+          />
+          <input
+            type="file"
+            accept="image/*"
+            style={{ display: "none" }}
+            onChange={handleProfilePictureChange}
+            id="profile-picture-input"
+          />
+          <Input
+            type="text"
+            placeholder="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <SaveButton onClick={handleSave}>Save Changes</SaveButton>
+        </ContentWrapper>
+      )}
     </Container>
   );
 }
