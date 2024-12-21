@@ -201,17 +201,23 @@ function ChangePassword() {
   const handleResetOtp = async () => {
     await sendOtpForPasswordReset();
     setOtpSent(true);
-  }
+  };
 
   const handleResetPassword = async () => {
-    if (otp.join("") === "") {
-      return;
+    try {
+      if (otp.join("") === "") {
+        return;
+      }
+      if (resetOtp.toString() !== otp.join("")) {
+        return;
+      }
+      await resetPassword(newPassword);
+      setForgotPassword(false);
+      setCurrentPassword("");
+      setNewPassword("");
+    } catch (error) {
+      console.error(error);
     }
-    if (resetOtp !== otp.join("")) {
-      return;
-    }
-    await resetPassword(newPassword);
-    setForgotPassword(false);
   };
 
   return (
@@ -220,11 +226,17 @@ function ChangePassword() {
       {forgotPassword ? (
         <ContentWrapper>
           <Message>
-            Enter the OTP sent to your email {' '}
+            Enter the OTP sent to your email{" "}
             <span style={{ fontWeight: "bold" }}> {user.email}</span>
           </Message>
           <Resend>
-            Didn't receive the OTP? <span style={{textDecoration: "underline"}} onClick={handleResetOtp}>Resend</span>
+            Didn't receive the OTP?{" "}
+            <span
+              style={{ textDecoration: "underline" }}
+              onClick={handleResetOtp}
+            >
+              Resend
+            </span>
           </Resend>
           <OTPContainer onPaste={handlePaste}>
             {otp.map((digit, index) => (
