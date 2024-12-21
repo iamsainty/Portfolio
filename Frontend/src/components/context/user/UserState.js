@@ -121,6 +121,27 @@ const UserState = (props) => {
     }
   };
 
+  const updateNotificationSettings = async (emailNewsletter, emailSecurityAlert) => {
+    try {
+      const response = await  fetch(`${host}/user/update-notification-setting`, {
+        method : 'PUT',
+        headers : {
+          'content-type' : 'application/json',
+          userToken : localStorage.getItem('userToken')
+        },
+        body : JSON.stringify({emailNewsletter, emailSecurityAlert})
+      });
+
+      const data = await response.json();
+
+      if( !data.success ){
+        return data.message;
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   return (
     <userContext.Provider
       value={{
@@ -131,6 +152,7 @@ const UserState = (props) => {
         sendOtpForPasswordReset,
         resetOtp,
         resetPassword,
+        updateNotificationSettings
       }}
     >
       {props.children}

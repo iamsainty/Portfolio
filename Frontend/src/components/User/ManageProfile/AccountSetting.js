@@ -1,4 +1,5 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
@@ -60,24 +61,25 @@ const ActionButton = styled.div`
 `;
 
 function AccountSetting() {
-  const handleDeleteAccount = () => {
-    console.log("Delete Account");
-  };
+
+  const navigate = useNavigate();
 
   const handleLogOut = () => {
-    console.log("Log Out");
+    localStorage.removeItem("userToken");
+    navigate("/");
+    window.location.reload();
   };
 
   return (
     <Container>
       <Heading>Account Settings</Heading>
       <ContentWrapper>
-        <ActionSection>
+        {/* <ActionSection>
           <ActionText>
             Delete your account permanently. This action cannot be undone.
           </ActionText>
           <ActionButton onClick={handleDeleteAccount}>Delete Account</ActionButton>
-        </ActionSection>
+        </ActionSection> */}
         <ActionSection>
           <ActionText>Log out of your account, and come back later.</ActionText>
           <ActionButton onClick={handleLogOut}>Log Out</ActionButton>

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
+import userContext from "../../context/user/userContext";
 
 const Container = styled.div`
   padding: 20px;
@@ -27,12 +28,26 @@ const ContentWrapper = styled.div`
   gap: 25px;
 `;
 
+const NotificationItem = styled.div`
+display : flex;
+flex-direction: column;
+justify-content : space-between;
+width : 40%;
+gap : 20px;
+`;
+
+const NotificationHead = styled.div`
+font-size: 20px;
+font-weight: bolder;
+margin-bottom : 20px;
+`;
+
 const Switch = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: 600;
-  width: 40%;
+  font-weight: 500;
+  width: 100%;
   gap: 10px;
 `;
 
@@ -81,46 +96,61 @@ const SaveButton = styled.div`
 `;
 
 function NotificationSetting() {
-  const [emailNotifications, setEmailNotifications] = useState(true);
-  const [pushNotifications, setPushNotifications] = useState(true);
-  const [smsNotifications, setSmsNotifications] = useState(true);
+  const [emailNewsletter, setEmailNewsletter] = useState(true);
+  const [emailsecurityAlerts, setEmailsecurityAlerts] = useState(true);
 
-  const handleSave = () => {
-    console.log("Save");
+  const {user, fetchUserDetails, updateNotificationSettings} = useContext(userContext);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        await fetchUserDetails();
+        if(user){
+          setEmailNewsletter(user.notifications.emailNewsletter);
+          setEmailsecurityAlerts(user.notifications.emailSecurityAlert);
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+    };
+
+    fetchDetails();
+    // eslint-disable-next-line
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      await updateNotificationSettings(emailNewsletter, emailsecurityAlerts);
+    } catch (error) {
+      console.error("Error updating notification settings:", error);
+    }
   };
 
   return (
     <Container>
       <Heading>Notification Setting</Heading>
       <ContentWrapper>
-        <Switch>
-          <label>Email Notifications</label>
-          <SwitchContainer
-            onClick={() => setEmailNotifications(!emailNotifications)}
-            checked={emailNotifications}
-          >
-            <SwitchButton checked={emailNotifications} />
-          </SwitchContainer>
-        </Switch>
-        <Switch>
-          <label>Push Notifications</label>
-          <SwitchContainer
-            onClick={() => setPushNotifications(!pushNotifications)}
-            checked={pushNotifications}
-          >
-            <SwitchButton checked={pushNotifications} />
-          </SwitchContainer>
-        </Switch>
-        <Switch>
-          <label>SMS Notifications</label>
-          <SwitchContainer
-            onClick={() => setSmsNotifications(!smsNotifications)}
-            checked={smsNotifications}
-          >
-            <SwitchButton checked={smsNotifications} />
-          </SwitchContainer>
-        </Switch>
-
+        <NotificationItem>
+          <NotificationHead>Email Notifications</NotificationHead>
+          <Switch>
+            <label>Newsletter</label>
+            <SwitchContainer
+              onClick={() => setEmailNewsletter(!emailNewsletter)}
+              checked={emailNewsletter}
+            >
+              <SwitchButton checked={emailNewsletter} />
+            </SwitchContainer>
+          </Switch>
+          <Switch>
+            <label>Security Alerts</label>
+            <SwitchContainer
+              onClick={() => setEmailsecurityAlerts(!emailsecurityAlerts)}
+              checked={emailsecurityAlerts}
+            >
+              <SwitchButton checked={emailsecurityAlerts} />
+            </SwitchContainer>
+          </Switch>
+        </NotificationItem>
         <SaveButton onClick={handleSave}>Save Changes</SaveButton>
       </ContentWrapper>
     </Container>

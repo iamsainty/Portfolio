@@ -16,7 +16,17 @@ const userDataSchema = new mongoose.Schema({
   },
   profilePictureUrl: {
     type: String,
-  }
+  },
+  notifications : {
+    emailNewsletter: {
+      type: Boolean,
+      default: true,
+    },
+    emailSecurityAlert: {
+      type: Boolean,
+      default: true,
+    },
+  },
 });
 
 const UserData = mongoose.model("UserData", userDataSchema);

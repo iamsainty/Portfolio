@@ -128,6 +128,24 @@ router.put('/reset-password', validateUserToken, async (req, res) => {
   } catch (error) {
     res.status(500).json({success: false, message: "Internal server error"});
   }
-})
+});
+
+router.put('/update-notification-setting', validateUserToken, async (req, res) => {
+  try {
+    const user = await UserData.findById(req.user.id);
+
+    const emailNewsletter = req.body.emailNewsletter;
+    const emailSecurityAlert = req.body.emailSecurityAlert;
+
+    user.notifications.emailNewsletter = emailNewsletter;
+    user.notifications.emailSecurityAlert = emailSecurityAlert;
+
+    await user.save();
+
+    res.status(200).json({success: true, message: "Notification settings updated successfully"});
+  } catch (error) {
+    res.status(500).json({success: false, message: "Internal server error"});
+  }
+});
 
 module.exports = router;
