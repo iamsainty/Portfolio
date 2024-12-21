@@ -12,33 +12,40 @@ const navItems = [
 
 const Container = styled.div`
   height: 100%;
-  padding: 10px;
-  border-right: 1px solid #aaa;
+  background-color: #444;
+  border-radius: 20px 0 0 20px;
+  border-right: none;
+  position: relative;
 `;
 
 const NavigationList = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 20px;
+  padding-top: 50px;
+  position: absolute;
+  right: 0;
+  width: 90%;
 `;
 
 const NavigationItem = styled.div`
   display: flex;
   align-items: center;
   cursor: pointer;
-  padding: 12px 20px;
-  border-radius: 10px;
+  padding: 12px 10px 12px 20px;
+  border-radius: 10px 0 0 10px;
   gap: 10px;
-  color: #555;
-  transition: background-color 0.3s ease, transform 0.2s ease;
+  color: white;
+  transition: all 0.5s ease;
 
   &:hover {
-    background-color: #f5f5f5;
-    transform: scale(1.05); 
+    background-color: white;
+    color: #444;
+    transform: scale(1.05);
   }
 
   &.active {
-    background-color: #f0f0f0;
+    background-image: linear-gradient(90deg, #ccc, white);
+    color: #444;
     font-weight: bold;
   }
 `;

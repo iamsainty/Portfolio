@@ -12,18 +12,22 @@ const Container = styled.div`
   margin-top: 50px;
   width: 80vw;
   height: 75vh;
-  border: 1px solid #aaa;
-  border-radius: 15px;
 `;
 
 const NavigationContainer = styled.div`
   width: 25%;
   height: 100%;
+  border: 1px solid #444;
+  border-radius: 20px 0 0 20px;
+  border-right : none;
 `;
 
 const ContentContainer = styled.div`
   width: 75%;
   height: 100%;
+  border: 2px solid #444;
+  border-radius: 0 20px 20px 0;
+  border-left : none;
 `;
 
 function ManageProfile() {
