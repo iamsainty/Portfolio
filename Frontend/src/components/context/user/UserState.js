@@ -3,6 +3,7 @@ import userContext from "./userContext";
 
 const UserState = (props) => {
   const [user, setUser] = useState(null);
+  const [resetOtp, setResetOtp] = useState("");
 
   // const host = "http://localhost:5002";
   const host = "https://hey-sainty-backend.vercel.app";
@@ -77,6 +78,49 @@ const UserState = (props) => {
     }
   };
 
+  const sendOtpForPasswordReset = async () => {
+    try {
+      const response = await fetch(`${host}/user/send-otp-for-password-recover`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          userToken: localStorage.getItem("userToken"),
+        },
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        return data.message;
+      }
+      setResetOtp(data.otp);
+    } catch (error) {
+      console.log(error);
+      return error.message;
+    }
+  };
+
+  const resetPassword = async (password) => {
+    try {
+      const response = await fetch(`${host}/user/reset-password`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ password }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        return data.message;
+      }
+    } catch (error) {
+      console.log(error);
+      return error.message;
+    }
+  };
+
   return (
     <userContext.Provider
       value={{
@@ -84,6 +128,9 @@ const UserState = (props) => {
         user,
         editProfile,
         changePassword,
+        sendOtpForPasswordReset,
+        resetOtp,
+        resetPassword,
       }}
     >
       {props.children}

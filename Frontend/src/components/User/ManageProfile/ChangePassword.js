@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import userContext from "../../context/user/userContext";
@@ -81,6 +81,41 @@ const Button = styled.button`
   }
 `;
 
+const OTPContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 35px;
+`;
+
+const Message = styled.div`
+  font-weight: 500;
+  color: #444;
+  text-align: center;
+`;
+
+const Resend = styled.div`
+  font-weight: 500;
+  font-size: 14px;
+  color: #444;
+  text-align: center;
+  cursor: pointer;
+`;
+
+const OTPInput = styled.input`
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+
+  &:focus {
+    border: 1px solid #333;
+    outline: none;
+  }
+`;
+
 function ChangePassword() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -90,14 +125,32 @@ function ChangePassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const { changePassword } = useContext(userContext);
+  const [forgotPassword, setForgotPassword] = useState(false);
 
-  const handleForgotPassword = () => {
-    console.log("forgot password");
+  const [otpSent, setOtpSent] = useState(false);
+
+  const {
+    user,
+    changePassword,
+    sendOtpForPasswordReset,
+    resetOtp,
+    resetPassword,
+  } = useContext(userContext);
+
+  const handleForgotPassword = async () => {
+    if (!otpSent) {
+      await sendOtpForPasswordReset();
+      setOtpSent(true);
+    }
+    setForgotPassword(true);
   };
 
   const handleChangePassword = async () => {
-    if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
+    if (
+      currentPassword === "" ||
+      newPassword === "" ||
+      confirmPassword === ""
+    ) {
       return;
     }
     if (newPassword !== confirmPassword) {
@@ -109,61 +162,169 @@ function ChangePassword() {
     await changePassword(currentPassword, newPassword);
   };
 
+  const [otp, setOtp] = useState(["", "", "", ""]);
+  const inputs = useRef([]);
+
+  const handleChange = (value, index) => {
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    if (value && index < inputs.current.length - 1) {
+      inputs.current[index + 1].focus();
+    }
+  };
+
+  const handleKeyDown = (e, index) => {
+    if (e.key === "Backspace" && otp[index] === "") {
+      if (index > 0) {
+        inputs.current[index - 1].focus();
+      }
+    }
+  };
+
+  const handlePaste = (e) => {
+    const pastedData = e.clipboardData.getData("text").slice(0, 4);
+    const newOtp = [...otp];
+    for (let i = 0; i < pastedData.length; i++) {
+      newOtp[i] = pastedData[i];
+    }
+    setOtp(newOtp);
+
+    const lastIndex = Math.min(
+      pastedData.length - 1,
+      inputs.current.length - 1
+    );
+    inputs.current[lastIndex].focus();
+  };
+
+  const handleResetOtp = async () => {
+    await sendOtpForPasswordReset();
+    setOtpSent(true);
+  }
+
+  const handleResetPassword = async () => {
+    if (otp.join("") === "") {
+      return;
+    }
+    if (resetOtp !== otp.join("")) {
+      return;
+    }
+    await resetPassword(newPassword);
+    setForgotPassword(false);
+  };
+
   return (
     <Container>
       <Heading>Change Password</Heading>
-      <ContentWrapper>
-        <InputWrapper>
-          <Input
-            type={showCurrentPassword ? "text" : "password"}
-            placeholder="Current Password"
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-          />
-          <IconWrapper>
-            {showCurrentPassword ? (
-              <GoEyeClosed onClick={() => setShowCurrentPassword(false)} />
-            ) : (
-              <GoEye onClick={() => setShowCurrentPassword(true)} />
-            )}
-          </IconWrapper>
-        </InputWrapper>
-        {/* forgot password handling */}
-        <ForgotPassword onClick={handleForgotPassword}>
-          Forgot Password?
-        </ForgotPassword>
-        <InputWrapper>
-          <Input
-            type={showNewPassword ? "text" : "password"}
-            placeholder="New Password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-          />
-          <IconWrapper>
-            {showNewPassword ? (
-              <GoEyeClosed onClick={() => setShowNewPassword(false)} />
-            ) : (
-              <GoEye onClick={() => setShowNewPassword(true)} />
-            )}
-          </IconWrapper>
-        </InputWrapper>
-        <InputWrapper>
-          <Input
-            type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm New Password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-          <IconWrapper>
-            {showConfirmPassword ? (
-              <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
-            ) : (
-              <GoEye onClick={() => setShowConfirmPassword(true)} />
-            )}
-          </IconWrapper>
-        </InputWrapper>
-        <Button onClick={handleChangePassword}>Change Password</Button>
-      </ContentWrapper>
+      {forgotPassword ? (
+        <ContentWrapper>
+          <Message>
+            Enter the OTP sent to your email {' '}
+            <span style={{ fontWeight: "bold" }}> {user.email}</span>
+          </Message>
+          <Resend>
+            Didn't receive the OTP? <span style={{textDecoration: "underline"}} onClick={handleResetOtp}>Resend</span>
+          </Resend>
+          <OTPContainer onPaste={handlePaste}>
+            {otp.map((digit, index) => (
+              <OTPInput
+                key={index}
+                type="text"
+                maxLength="1"
+                value={digit}
+                onChange={(e) => handleChange(e.target.value, index)}
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                ref={(el) => (inputs.current[index] = el)}
+              />
+            ))}
+          </OTPContainer>
+          <InputWrapper>
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <IconWrapper>
+              {showNewPassword ? (
+                <GoEyeClosed onClick={() => setShowNewPassword(false)} />
+              ) : (
+                <GoEye onClick={() => setShowNewPassword(true)} />
+              )}
+            </IconWrapper>
+          </InputWrapper>
+          <InputWrapper>
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <IconWrapper>
+              {showConfirmPassword ? (
+                <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
+              ) : (
+                <GoEye onClick={() => setShowConfirmPassword(true)} />
+              )}
+            </IconWrapper>
+          </InputWrapper>
+          <Button onClick={handleResetPassword}>Reset Password</Button>
+        </ContentWrapper>
+      ) : (
+        <ContentWrapper>
+          <InputWrapper>
+            <Input
+              type={showCurrentPassword ? "text" : "password"}
+              placeholder="Current Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+            />
+            <IconWrapper>
+              {showCurrentPassword ? (
+                <GoEyeClosed onClick={() => setShowCurrentPassword(false)} />
+              ) : (
+                <GoEye onClick={() => setShowCurrentPassword(true)} />
+              )}
+            </IconWrapper>
+          </InputWrapper>
+          {/* forgot password handling */}
+          <ForgotPassword onClick={handleForgotPassword}>
+            Forgot Password?
+          </ForgotPassword>
+          <InputWrapper>
+            <Input
+              type={showNewPassword ? "text" : "password"}
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+            <IconWrapper>
+              {showNewPassword ? (
+                <GoEyeClosed onClick={() => setShowNewPassword(false)} />
+              ) : (
+                <GoEye onClick={() => setShowNewPassword(true)} />
+              )}
+            </IconWrapper>
+          </InputWrapper>
+          <InputWrapper>
+            <Input
+              type={showConfirmPassword ? "text" : "password"}
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            <IconWrapper>
+              {showConfirmPassword ? (
+                <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
+              ) : (
+                <GoEye onClick={() => setShowConfirmPassword(true)} />
+              )}
+            </IconWrapper>
+          </InputWrapper>
+          <Button onClick={handleChangePassword}>Change Password</Button>
+        </ContentWrapper>
+      )}
     </Container>
   );
 }

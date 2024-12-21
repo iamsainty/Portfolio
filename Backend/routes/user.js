@@ -9,6 +9,7 @@ const {
   profilePictureUploadToAWS,
   profilePictureDeleteFromAWS,
 } = require("../service/profileUploadAWS");
+const { sendOTPforPasswordRecover } = require("../service/emailWithNodemailer");
 
 router.put(
   "/edit-profile",
@@ -86,6 +87,47 @@ router.put('/change-password', validateUserToken, async (req, res) => {
         console.log(error);
         res.status(500).json({success: false, message: "Internal server error"});
     }
+})
+
+router.post('/send-otp-for-password-recover', validateUserToken, async (req, res) => {
+  try {
+    const user = await UserData.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    const otp = Math.floor(1000 + Math.random() * 9000);
+
+    const otpSent = await sendOTPforPasswordRecover(user.name, user.email, otp);
+
+    if(otpSent){
+      return res.status(200).json({success: true, otp, message: "OTP sent successfully"});
+    }
+
+    res.status(400).json({success: false, message: "Failed to send OTP"});
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({success: false, message: "Internal server error"});
+  }
+})
+
+router.put('/reset-password', validateUserToken, async (req, res) => {
+  try {
+    const user = await UserData.findById(req.user.id);
+
+    const password = req.body.password;
+
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+
+    user.password = hashedPassword;
+
+    user.save();
+
+    res.status(200).json({success: true, message: "Password reset successfully"});
+  } catch (error) {
+    res.status(500).json({success: false, message: "Internal server error"});
+  }
 })
 
 module.exports = router;

@@ -6,7 +6,7 @@ const userData = require("../models/UserData");
 const JWT_SECRET = process.env.JWT_SECRET;
 
 const validateUserToken = require("../middleware/validateUserToken");
-const sendOTP = require("../service/sendOtp");
+const { sendOTPforNewAccount } = require("../service/emailWithNodemailer");
 
 router.post("/signup", async (req, res) => {
   try {
@@ -75,7 +75,7 @@ router.post("/send-otp", async (req, res) => {
 
     const otp = Math.floor(1000 + Math.random() * 9000);
 
-    const otpSent = await sendOTP(name, email, otp);
+    const otpSent = await sendOTPforNewAccount(name, email, otp);
 
     if (otpSent) {
       return res
