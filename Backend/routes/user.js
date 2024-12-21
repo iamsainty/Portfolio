@@ -65,4 +65,27 @@ router.put(
   }
 );
 
+router.put('/change-password', validateUserToken, async (req, res) => {
+    try {
+        const user = await UserData.findById(req.user.id);
+        if(!user){
+            return res.status(404).json({success: false, message: "User not found"});
+        }
+
+        const isPasswordCorrect = await bcrypt.compare(req.body.currentPassword, user.password);
+        if(!isPasswordCorrect){
+            return res.status(400).json({success: false, message: "Current password is incorrect"});
+        }
+
+        const hashedPassword = await bcrypt.hash(req.body.newPassword, 10);
+        user.password = hashedPassword;
+        await user.save();
+
+        res.json({success: true, message: "Password changed successfully"});
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({success: false, message: "Internal server error"});
+    }
+})
+
 module.exports = router;

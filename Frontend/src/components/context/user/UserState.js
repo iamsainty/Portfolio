@@ -53,12 +53,37 @@ const UserState = (props) => {
     }
   };
 
+  const changePassword = async (currentPassword, newPassword) => {
+    try {
+      const response = await fetch(`${host}/user/change-password`, {
+        method: "PUT",
+        headers: {
+          userToken: localStorage.getItem("userToken"),
+        },
+        body: JSON.stringify({
+          currentPassword,
+          newPassword,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!data.success) {
+        return data.message;
+      }
+    } catch (error) {
+      console.log(error);
+      return error.message;
+    }
+  };
+
   return (
     <userContext.Provider
       value={{
         fetchUserDetails,
         user,
         editProfile,
+        changePassword,
       }}
     >
       {props.children}

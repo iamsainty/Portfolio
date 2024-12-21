@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
 import { GoEye, GoEyeClosed } from "react-icons/go";
+import userContext from "../../context/user/userContext";
 
 const Container = styled.div`
   padding: 20px;
@@ -85,12 +86,27 @@ function ChangePassword() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const { changePassword } = useContext(userContext);
+
   const handleForgotPassword = () => {
     console.log("forgot password");
   };
 
-  const handleChangePassword = () => {
-    console.log("change password");
+  const handleChangePassword = async () => {
+    if (currentPassword === "" || newPassword === "" || confirmPassword === "") {
+      return;
+    }
+    if (newPassword !== confirmPassword) {
+      return;
+    }
+    if (newPassword.length < 6) {
+      return;
+    }
+    await changePassword(currentPassword, newPassword);
   };
 
   return (
@@ -101,6 +117,8 @@ function ChangePassword() {
           <Input
             type={showCurrentPassword ? "text" : "password"}
             placeholder="Current Password"
+            value={currentPassword}
+            onChange={(e) => setCurrentPassword(e.target.value)}
           />
           <IconWrapper>
             {showCurrentPassword ? (
@@ -118,6 +136,8 @@ function ChangePassword() {
           <Input
             type={showNewPassword ? "text" : "password"}
             placeholder="New Password"
+            value={newPassword}
+            onChange={(e) => setNewPassword(e.target.value)}
           />
           <IconWrapper>
             {showNewPassword ? (
@@ -130,7 +150,9 @@ function ChangePassword() {
         <InputWrapper>
           <Input
             type={showConfirmPassword ? "text" : "password"}
-            placeholder="Confirm Password"
+            placeholder="Confirm New Password"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
           />
           <IconWrapper>
             {showConfirmPassword ? (
