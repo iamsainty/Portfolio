@@ -54,14 +54,14 @@ router.put(
 
       res.json({
         success: true,
-        message: "Profile picture updated successfully",
+        message: "Changes saved successfully",
         updatedUser,
       });
     } catch (error) {
       console.log(error);
       res
         .status(500)
-        .json({ success: false, message: "Internal server error" });
+        .json({ success: false, message: "Failed to save changes, please try again" });
     }
   }
 );
