@@ -104,10 +104,10 @@ router.post('/send-otp-for-password-recover', validateUserToken, async (req, res
       return res.status(200).json({success: true, otp, message: "OTP sent successfully"});
     }
 
-    res.status(400).json({success: false, message: "Failed to send OTP"});
+    res.status(400).json({success: false, message: "Failed to send OTP, please try again"});
   } catch (error) {
     console.log(error);
-    res.status(500).json({success: false, message: "Internal server error"});
+    res.status(500).json({success: false, message: "Failed to send OTP, please try again"});
   }
 })
 
@@ -126,7 +126,7 @@ router.put('/reset-password', validateUserToken, async (req, res) => {
 
     res.status(200).json({success: true, message: "Password reset successfully"});
   } catch (error) {
-    res.status(500).json({success: false, message: "Internal server error"});
+    res.status(500).json({success: false, message: "Failed to reset password, please try again"});
   }
 });
 
@@ -144,7 +144,7 @@ router.put('/update-notification-setting', validateUserToken, async (req, res) =
 
     res.status(200).json({success: true, message: "Notification settings updated successfully"});
   } catch (error) {
-    res.status(500).json({success: false, message: "Internal server error"});
+    res.status(500).json({success: false, message: "Failed to update notification settings, please try again"});
   }
 });
 

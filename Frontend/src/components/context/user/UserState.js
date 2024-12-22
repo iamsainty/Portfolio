@@ -126,11 +126,10 @@ const UserState = (props) => {
 
       const data = await response.json();
 
-      if( !data.success ){
-        return data.message;
-      }
+      return data.message;
     } catch (error) {
       console.log(error);
+      return error.message;
     }
   }
 
