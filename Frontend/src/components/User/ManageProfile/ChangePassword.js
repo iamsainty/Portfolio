@@ -2,6 +2,7 @@ import React, { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { GoEye, GoEyeClosed } from "react-icons/go";
 import userContext from "../../context/user/userContext";
+import Loading from "../../Loading";
 
 const Container = styled.div`
   padding: 20px;
@@ -13,10 +14,10 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Heading = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
+const Headline = styled.div`
+  font-size: 25px;
+  font-weight: 500;
+  color: #444;
 `;
 
 const ContentWrapper = styled.div`
@@ -64,14 +65,12 @@ const IconWrapper = styled.div`
 
 const Button = styled.button`
   padding: 10px 20px;
-  font-weight: 600;
-  font-size: 15px;
   background-color: #444;
   color: #fff;
+  font-weight: 500;
   border: 1px solid #444;
   border-radius: 25px;
   cursor: pointer;
-  margin-top: 20px;
   transition: all 0.5s ease;
 
   &:hover {
@@ -116,6 +115,37 @@ const OTPInput = styled.input`
   }
 `;
 
+const DispalyText = styled.div`
+  font-size: 15px;
+  font-weight: 500;
+  width: auto;
+  margin-top: 25px;
+  transition: all 0.5s ease;
+
+  MsgBox {
+    width: auto;
+  }
+  SaveButton {
+    width: auto;
+  }
+`;
+
+const MsgBox = styled.div`
+  padding: 10px 20px;
+  background-color: #444;
+  color: #fff;
+  font-weight: 500;
+  border: 1px solid #444;
+  border-radius: 25px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: white;
+    color: #444;
+    border: 1px solid #444;
+  }
+`;
+
 function ChangePassword() {
   const [showCurrentPassword, setShowCurrentPassword] = useState(false);
   const [showNewPassword, setShowNewPassword] = useState(false);
@@ -129,6 +159,10 @@ function ChangePassword() {
 
   const [otpSent, setOtpSent] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+  const [msg, setMsg] = useState("");
+  const [savingChanges, setSavingChanges] = useState(false);
+
   const {
     user,
     changePassword,
@@ -138,11 +172,13 @@ function ChangePassword() {
   } = useContext(userContext);
 
   const handleForgotPassword = async () => {
+    setLoading(true);
     if (!otpSent) {
       await sendOtpForPasswordReset();
       setOtpSent(true);
     }
     setForgotPassword(true);
+    setLoading(false);
   };
 
   const handleChangePassword = async () => {
@@ -151,15 +187,33 @@ function ChangePassword() {
       newPassword === "" ||
       confirmPassword === ""
     ) {
+      setMsg("Please fill all the fields");
+      setTimeout(() => {
+        setMsg("");
+      }, 3000);
       return;
     }
     if (newPassword !== confirmPassword) {
+      setMsg("New password and confirm password do not match");
+      setTimeout(() => {
+        setMsg("");
+      }, 3000);
       return;
     }
     if (newPassword.length < 6) {
+      setMsg("New password must be at least 6 characters long");
+      setTimeout(() => {
+        setMsg("");
+      }, 3000);
       return;
     }
-    await changePassword(currentPassword, newPassword);
+    setSavingChanges(true);
+    const response = await changePassword(currentPassword, newPassword);
+    setSavingChanges(false);
+    setMsg(response);
+    setTimeout(() => {
+      setMsg("");
+    }, 3000);
   };
 
   const [otp, setOtp] = useState(["", "", "", ""]);
@@ -206,15 +260,60 @@ function ChangePassword() {
   const handleResetPassword = async () => {
     try {
       if (otp.join("") === "") {
+        setMsg("Please enter the OTP");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
         return;
       }
       if (resetOtp.toString() !== otp.join("")) {
+        setMsg("OTP does not match");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
         return;
       }
-      await resetPassword(newPassword);
-      setForgotPassword(false);
-      setCurrentPassword("");
-      setNewPassword("");
+      if (newPassword === "") {
+        setMsg("New password cannot be empty");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
+        return;
+      }
+      if (newPassword.length < 6) {
+        setMsg("Password must be at least 6 characters long");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
+        return;
+      }
+      if (confirmPassword === "") {
+        setMsg("Confirm password cannot be empty");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
+        return;
+      }
+      if (newPassword !== confirmPassword) {
+        setMsg("New password and confirm password do not match");
+        setTimeout(() => {
+          setMsg("");
+        }, 3000);
+        return;
+      }
+      setSavingChanges(true);
+      const response = await resetPassword(newPassword);
+      setSavingChanges(false);
+      setMsg(response);
+      setTimeout(() => {
+        setMsg("");
+        setForgotPassword(false);
+        setCurrentPassword("");
+        setNewPassword("");
+        setConfirmPassword("");
+        setOtpSent(false);
+        setOtp(["", "", "", ""]);
+      }, 3000);
     } catch (error) {
       console.error(error);
     }
@@ -222,8 +321,22 @@ function ChangePassword() {
 
   return (
     <Container>
-      <Heading>Change Password</Heading>
-      {forgotPassword ? (
+      <Headline>
+        <span
+          style={{
+            fontFamily: "'Cedarville Cursive', cursive",
+            fontSize: "40px",
+            fontWeight: "bold",
+            padding: "0 10px",
+          }}
+        >
+          Change
+        </span>
+        your password
+      </Headline>
+      {loading ? (
+        <Loading />
+      ) : forgotPassword ? (
         <ContentWrapper>
           <Message>
             Enter the OTP sent to your email{" "}
@@ -281,7 +394,19 @@ function ChangePassword() {
               )}
             </IconWrapper>
           </InputWrapper>
-          <Button onClick={handleResetPassword}>Reset Password</Button>
+          {savingChanges ? (
+            <div style={{ marginTop: "25px" }}>
+              <Loading />
+            </div>
+          ) : (
+            <DispalyText>
+              {msg ? (
+                <MsgBox>{msg}</MsgBox>
+              ) : (
+                <Button onClick={handleResetPassword}>Reset Password</Button>
+              )}
+            </DispalyText>
+          )}
         </ContentWrapper>
       ) : (
         <ContentWrapper>
@@ -334,7 +459,19 @@ function ChangePassword() {
               )}
             </IconWrapper>
           </InputWrapper>
-          <Button onClick={handleChangePassword}>Change Password</Button>
+          {savingChanges ? (
+            <div style={{ marginTop: "25px" }}>
+              <Loading />
+            </div>
+          ) : (
+            <DispalyText>
+              {msg ? (
+                <MsgBox>{msg}</MsgBox>
+              ) : (
+                <Button onClick={handleChangePassword}>Change Password</Button>
+              )}
+            </DispalyText>
+          )}
         </ContentWrapper>
       )}
     </Container>
