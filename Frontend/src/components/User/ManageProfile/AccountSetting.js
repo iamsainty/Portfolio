@@ -12,10 +12,10 @@ const Container = styled.div`
   position: relative;
 `;
 
-const Heading = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-  text-align: center;
+const Headline = styled.div`
+  font-size: 25px;
+  font-weight: 500;
+  color: #444;
 `;
 
 const ContentWrapper = styled.div`
@@ -38,7 +38,6 @@ const ActionSection = styled.div`
 `;
 
 const ActionText = styled.div`
-  font-size: 15px;
   font-weight: 600;
 `;
 
@@ -64,7 +63,7 @@ function AccountSetting() {
 
   const navigate = useNavigate();
 
-  const handleLogOut = () => {
+  const handleSignOut = () => {
     localStorage.removeItem("userToken");
     navigate("/");
     window.location.reload();
@@ -72,7 +71,19 @@ function AccountSetting() {
 
   return (
     <Container>
-      <Heading>Account Settings</Heading>
+    <Headline>
+      <span
+        style={{
+          fontFamily: "'Cedarville Cursive', cursive",
+          fontSize: "40px",
+          fontWeight: "bold",
+          padding: "0 10px",
+        }}
+      >
+        Manage
+      </span>
+      your account
+    </Headline>
       <ContentWrapper>
         {/* <ActionSection>
           <ActionText>
@@ -81,8 +92,8 @@ function AccountSetting() {
           <ActionButton onClick={handleDeleteAccount}>Delete Account</ActionButton>
         </ActionSection> */}
         <ActionSection>
-          <ActionText>Log out of your account, and come back later.</ActionText>
-          <ActionButton onClick={handleLogOut}>Log Out</ActionButton>
+          <ActionText>Sign out of your account, you can sign in again later.</ActionText>
+          <ActionButton onClick={handleSignOut}>Sign Out</ActionButton>
         </ActionSection>
       </ContentWrapper>
     </Container>
