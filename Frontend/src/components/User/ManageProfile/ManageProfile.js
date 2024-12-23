@@ -49,8 +49,9 @@ const ContentContainer = styled.div`
   @media (max-width: 768px) {
     width: 100%;
     height: auto;
-    margin-top : 5vh;
-    border-radius : 20px;
+    margin-top: 5vh;
+    border-radius: 20px;
+    border: 2px solid #444;
   }
 `;
 
