@@ -12,17 +12,31 @@ import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
+  flex-direction: row;
   margin-top: 50px;
   width: 80vw;
   height: 75vh;
+
+  @media (max-width: 768px) {
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;
+    height: 100vh;
+  }
 `;
 
 const NavigationContainer = styled.div`
   width: 25%;
   height: 100%;
-  border: 1px solid #444;
   border-radius: 20px 0 0 20px;
-  border-right : none;
+  border-right: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 7.5vh;
+    border: none;
+    margin-top: 50px;
+  }
 `;
 
 const ContentContainer = styled.div`
@@ -31,6 +45,13 @@ const ContentContainer = styled.div`
   border: 2px solid #444;
   border-radius: 0 20px 20px 0;
   border-left: none;
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: auto;
+    margin-top : 5vh;
+    border-radius : 20px;
+  }
 `;
 
 function ManageProfile() {

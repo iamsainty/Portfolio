@@ -12,10 +12,14 @@ const navItems = [
 
 const Container = styled.div`
   height: 100%;
-  background-color: #444;
+  background-image: linear-gradient(135deg, #555, #333);
   border-radius: 20px 0 0 20px;
   border-right: none;
   position: relative;
+
+  @media (max-width: 768px) {
+    border-radius: 50px;
+  }
 `;
 
 const NavigationList = styled.div`
@@ -25,6 +29,16 @@ const NavigationList = styled.div`
   position: absolute;
   right: 0;
   width: 90%;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    margin-top: 0;
+    padding-top: 0;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: space-evenly;
+  }
 `;
 
 const NavigationItem = styled.div`
@@ -48,6 +62,21 @@ const NavigationItem = styled.div`
     color: #444;
     font-weight: bold;
   }
+
+  @media (max-width: 768px) {
+    padding: 10px 15px;
+    transition: none;
+    font-size : 17.5px;
+    span {
+      display: none;
+    }
+    &:hover {
+      border-radius: 25px;
+    }
+    &.active {
+      border-radius: 25px;
+    }
+  }
 `;
 
 function SideNavigation({ activeSection, setActiveSection }) {
@@ -61,7 +90,7 @@ function SideNavigation({ activeSection, setActiveSection }) {
             className={activeSection === item.name ? "active" : ""}
           >
             {item.icon}
-            {item.name}
+            <span>{item.name}</span>
           </NavigationItem>
         ))}
       </NavigationList>
