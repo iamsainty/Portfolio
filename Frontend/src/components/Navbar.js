@@ -9,6 +9,7 @@ import { signOut } from "firebase/auth";
 import { auth } from "./FirebaseAuth/FirebaseConfig";
 import AuthModal from "./AuthModal/AuthModal";
 import userAuthContext from "./context/userAuth/userAuthContext";
+import Loading from "./Loading";
 
 // Styled Components
 const NavbarWrapper = styled.nav`
@@ -50,12 +51,18 @@ const NavbarLink = styled(Link)`
   text-decoration: none;
 `;
 
+const LoadingContainer = styled.div`
+  position: absolute;
+  right: 20px;
+`;
+
 const UserContainer = styled.div`
   border: 1px solid black;
   border-radius: ${({ hovered }) => (hovered ? "2vh" : "5vh")};
   width: 250px;
   height: ${({ hovered }) => (hovered ? "135px" : "55px")};
   transition: border-radius 0.2s ease, width 0.3s ease, height 0.3s ease;
+  background-color: #fff;
   @media (min-width: 768px) {
     width: ${({ hovered }) => (hovered ? "250px" : "55px")};
     position: absolute;
@@ -132,9 +139,13 @@ const HoverMenuItem = styled.div`
   font-size: 1.1rem;
   white-space: nowrap;
   opacity: ${({ hovered }) => (hovered ? 1 : 0)};
-  transition: opacity 0.75s ease;
+  transition: all 0.5s ease;
   margin-top: 5px;
   padding-left: 10px;
+
+  &:hover{
+  font-weight : 800;
+  }
 `;
 
 const AccountMenuItem = styled.div`
@@ -193,6 +204,8 @@ export default function Navbar() {
   const [signInModal, setSignInModal] = useState(false);
   const [signUpModal, setSignUpModal] = useState(false);
 
+  const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleClose = () => setShow(false);
@@ -203,7 +216,9 @@ export default function Navbar() {
   useEffect(() => {
     const fetchDetails = async () => {
       try {
+        setLoading(true);
         await fetchUserDetails();
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
@@ -215,6 +230,7 @@ export default function Navbar() {
 
   const handleManageProfile = () => {
     navigate("/profile");
+    setShow(false);
   };
 
   const handleLogout = async () => {
@@ -265,7 +281,11 @@ export default function Navbar() {
           <NavbarLink to="/certifications">Certifications</NavbarLink>
           <NavbarLink to="/blog">Blog</NavbarLink>
         </LargeNavbar>
-        {user ? (
+        {loading ? (
+          <LoadingContainer>
+            <Loading />
+          </LoadingContainer>
+        ) : user ? (
           <UserContainer
             hovered={hovered}
             onMouseEnter={() => setHovered(true)}
