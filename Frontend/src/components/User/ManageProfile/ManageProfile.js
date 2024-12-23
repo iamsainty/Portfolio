@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import SideNavigation from "./SideNavigation";
 import MyProfile from "./MyProfile";
 import EditProfile from "./EditProfile";
@@ -6,6 +6,9 @@ import ChangePassword from "./ChangePassword";
 import NotificationSetting from "./NotificationSetting";
 import AccountSetting from "./AccountSetting";
 import styled from "styled-components";
+import userContext from "../../context/user/userContext";
+import Loading from "../../Loading";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -27,14 +30,50 @@ const ContentContainer = styled.div`
   height: 100%;
   border: 2px solid #444;
   border-radius: 0 20px 20px 0;
-  border-left : none;
+  border-left: none;
 `;
 
 function ManageProfile() {
   const [activeSection, setActiveSection] = useState("My Profile");
+  const navigate = useNavigate();
+  const { user, fetchUserDetails } = useContext(userContext);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        setLoading(true);
+        await fetchUserDetails();
+        if (!user) {
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error fetching user details:", error);
+      }
+      setLoading(false);
+    };
+
+    fetchDetails();
+    // eslint-disable-next-line
+  }, []);
+
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <Loading />
+      </div>
+    );
+  }
 
   return (
-    <Container className="container d-flex">
+    <Container className="container">
       <NavigationContainer>
         <SideNavigation
           activeSection={activeSection}
