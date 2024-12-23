@@ -8,7 +8,6 @@ import AccountSetting from "./AccountSetting";
 import styled from "styled-components";
 import userContext from "../../context/user/userContext";
 import Loading from "../../Loading";
-import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -55,24 +54,42 @@ const ContentContainer = styled.div`
   }
 `;
 
+const Content = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 600;
+  min-height: 50vh;
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+
+  @media (min-width: 768px) {
+    font-size: 24px;
+  }
+`;
+
 function ManageProfile() {
   const [activeSection, setActiveSection] = useState("My Profile");
-  const navigate = useNavigate();
   const { user, fetchUserDetails } = useContext(userContext);
   const [loading, setLoading] = useState(false);
+
+  const [userSignedIn, setUserSignedIn] = useState(false);
 
   useEffect(() => {
     const fetchDetails = async () => {
       try {
         setLoading(true);
         await fetchUserDetails();
-        if (!user) {
-          navigate("/");
+        setLoading(false);
+        if (user) {
+          setUserSignedIn(true);
         }
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
-      setLoading(false);
     };
 
     fetchDetails();
@@ -103,11 +120,19 @@ function ManageProfile() {
         />
       </NavigationContainer>
       <ContentContainer>
-        {activeSection === "My Profile" && <MyProfile />}
-        {activeSection === "Edit Profile" && <EditProfile />}
-        {activeSection === "Change Password" && <ChangePassword />}
-        {activeSection === "Notification Settings" && <NotificationSetting />}
-        {activeSection === "Account Settings" && <AccountSetting />}
+        {!userSignedIn ? (
+          <Content>Sign in / Sign Up to access your profile</Content>
+        ) : (
+          <>
+            {activeSection === "My Profile" && <MyProfile />}
+            {activeSection === "Edit Profile" && <EditProfile />}
+            {activeSection === "Change Password" && <ChangePassword />}
+            {activeSection === "Notification Settings" && (
+              <NotificationSetting />
+            )}
+            {activeSection === "Account Settings" && <AccountSetting />}
+          </>
+        )}
       </ContentContainer>
     </Container>
   );
