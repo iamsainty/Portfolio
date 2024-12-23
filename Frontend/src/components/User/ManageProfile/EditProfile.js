@@ -5,19 +5,32 @@ import Loading from "../../Loading";
 import { BsPencilFill } from "react-icons/bs";
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 50px 20px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  gap : 25px;
 `;
 
 const Headline = styled.div`
   font-size: 25px;
   font-weight: 500;
   color: #444;
+
+  span {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+
+    span {
+      font-size: 25px;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -45,6 +58,11 @@ const ProfileWrapper = styled.div`
 
   &:hover {
     box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    width: 140px;
+    height: 140px;
   }
 `;
 
@@ -88,6 +106,11 @@ const EditButton = styled.div`
       opacity: 1;
     }
   }
+
+  @media (max-width: 768px) {
+    top: 90px;
+    left: 110px;
+  }
 `;
 
 const ProfileImage = styled.img`
@@ -96,6 +119,11 @@ const ProfileImage = styled.img`
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 0 25px 0 rgba(0, 0, 0, 0.1);
+
+  @media (max-width: 768px) {
+    width: 130px;
+    height: 130px;
+  }
 `;
 
 const Input = styled.input`
@@ -109,6 +137,11 @@ const Input = styled.input`
 
   &:focus {
     border: 1px solid #000;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    padding: 8px 15px;
   }
 `;
 
@@ -139,6 +172,11 @@ const MsgBox = styled.div`
     color: #444;
     border: 1px solid #444;
   }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
 `;
 
 const SaveButton = styled.div`
@@ -154,6 +192,11 @@ const SaveButton = styled.div`
     background-color: white;
     color: #444;
     border: 1px solid #444;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 `;
 
@@ -223,6 +266,7 @@ function EditProfile() {
           justifyContent: "center",
           alignItems: "center",
           height: "100%",
+          minHeight: "50vh",
           width: "100%",
         }}
       >
@@ -233,60 +277,62 @@ function EditProfile() {
 
   return (
     <Container>
-      <Headline>
-        <span
-          style={{
-            fontFamily: "'Cedarville Cursive', cursive",
-            fontSize: "40px",
-            fontWeight: "bold",
-            padding: "0 10px",
-          }}
-        >
-          Customize
-        </span>
-        your profile
-      </Headline>
-      {user && (
-        <ContentWrapper>
-          <ProfileWrapper>
-            <EditButton onClick={handleProfilePictureClick}>
-              <BsPencilFill />
-              <span>Choose a picture</span>
-            </EditButton>
-            <ProfileImage
-              src={user.profilePictureUrl}
-              alt="Profile Image"
-              onClick={handleProfilePictureClick}
+      <ContentWrapper>
+        <Headline>
+          <span
+            style={{
+              fontFamily: "'Cedarville Cursive', cursive",
+              fontSize: "40px",
+              fontWeight: "bold",
+              padding: "0 10px",
+            }}
+          >
+            Customize
+          </span>
+          your profile
+        </Headline>
+        {user && (
+          <>
+            <ProfileWrapper>
+              <EditButton onClick={handleProfilePictureClick}>
+                <BsPencilFill />
+                <span>Choose a picture</span>
+              </EditButton>
+              <ProfileImage
+                src={user.profilePictureUrl}
+                alt="Profile Image"
+                onClick={handleProfilePictureClick}
+              />
+            </ProfileWrapper>
+            <input
+              type="file"
+              accept="image/*"
+              style={{ display: "none" }}
+              onChange={handleProfilePictureChange}
+              id="profile-picture-input"
             />
-          </ProfileWrapper>
-          <input
-            type="file"
-            accept="image/*"
-            style={{ display: "none" }}
-            onChange={handleProfilePictureChange}
-            id="profile-picture-input"
-          />
-          <Input
-            type="text"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          {saving ? (
-            <div>
-              <Loading />
-            </div>
-          ) : (
-            <DispalyText>
-              {msg ? (
-                <MsgBox>{msg}</MsgBox>
-              ) : (
-                <SaveButton onClick={handleSave}>Save Changes</SaveButton>
-              )}
-            </DispalyText>
-          )}
-        </ContentWrapper>
-      )}
+            <Input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {saving ? (
+              <div>
+                <Loading />
+              </div>
+            ) : (
+              <DispalyText>
+                {msg ? (
+                  <MsgBox>{msg}</MsgBox>
+                ) : (
+                  <SaveButton onClick={handleSave}>Save Changes</SaveButton>
+                )}
+              </DispalyText>
+            )}
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 }
