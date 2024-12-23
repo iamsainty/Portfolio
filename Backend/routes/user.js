@@ -61,7 +61,7 @@ router.put(
       console.log(error);
       res
         .status(500)
-        .json({ success: false, message: "Failed to save changes, please try again" });
+        .json({ success: false, message: "Failed to save changes" });
     }
   }
 );
@@ -85,7 +85,7 @@ router.put('/change-password', validateUserToken, async (req, res) => {
         res.json({success: true, message: "Password changed successfully"});
     } catch (error) {
         console.log(error);
-        res.status(500).json({success: false, message: "Failed to change password, please try again"});
+        res.status(500).json({success: false, message: "Failed to change password"});
     }
 })
 
@@ -104,10 +104,10 @@ router.post('/send-otp-for-password-recover', validateUserToken, async (req, res
       return res.status(200).json({success: true, otp, message: "OTP sent successfully"});
     }
 
-    res.status(400).json({success: false, message: "Failed to send OTP, please try again"});
+    res.status(400).json({success: false, message: "Failed to send OTP"});
   } catch (error) {
     console.log(error);
-    res.status(500).json({success: false, message: "Failed to send OTP, please try again"});
+    res.status(500).json({success: false, message: "Failed to send OTP"});
   }
 })
 
@@ -126,7 +126,7 @@ router.put('/reset-password', validateUserToken, async (req, res) => {
 
     res.status(200).json({success: true, message: "Password reset successfully"});
   } catch (error) {
-    res.status(500).json({success: false, message: "Failed to reset password, please try again"});
+    res.status(500).json({success: false, message: "Failed to reset password"});
   }
 });
 
@@ -142,9 +142,9 @@ router.put('/update-notification-setting', validateUserToken, async (req, res) =
 
     await user.save();
 
-    res.status(200).json({success: true, message: "Notification settings updated successfully"});
+    res.status(200).json({success: true, message: "Settings updated successfully"});
   } catch (error) {
-    res.status(500).json({success: false, message: "Failed to update notification settings, please try again"});
+    res.status(500).json({success: false, message: "Failed to update settings"});
   }
 });
 

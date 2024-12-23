@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 50px 20px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -16,6 +16,18 @@ const Headline = styled.div`
   font-size: 25px;
   font-weight: 500;
   color: #444;
+
+  span {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+
+    span {
+      font-size: 35px;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -38,7 +50,8 @@ const ActionSection = styled.div`
 `;
 
 const ActionText = styled.div`
-  font-weight: 600;
+  font-weight: 500;
+  text-align: center;
 `;
 
 const ActionButton = styled.div`
@@ -60,7 +73,6 @@ const ActionButton = styled.div`
 `;
 
 function AccountSetting() {
-
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -71,20 +83,19 @@ function AccountSetting() {
 
   return (
     <Container>
-    <Headline>
-      <span
-        style={{
-          fontFamily: "'Cedarville Cursive', cursive",
-          fontSize: "40px",
-          fontWeight: "bold",
-          padding: "0 10px",
-        }}
-      >
-        Manage
-      </span>
-      your account
-    </Headline>
       <ContentWrapper>
+        <Headline>
+          <span
+            style={{
+              fontFamily: "'Cedarville Cursive', cursive",
+              fontWeight: "bold",
+              padding: "0 10px",
+            }}
+          >
+            Manage
+          </span>
+          your account
+        </Headline>
         {/* <ActionSection>
           <ActionText>
             Delete your account permanently. This action cannot be undone.
@@ -92,7 +103,9 @@ function AccountSetting() {
           <ActionButton onClick={handleDeleteAccount}>Delete Account</ActionButton>
         </ActionSection> */}
         <ActionSection>
-          <ActionText>Sign out of your account, you can sign in again later.</ActionText>
+          <ActionText>
+            Sign out of your account, you can sign in again later.
+          </ActionText>
           <ActionButton onClick={handleSignOut}>Sign Out</ActionButton>
         </ActionSection>
       </ContentWrapper>

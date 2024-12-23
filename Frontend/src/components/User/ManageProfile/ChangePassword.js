@@ -5,19 +5,33 @@ import userContext from "../../context/user/userContext";
 import Loading from "../../Loading";
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 50px 20px;
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   position: relative;
+  gap: 35px;
 `;
 
 const Headline = styled.div`
   font-size: 25px;
   font-weight: 500;
   color: #444;
+  margin-bottom: 5vh;
+
+  span {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+
+    span {
+      font-size: 35px;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -40,6 +54,10 @@ const InputWrapper = styled.div`
   padding: 10px 20px;
   outline: none;
   gap: 10px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const ForgotPassword = styled.div`
@@ -51,6 +69,10 @@ const ForgotPassword = styled.div`
   color: #444;
   cursor: pointer;
   margin-bottom: 15px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const Input = styled.input`
@@ -67,16 +89,19 @@ const Button = styled.button`
   padding: 10px 20px;
   background-color: #444;
   color: #fff;
-  font-weight: 500;
   border: 1px solid #444;
   border-radius: 25px;
   cursor: pointer;
-  transition: all 0.5s ease;
 
   &:hover {
     background-color: white;
     color: #444;
     border: 1px solid #444;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 `;
 
@@ -91,6 +116,10 @@ const Message = styled.div`
   font-weight: 500;
   color: #444;
   text-align: center;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const Resend = styled.div`
@@ -99,6 +128,10 @@ const Resend = styled.div`
   color: #444;
   text-align: center;
   cursor: pointer;
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+  }
 `;
 
 const OTPInput = styled.input`
@@ -134,7 +167,6 @@ const MsgBox = styled.div`
   padding: 10px 20px;
   background-color: #444;
   color: #fff;
-  font-weight: 500;
   border: 1px solid #444;
   border-radius: 25px;
   cursor: pointer;
@@ -143,6 +175,11 @@ const MsgBox = styled.div`
     background-color: white;
     color: #444;
     border: 1px solid #444;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 `;
 
@@ -321,159 +358,162 @@ function ChangePassword() {
 
   return (
     <Container>
-      <Headline>
-        <span
-          style={{
-            fontFamily: "'Cedarville Cursive', cursive",
-            fontSize: "40px",
-            fontWeight: "bold",
-            padding: "0 10px",
-          }}
-        >
-          Change
-        </span>
-        your password
-      </Headline>
-      {loading ? (
-        <Loading />
-      ) : forgotPassword ? (
-        <ContentWrapper>
-          <Message>
-            Enter the OTP sent to your email{" "}
-            <span style={{ fontWeight: "bold" }}> {user.email}</span>
-          </Message>
-          <Resend>
-            Didn't receive the OTP?{" "}
-            <span
-              style={{ textDecoration: "underline" }}
-              onClick={handleResetOtp}
-            >
-              Resend
-            </span>
-          </Resend>
-          <OTPContainer onPaste={handlePaste}>
-            {otp.map((digit, index) => (
-              <OTPInput
-                key={index}
-                type="text"
-                maxLength="1"
-                value={digit}
-                onChange={(e) => handleChange(e.target.value, index)}
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                ref={(el) => (inputs.current[index] = el)}
+      <ContentWrapper>
+        <Headline>
+          <span
+            style={{
+              fontFamily: "'Cedarville Cursive', cursive",
+              fontWeight: "bold",
+              padding: "0 10px",
+            }}
+          >
+            Change
+          </span>
+          your password
+        </Headline>
+        {loading ? (
+          <Loading />
+        ) : forgotPassword ? (
+          <>
+            <Message>
+              Enter the OTP sent to your email{" "}
+              <span style={{ fontWeight: "bold" }}> {user.email}</span>
+            </Message>
+            <Resend>
+              Didn't receive the OTP?{" "}
+              <span
+                style={{ textDecoration: "underline" }}
+                onClick={handleResetOtp}
+              >
+                Resend
+              </span>
+            </Resend>
+            <OTPContainer onPaste={handlePaste}>
+              {otp.map((digit, index) => (
+                <OTPInput
+                  key={index}
+                  type="text"
+                  maxLength="1"
+                  value={digit}
+                  onChange={(e) => handleChange(e.target.value, index)}
+                  onKeyDown={(e) => handleKeyDown(e, index)}
+                  ref={(el) => (inputs.current[index] = el)}
+                />
+              ))}
+            </OTPContainer>
+            <InputWrapper>
+              <Input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
               />
-            ))}
-          </OTPContainer>
-          <InputWrapper>
-            <Input
-              type={showNewPassword ? "text" : "password"}
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <IconWrapper>
-              {showNewPassword ? (
-                <GoEyeClosed onClick={() => setShowNewPassword(false)} />
-              ) : (
-                <GoEye onClick={() => setShowNewPassword(true)} />
-              )}
-            </IconWrapper>
-          </InputWrapper>
-          <InputWrapper>
-            <Input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <IconWrapper>
-              {showConfirmPassword ? (
-                <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
-              ) : (
-                <GoEye onClick={() => setShowConfirmPassword(true)} />
-              )}
-            </IconWrapper>
-          </InputWrapper>
-          {savingChanges ? (
-            <div style={{ marginTop: "25px" }}>
-              <Loading />
-            </div>
-          ) : (
-            <DispalyText>
-              {msg ? (
-                <MsgBox>{msg}</MsgBox>
-              ) : (
-                <Button onClick={handleResetPassword}>Reset Password</Button>
-              )}
-            </DispalyText>
-          )}
-        </ContentWrapper>
-      ) : (
-        <ContentWrapper>
-          <InputWrapper>
-            <Input
-              type={showCurrentPassword ? "text" : "password"}
-              placeholder="Current Password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-            />
-            <IconWrapper>
-              {showCurrentPassword ? (
-                <GoEyeClosed onClick={() => setShowCurrentPassword(false)} />
-              ) : (
-                <GoEye onClick={() => setShowCurrentPassword(true)} />
-              )}
-            </IconWrapper>
-          </InputWrapper>
-          {/* forgot password handling */}
-          <ForgotPassword onClick={handleForgotPassword}>
-            Forgot Password?
-          </ForgotPassword>
-          <InputWrapper>
-            <Input
-              type={showNewPassword ? "text" : "password"}
-              placeholder="New Password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-            />
-            <IconWrapper>
-              {showNewPassword ? (
-                <GoEyeClosed onClick={() => setShowNewPassword(false)} />
-              ) : (
-                <GoEye onClick={() => setShowNewPassword(true)} />
-              )}
-            </IconWrapper>
-          </InputWrapper>
-          <InputWrapper>
-            <Input
-              type={showConfirmPassword ? "text" : "password"}
-              placeholder="Confirm New Password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-            />
-            <IconWrapper>
-              {showConfirmPassword ? (
-                <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
-              ) : (
-                <GoEye onClick={() => setShowConfirmPassword(true)} />
-              )}
-            </IconWrapper>
-          </InputWrapper>
-          {savingChanges ? (
-            <div style={{ marginTop: "25px" }}>
-              <Loading />
-            </div>
-          ) : (
-            <DispalyText>
-              {msg ? (
-                <MsgBox>{msg}</MsgBox>
-              ) : (
-                <Button onClick={handleChangePassword}>Change Password</Button>
-              )}
-            </DispalyText>
-          )}
-        </ContentWrapper>
-      )}
+              <IconWrapper>
+                {showNewPassword ? (
+                  <GoEyeClosed onClick={() => setShowNewPassword(false)} />
+                ) : (
+                  <GoEye onClick={() => setShowNewPassword(true)} />
+                )}
+              </IconWrapper>
+            </InputWrapper>
+            <InputWrapper>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm New Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <IconWrapper>
+                {showConfirmPassword ? (
+                  <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
+                ) : (
+                  <GoEye onClick={() => setShowConfirmPassword(true)} />
+                )}
+              </IconWrapper>
+            </InputWrapper>
+            {savingChanges ? (
+              <div style={{ marginTop: "25px" }}>
+                <Loading />
+              </div>
+            ) : (
+              <DispalyText>
+                {msg ? (
+                  <MsgBox>{msg}</MsgBox>
+                ) : (
+                  <Button onClick={handleResetPassword}>Reset Password</Button>
+                )}
+              </DispalyText>
+            )}
+          </>
+        ) : (
+          <>
+            <InputWrapper>
+              <Input
+                type={showCurrentPassword ? "text" : "password"}
+                placeholder="Current Password"
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+              />
+              <IconWrapper>
+                {showCurrentPassword ? (
+                  <GoEyeClosed onClick={() => setShowCurrentPassword(false)} />
+                ) : (
+                  <GoEye onClick={() => setShowCurrentPassword(true)} />
+                )}
+              </IconWrapper>
+            </InputWrapper>
+            {/* forgot password handling */}
+            <ForgotPassword onClick={handleForgotPassword}>
+              Forgot Password?
+            </ForgotPassword>
+            <InputWrapper>
+              <Input
+                type={showNewPassword ? "text" : "password"}
+                placeholder="New Password"
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+              />
+              <IconWrapper>
+                {showNewPassword ? (
+                  <GoEyeClosed onClick={() => setShowNewPassword(false)} />
+                ) : (
+                  <GoEye onClick={() => setShowNewPassword(true)} />
+                )}
+              </IconWrapper>
+            </InputWrapper>
+            <InputWrapper>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                placeholder="Confirm New Password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+              <IconWrapper>
+                {showConfirmPassword ? (
+                  <GoEyeClosed onClick={() => setShowConfirmPassword(false)} />
+                ) : (
+                  <GoEye onClick={() => setShowConfirmPassword(true)} />
+                )}
+              </IconWrapper>
+            </InputWrapper>
+            {savingChanges ? (
+              <div style={{ marginTop: "25px" }}>
+                <Loading />
+              </div>
+            ) : (
+              <DispalyText>
+                {msg ? (
+                  <MsgBox>{msg}</MsgBox>
+                ) : (
+                  <Button onClick={handleChangePassword}>
+                    Change Password
+                  </Button>
+                )}
+              </DispalyText>
+            )}
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 }

@@ -4,7 +4,7 @@ import userContext from "../../context/user/userContext";
 import Loading from "../../Loading";
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 50px 20px;
   width: 100%;
   height: 100%;
   display: flex;
@@ -17,6 +17,19 @@ const Headline = styled.div`
   font-size: 25px;
   font-weight: 500;
   color: #444;
+  margin-bottom: 5vh;
+
+  span {
+    font-size: 50px;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 16px;
+
+    span {
+      font-size: 35px;
+    }
+  }
 `;
 
 const ContentWrapper = styled.div`
@@ -35,12 +48,17 @@ const NotificationItem = styled.div`
   justify-content: space-between;
   width: 40%;
   gap: 20px;
+  padding: 25px 10px;
+
+  @media (max-width: 768px) {
+    width: 100%;
+  }
 `;
 
 const NotificationHead = styled.div`
   font-size: 20px;
   font-weight: bolder;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 `;
 
 const Switch = styled.div`
@@ -91,31 +109,38 @@ const MsgBox = styled.div`
   border: 1px solid #444;
   border-radius: 25px;
   cursor: pointer;
-  margin-top: 25px;
+  transition: all 0.5s ease;
 
   &:hover {
     background-color: white;
     color: #444;
     border: 1px solid #444;
   }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
 `;
 
 const SaveButton = styled.div`
   padding: 10px 20px;
-  font-weight: 600;
-  font-size: 15px;
   background-color: #444;
   color: #fff;
   border: 1px solid #444;
   border-radius: 25px;
   cursor: pointer;
   transition: all 0.5s ease;
-  margin-top: 25px;
 
   &:hover {
     background-color: white;
     color: #444;
     border: 1px solid #444;
+  }
+
+  @media (max-width: 768px) {
+    font-size: 14px;
+    padding: 8px 15px;
   }
 `;
 
@@ -168,59 +193,60 @@ function NotificationSetting() {
 
   return (
     <Container>
-      <Headline>
-        <span
-          style={{
-            fontFamily: "'Cedarville Cursive', cursive",
-            fontSize: "40px",
-            fontWeight: "bold",
-            padding: "0 10px",
-          }}
-        >
-          Manage
-        </span>
-        your notifications
-      </Headline>
-      {loading ? (
-        <Loading />
-      ) : (
-        <ContentWrapper>
-          <NotificationItem>
-            <NotificationHead>Email Notifications</NotificationHead>
-            <Switch>
-              <label>Newsletter</label>
-              <SwitchContainer
-                onClick={() => setEmailNewsletter(!emailNewsletter)}
-                checked={emailNewsletter}
-              >
-                <SwitchButton checked={emailNewsletter} />
-              </SwitchContainer>
-            </Switch>
-            <Switch>
-              <label>Security Alerts</label>
-              <SwitchContainer
-                onClick={() => setEmailsecurityAlerts(!emailsecurityAlerts)}
-                checked={emailsecurityAlerts}
-              >
-                <SwitchButton checked={emailsecurityAlerts} />
-              </SwitchContainer>
-            </Switch>
-          </NotificationItem>
-          {savingChanges ? (
-            <div style={{ marginTop: "25px" }}>
-              <Loading />
-            </div>
-          ) : (
-            <DispalyText>
-              {msg ? (
-                <MsgBox>{msg}</MsgBox>
-              ) : (
-                <SaveButton onClick={handleSave}>Save preferences</SaveButton>
-              )}
-            </DispalyText>
-          )}
-        </ContentWrapper>
-      )}
+      <ContentWrapper>
+        <Headline>
+          <span
+            style={{
+              fontFamily: "'Cedarville Cursive', cursive",
+              fontWeight: "bold",
+              padding: "0 10px",
+            }}
+          >
+            Manage
+          </span>
+          your notifications
+        </Headline>
+        {loading ? (
+          <Loading />
+        ) : (
+          <>
+            <NotificationItem>
+              <NotificationHead>Email Notifications</NotificationHead>
+              <Switch>
+                <label>Newsletter</label>
+                <SwitchContainer
+                  onClick={() => setEmailNewsletter(!emailNewsletter)}
+                  checked={emailNewsletter}
+                >
+                  <SwitchButton checked={emailNewsletter} />
+                </SwitchContainer>
+              </Switch>
+              <Switch>
+                <label>Security Alerts</label>
+                <SwitchContainer
+                  onClick={() => setEmailsecurityAlerts(!emailsecurityAlerts)}
+                  checked={emailsecurityAlerts}
+                >
+                  <SwitchButton checked={emailsecurityAlerts} />
+                </SwitchContainer>
+              </Switch>
+            </NotificationItem>
+            {savingChanges ? (
+              <div style={{ marginTop: "25px" }}>
+                <Loading />
+              </div>
+            ) : (
+              <DispalyText>
+                {msg ? (
+                  <MsgBox>{msg}</MsgBox>
+                ) : (
+                  <SaveButton onClick={handleSave}>Save preferences</SaveButton>
+                )}
+              </DispalyText>
+            )}
+          </>
+        )}
+      </ContentWrapper>
     </Container>
   );
 }

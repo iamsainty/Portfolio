@@ -28,7 +28,7 @@ const Headline = styled.div`
     font-size: 16px;
 
     span {
-      font-size: 25px;
+      font-size: 35px;
     }
   }
 `;
@@ -282,7 +282,6 @@ function EditProfile() {
           <span
             style={{
               fontFamily: "'Cedarville Cursive', cursive",
-              fontSize: "40px",
               fontWeight: "bold",
               padding: "0 10px",
             }}
