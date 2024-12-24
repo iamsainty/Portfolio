@@ -45,7 +45,7 @@ function App() {
                       <Route
                         exact
                         path="/"
-                        element={<Home title="Home - Sainty" />}
+                        element={<Home />}
                       />
 
                       {/* Routes for user authentication */}
@@ -64,7 +64,7 @@ function App() {
                       <Route
                         exact
                         path="/projects"
-                        element={<Projects title="Projects - Sainty" />}
+                        element={<Projects />}
                       />
                       <Route
                         exact

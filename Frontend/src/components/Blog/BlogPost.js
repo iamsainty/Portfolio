@@ -9,6 +9,7 @@ import NotFound from "../NotFound"; // Import the NotFound component
 import { FaTag } from "react-icons/fa";
 import { RiBarChartFill } from "react-icons/ri";
 import CommentSection from "./Comment/CommentSection";
+import { Helmet } from "react-helmet-async";
 
 const BlogContainer = styled(Container)`
   margin-top: 10vh;
@@ -198,13 +199,6 @@ const BlogPost = () => {
   }, [permalink]);
 
   useEffect(() => {
-    if (blogPost) {
-      document.title = `${blogPost.title} - Sainty`;
-    }
-    // eslint-disable-next-line
-  }, [blogPost]);
-
-  useEffect(() => {
     const fetchRecentBlogs = async () => {
       try {
         setRecentBlogsLoading(true);
@@ -244,158 +238,205 @@ const BlogPost = () => {
   console.log(content);
 
   return (
-    <BlogContainer>
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <div className="col-12 col-md-8">
-          <img
-            src={`${blogPost.coverimage}`}
-            alt={`${blogPost.title} Preview`}
-            onError={(e) => {
-              e.target.onerror = null;
-              e.target.src = defaultblogcover;
-            }}
-            width={"100%"}
-            height={"auto"}
-            style={{
-              objectFit: "cover",
-              objectPosition: "center",
-              borderRadius: "15px",
-            }}
-          />
-          <h1 style={{ marginTop: "5vh", fontWeight: "700" }}>
-            {blogPost.title}
-          </h1>
-          <hr />
-          <div
-            className="d-lg-flex"
-            style={{ justifyContent: "space-between" }}
-          >
-            <span>By : {blogPost.author}</span>
-            <br className="d-lg-none" />
-            <span>
-              Date Published :{" "}
-              {new Date(blogPost.dateCreated).toLocaleDateString()}
-            </span>
-          </div>
-          <hr />
-          {content.map((block) => {
-            return (
-              <Section>
-                {block.type === "paragraph" && (
-                  <div dangerouslySetInnerHTML={{ __html: block.data.text }} />
-                )}
-                {block.type === "header" && (
-                  <h2 style={{ fontWeight: "600" }}>{block.data.text} </h2>
-                )}
-                {block.type === "list" && (
-                  <ol>
-                    {block.data.items.map((item) => {
-                      return (
-                        <>
-                          <ListItem
-                            dangerouslySetInnerHTML={{ __html: item }}
-                          />
-                        </>
-                      );
-                    })}
-                  </ol>
-                )}
-                {block.type === "code" && (
-                  <CodeBlock>{block.data.code}</CodeBlock>
-                )}
-                {block.type === "quote" && (
-                  <>
-                    <Quote
+    <>
+    <Helmet>
+        <title>{blogPost.title} - Hey Sainty | Priyanshu Chaurasiya</title>
+        <meta
+          name="description"
+          content={blogPost.summary}
+        />
+        <meta name="author" content="Priyanshu Chaurasiya" />
+        <meta
+          property="og:title"
+          content={blogPost.title}
+        />
+        <meta
+          property="og:description"
+          content={blogPost.summary}
+        />
+        <meta
+          property="og:image"
+          content={blogPost.coverimage}
+        />
+        <meta property="og:url" content={`https://hey-sainty.web.app/blog/${blogPost.permalink}`} />
+        <meta property="og:type" content="website" />
+        <meta property="og:site_name" content="Hey Sainty" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content={blogPost.title}
+        />
+        <meta
+          name="twitter:description"
+          content={blogPost.summary}
+        />
+        <meta
+          name="twitter:image"
+          content={blogPost.coverimage}
+        />
+        <meta name="twitter:url" content={`https://hey-sainty.web.app/blog/${blogPost.permalink}`} />
+
+        <link rel="canonical" href={`/blog/${blogPost.permalink}`} />
+      </Helmet>
+      <BlogContainer>
+        <div style={{ display: "flex", justifyContent: "center" }}>
+          <div className="col-12 col-md-8">
+            <img
+              src={`${blogPost.coverimage}`}
+              alt={`${blogPost.title} Preview`}
+              onError={(e) => {
+                e.target.onerror = null;
+                e.target.src = defaultblogcover;
+              }}
+              width={"100%"}
+              height={"auto"}
+              style={{
+                objectFit: "cover",
+                objectPosition: "center",
+                borderRadius: "15px",
+              }}
+            />
+            <h1 style={{ marginTop: "5vh", fontWeight: "700" }}>
+              {blogPost.title}
+            </h1>
+            <hr />
+            <div
+              className="d-lg-flex"
+              style={{ justifyContent: "space-between" }}
+            >
+              <span>By : {blogPost.author}</span>
+              <br className="d-lg-none" />
+              <span>
+                Date Published :{" "}
+                {new Date(blogPost.dateCreated).toLocaleDateString()}
+              </span>
+            </div>
+            <hr />
+            {content.map((block) => {
+              return (
+                <Section>
+                  {block.type === "paragraph" && (
+                    <div
                       dangerouslySetInnerHTML={{ __html: block.data.text }}
                     />
-                    <QuoteCaption
-                      dangerouslySetInnerHTML={{ __html: block.data.caption }}
-                    />
-                  </>
-                )}
-                {block.type === "linkTool" && (
-                  <LinkTool href={block.data.link}>{block.data.link} </LinkTool>
-                )}
-                {block.type === "delimeter" && <hr />}
-              </Section>
-            );
-          })}
-          <hr style={{ margin: "5vh 0" }} />
-          <h3 style={{ fontWeight: "bolder", fontSize: "35px" }}>Comments</h3>
-          <CommentSection blogId={blogPost._id} />
+                  )}
+                  {block.type === "header" && (
+                    <h2 style={{ fontWeight: "600" }}>{block.data.text} </h2>
+                  )}
+                  {block.type === "list" && (
+                    <ol>
+                      {block.data.items.map((item) => {
+                        return (
+                          <>
+                            <ListItem
+                              dangerouslySetInnerHTML={{ __html: item }}
+                            />
+                          </>
+                        );
+                      })}
+                    </ol>
+                  )}
+                  {block.type === "code" && (
+                    <CodeBlock>{block.data.code}</CodeBlock>
+                  )}
+                  {block.type === "quote" && (
+                    <>
+                      <Quote
+                        dangerouslySetInnerHTML={{ __html: block.data.text }}
+                      />
+                      <QuoteCaption
+                        dangerouslySetInnerHTML={{ __html: block.data.caption }}
+                      />
+                    </>
+                  )}
+                  {block.type === "linkTool" && (
+                    <LinkTool href={block.data.link}>
+                      {block.data.link}{" "}
+                    </LinkTool>
+                  )}
+                  {block.type === "delimeter" && <hr />}
+                </Section>
+              );
+            })}
+            <hr style={{ margin: "5vh 0" }} />
+            <h3 style={{ fontWeight: "bolder", fontSize: "35px" }}>Comments</h3>
+            <CommentSection blogId={blogPost._id} />
+          </div>
         </div>
-      </div>
-      <MoreBlogsSection>
-        <MoreBlogsTitle>Recent Blogs</MoreBlogsTitle>
-        {recentBlogsLoading ? (
-          <Loading />
-        ) : (
-          <GridContainer>
-            {recentBlogs.map((blog) => (
-              <Link
-                to={`/blog/${blog.permalink}`}
-                style={{ textDecoration: "none" }}
-                key={blog._id}
-              >
-                <BlogCard>
-                  <img
-                    src={`${blog.coverimage}`}
-                    alt={`${blog.title} Preview`}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = defaultblogcover;
-                    }}
-                  />
-                  <div className="card-body">
-                    <h2>{blog.title}</h2>
-                    <div className="tags-container">
-                      <FaTag className="tags-icon" />
-                      <div className="tags">
-                        {blog.tag.map((tag) => (
-                          <Tag
-                            to={`/blog/tag/${tag}`}
-                            key={tag}
-                            className="tag"
-                          >
-                            {tag}
-                          </Tag>
-                        ))}
+        <MoreBlogsSection>
+          <MoreBlogsTitle>Recent Blogs</MoreBlogsTitle>
+          {recentBlogsLoading ? (
+            <Loading />
+          ) : (
+            <GridContainer>
+              {recentBlogs.map((blog) => (
+                <Link
+                  to={`/blog/${blog.permalink}`}
+                  style={{ textDecoration: "none" }}
+                  key={blog._id}
+                >
+                  <BlogCard>
+                    <img
+                      src={`${blog.coverimage}`}
+                      alt={`${blog.title} Preview`}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = defaultblogcover;
+                      }}
+                    />
+                    <div className="card-body">
+                      <h2>{blog.title}</h2>
+                      <div className="tags-container">
+                        <FaTag className="tags-icon" />
+                        <div className="tags">
+                          {blog.tag.map((tag) => (
+                            <Tag
+                              to={`/blog/tag/${tag}`}
+                              key={tag}
+                              className="tag"
+                            >
+                              {tag}
+                            </Tag>
+                          ))}
+                        </div>
                       </div>
+                      <p>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
+                      <p>Author: {blog.author}</p>
+                      <p>
+                        {blog.dateCreated === blog.lastUpdated
+                          ? `Published on: ${new Date(
+                              blog.dateCreated
+                            ).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}`
+                          : `Last updated on: ${new Date(
+                              blog.lastUpdated
+                            ).toLocaleDateString("en-GB", {
+                              day: "numeric",
+                              month: "short",
+                              year: "numeric",
+                            })}`}
+                      </p>
+                      <p
+                        style={{ display: "inline-flex", alignItems: "center" }}
+                      >
+                        <RiBarChartFill style={{ marginRight: "1vh" }} />
+                        {blog.views} views
+                      </p>
                     </div>
-                    <p>{blog.summary ? blog.summary.slice(0, 130) : ""}...</p>
-                    <p>Author: {blog.author}</p>
-                    <p>
-                      {blog.dateCreated === blog.lastUpdated
-                        ? `Published on: ${new Date(
-                            blog.dateCreated
-                          ).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}`
-                        : `Last updated on: ${new Date(
-                            blog.lastUpdated
-                          ).toLocaleDateString("en-GB", {
-                            day: "numeric",
-                            month: "short",
-                            year: "numeric",
-                          })}`}
-                    </p>
-                    <p style={{ display: "inline-flex", alignItems: "center" }}>
-                      <RiBarChartFill style={{ marginRight: "1vh" }} />
-                      {blog.views} views
-                    </p>
-                  </div>
-                </BlogCard>
-              </Link>
-            ))}
-          </GridContainer>
-        )}
-        <ViewMoreButton to="/blog" className="btn btn-outline-dark">
-          View More Blogs
-        </ViewMoreButton>
-      </MoreBlogsSection>
-    </BlogContainer>
+                  </BlogCard>
+                </Link>
+              ))}
+            </GridContainer>
+          )}
+          <ViewMoreButton to="/blog" className="btn btn-outline-dark">
+            View More Blogs
+          </ViewMoreButton>
+        </MoreBlogsSection>
+      </BlogContainer>
+    </>
   );
 };
 

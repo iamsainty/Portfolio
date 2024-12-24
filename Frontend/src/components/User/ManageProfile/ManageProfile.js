@@ -9,6 +9,7 @@ import styled from "styled-components";
 import userContext from "../../context/user/userContext";
 import Loading from "../../Loading";
 import { useNavigate } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 
 const Container = styled.div`
   display: flex;
@@ -114,21 +115,72 @@ function ManageProfile() {
   }
 
   return (
-    <Container className="container">
-      <NavigationContainer>
-        <SideNavigation
-          activeSection={activeSection}
-          setActiveSection={setActiveSection}
+    <>
+      <Helmet>
+        <title>Manage Profile - View, Edit, and Manage Account</title>
+        <meta
+          name="description"
+          content="Manage your profile and settings on Hey Sainty."
         />
-      </NavigationContainer>
-      <ContentContainer>
-        {activeSection === "My Profile" && <MyProfile />}
-        {activeSection === "Edit Profile" && <EditProfile />}
-        {activeSection === "Change Password" && <ChangePassword />}
-        {activeSection === "Notification Settings" && <NotificationSetting />}
-        {activeSection === "Account Settings" && <AccountSetting />}
-      </ContentContainer>
-    </Container>
+        <meta name="author" content="Priyanshu Chaurasiya" />
+        <meta
+          property="og:title"
+          content="Manage Profile - Hey Sainty | Priyanshu Chaurasiya"
+        />
+        <meta
+          property="og:description"
+          content="Manage your profile and settings on Hey Sainty."
+        />
+        <meta
+          property="og:image"
+          content="https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png"
+        />
+        <meta property="og:url" content="https://hey-sainty.web.app/profile" />
+        <meta property="og:type" content="website" />
+        <meta
+          property="og:site_name"
+          content="Hey Sainty | Priyanshu Chaurasiya"
+        />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Manage Profile - Hey Sainty | Priyanshu Chaurasiya"
+        />
+        <meta
+          name="twitter:description"
+          content="Manage your profile and settings on Hey Sainty."
+        />
+        <meta
+          name="twitter:image"
+          content="https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png"
+        />
+        <meta
+          name="twitter:url"
+          content="https://hey-sainty.web.app/profile"
+        />
+        <meta
+          name="keywords"
+          content="Manage Profile, Priyanshu Chaurasiya, Hey Sainty, web development, MERN stack, projects"
+        />
+
+        <link rel="canonical" href="/profile" />
+      </Helmet>
+      <Container className="container">
+        <NavigationContainer>
+          <SideNavigation
+            activeSection={activeSection}
+            setActiveSection={setActiveSection}
+          />
+        </NavigationContainer>
+        <ContentContainer>
+          {activeSection === "My Profile" && <MyProfile />}
+          {activeSection === "Edit Profile" && <EditProfile />}
+          {activeSection === "Change Password" && <ChangePassword />}
+          {activeSection === "Notification Settings" && <NotificationSetting />}
+          {activeSection === "Account Settings" && <AccountSetting />}
+        </ContentContainer>
+      </Container>
+    </>
   );
 }
 
