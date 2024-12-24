@@ -128,7 +128,7 @@ function MyProfile() {
       try {
         setLoading(true);
         await fetchUserDetails();
-        if (user.profilePictureUrl === null) {
+        if (user && user.profilePictureUrl === null) {
           user.profilePictureUrl =
             "https://hey-sainty.s3.ap-south-1.amazonaws.com/profile-pictures/Default+Profile+Picture+-+Hey+Sainty.png";
         }

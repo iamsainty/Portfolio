@@ -8,6 +8,7 @@ import AccountSetting from "./AccountSetting";
 import styled from "styled-components";
 import userContext from "../../context/user/userContext";
 import Loading from "../../Loading";
+import { useNavigate } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
@@ -54,29 +55,29 @@ const ContentContainer = styled.div`
   }
 `;
 
-const Content = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: 600;
-  min-height: 50vh;
-  text-align: center;
-  padding: 20px;
-  font-size: 18px;
+// const Content = styled.div`
+//   height: 100%;
+//   width: 100%;
+//   display: flex;
+//   justify-content: center;
+//   align-items: center;
+//   font-weight: 600;
+//   min-height: 80vh;
+//   text-align: center;
+//   padding: 50px;
+//   font-size: 18px;
 
-  @media (min-width: 768px) {
-    font-size: 24px;
-  }
-`;
+//   @media (min-width: 768px) {
+//     font-size: 24px;
+//   }
+// `;
 
 function ManageProfile() {
   const [activeSection, setActiveSection] = useState("My Profile");
   const { user, fetchUserDetails } = useContext(userContext);
   const [loading, setLoading] = useState(false);
 
-  const [userSignedIn, setUserSignedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -84,9 +85,6 @@ function ManageProfile() {
         setLoading(true);
         await fetchUserDetails();
         setLoading(false);
-        if (user) {
-          setUserSignedIn(true);
-        }
       } catch (error) {
         console.error("Error fetching user details:", error);
       }
@@ -111,6 +109,10 @@ function ManageProfile() {
     );
   }
 
+  if (!user) {
+    navigate("/");
+  }
+
   return (
     <Container className="container">
       <NavigationContainer>
@@ -120,19 +122,11 @@ function ManageProfile() {
         />
       </NavigationContainer>
       <ContentContainer>
-        {!userSignedIn ? (
-          <Content>Sign in / Sign Up to access your profile</Content>
-        ) : (
-          <>
-            {activeSection === "My Profile" && <MyProfile />}
-            {activeSection === "Edit Profile" && <EditProfile />}
-            {activeSection === "Change Password" && <ChangePassword />}
-            {activeSection === "Notification Settings" && (
-              <NotificationSetting />
-            )}
-            {activeSection === "Account Settings" && <AccountSetting />}
-          </>
-        )}
+        {activeSection === "My Profile" && <MyProfile />}
+        {activeSection === "Edit Profile" && <EditProfile />}
+        {activeSection === "Change Password" && <ChangePassword />}
+        {activeSection === "Notification Settings" && <NotificationSetting />}
+        {activeSection === "Account Settings" && <AccountSetting />}
       </ContentContainer>
     </Container>
   );
