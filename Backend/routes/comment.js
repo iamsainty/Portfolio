@@ -3,6 +3,7 @@ const router = express.Router();
 
 const BlogComment = require("../models/BlogComment");
 const validateUserToken = require("../middleware/validateUserToken");
+const BlogPost = require("../models/BlogPost");
 
 // route to add a comment
 router.post("/new-comment", validateUserToken, async (req, res) => {
@@ -18,6 +19,9 @@ router.post("/new-comment", validateUserToken, async (req, res) => {
       commentLikes: 0,
     });
     const savedComment = await newComment.save();
+    const blogPost = await BlogPost.findById(blogId);
+    blogPost.comments += 1;
+    await blogPost.save();
     res.status(201).json({ success: true, savedComment });
   } catch (error) {
     res.status(500).json({ message: "Failed to add comment", success: false });
