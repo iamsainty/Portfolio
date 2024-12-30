@@ -3,7 +3,7 @@ const dotenv = require('dotenv');
 const connectToMongo = require('./config/db');
 const cors = require('cors');
 const path = require('path'); // Import path module
-const connectToMySQL = require('./config/aws-rds-mysql');
+const {connectToMySQL} = require('./config/aws-rds-mysql');
 
 dotenv.config();
 
@@ -28,6 +28,7 @@ app.use('/auth', require('./routes/auth'));
 app.use('/blog', require('./routes/blog'));
 app.use('/comment', require(('./routes/comment')));
 app.use('/user', require('./routes/user'));
+app.use('/blog-activity', require('./routes/blogActivity'));
 app.use('/', (req, res) => {
   res.json({ Success: "Backend is working perfectly" });
 });
