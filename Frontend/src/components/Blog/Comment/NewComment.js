@@ -88,7 +88,7 @@ const Button = styled.button`
   border: 1px solid #999;
 `;
 
-function NewComment({ blogId }) {
+function NewComment({ blogId, blogUrl }) {
   const { user, fetchUserDetails } = useContext(userAuthContext);
   const { newComment } = useContext(commentContext);
 
@@ -127,7 +127,7 @@ function NewComment({ blogId }) {
   const handleSubmit = () => {
     // check if the comment has 10 to  200 characters
     if (comment.length >= 10 && comment.length <= 200) {
-      newComment(blogId, comment);
+      newComment(blogId, blogUrl, comment);
     } else {
       setError("Comment must be 10 to 200 characters long");
     }

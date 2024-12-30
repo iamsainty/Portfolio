@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import commentContext from "./commentContext";
 
 const CommentState = (props) => {
-  const host = 'https://hey-sainty-backend.vercel.app';
-//   const host = "http://localhost:5002";
+  const host = "https://hey-sainty-backend.vercel.app";
+  //   const host = "http://localhost:5002";
 
   const [comments, setComments] = useState([]);
 
@@ -27,7 +27,7 @@ const CommentState = (props) => {
     }
   };
 
-  const newComment = async (blogId, comment) => {
+  const newComment = async (blogId, blogUrl, comment) => {
     try {
       const url = `${host}/comment/new-comment`;
       const response = await fetch(url, {
@@ -41,6 +41,16 @@ const CommentState = (props) => {
       const data = await response.json();
       if (data.success) {
         setComments([...comments, data.savedComment]);
+
+        const url = `${host}/blog-activity/blog-comment`;
+        await fetch(url, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            userToken: localStorage.getItem("userToken"),
+          },
+          body: JSON.stringify({ blogUrl }),
+        });
       }
     } catch (error) {
       console.error(error);

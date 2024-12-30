@@ -360,7 +360,7 @@ const BlogPost = () => {
             })}
             <hr style={{ margin: "5vh 0" }} />
             <h3 style={{ fontWeight: "bolder", fontSize: "35px" }}>Comments</h3>
-            <CommentSection blogId={blogPost._id} />
+            <CommentSection blogId={blogPost._id} blogUrl={blogPost.permalink} />
           </div>
         </div>
         <MoreBlogsSection>
