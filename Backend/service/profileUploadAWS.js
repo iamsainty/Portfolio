@@ -1,14 +1,19 @@
-const AWS = require("aws-sdk");
 const dotenv = require("dotenv");
 const fs = require("fs");
 const path = require("path");
 
+// Import the required modules from the v3 SDK
+const { S3Client, PutObjectCommand, DeleteObjectCommand } = require("@aws-sdk/client-s3");
+
 dotenv.config();
 
-const awsS3 = new AWS.S3({
-  accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-  secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+// Initialize the S3 client from v3
+const awsS3 = new S3Client({
   region: process.env.AWS_REGION,
+  credentials: {
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  },
 });
 
 const profilePictureUploadToAWS = async (file) => {
@@ -17,14 +22,17 @@ const profilePictureUploadToAWS = async (file) => {
     const fileExtension = path.extname(file.originalname);
     const fileName = `${Date.now()}${fileExtension}`;
 
-    const params = {
+    // Prepare parameters for uploading
+    const uploadParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: `profile-pictures/${fileName}`,
       Body: fileContent,
       ContentType: file.mimetype,
     };
 
-    const uploadResponse = await awsS3.upload(params).promise();
+    // Use the PutObjectCommand to upload to S3
+    const uploadCommand = new PutObjectCommand(uploadParams);
+    const uploadResponse = await awsS3.send(uploadCommand);
 
     return uploadResponse; // Return S3 response containing the secure URL
   } catch (error) {
@@ -36,11 +44,17 @@ const profilePictureUploadToAWS = async (file) => {
 const profilePictureDeleteFromAWS = async (previousURL) => {
   try {
     const previousKey = previousURL.split("/").slice(-2).join("/");
+
+    // Prepare parameters for deleting the object
     const deleteParams = {
       Bucket: process.env.AWS_BUCKET_NAME,
       Key: previousKey,
     };
-    await awsS3.deleteObject(deleteParams).promise();
+
+    // Use the DeleteObjectCommand to delete from S3
+    const deleteCommand = new DeleteObjectCommand(deleteParams);
+    await awsS3.send(deleteCommand);
+
     return true;
   } catch (error) {
     console.log("Error deleting previous profile picture:", error);
