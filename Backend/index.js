@@ -1,12 +1,14 @@
 const express = require('express');
 const dotenv = require('dotenv');
-const connectToMongo = require('./db');
+const connectToMongo = require('./config/db');
 const cors = require('cors');
 const path = require('path'); // Import path module
+const connectToMySQL = require('./config/aws-rds-mysql');
 
 dotenv.config();
 
 connectToMongo();
+connectToMySQL();
 
 const app = express();
 
