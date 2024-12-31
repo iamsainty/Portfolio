@@ -43,7 +43,6 @@ const blogPostSchema = new mongoose.Schema({
   },
   likes: {
     type: [mongoose.Schema.Types.ObjectId],
-    default: 0,
   },
   comments: {
     type: Number,
