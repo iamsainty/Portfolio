@@ -47,7 +47,9 @@ function BlogLike({ blogPost }) {
     const fetchDetails = async () => {
       try {
         await fetchUserDetails();
-        setLiked(blogPost.likes.includes(user._id))
+        if(user){
+            setLiked(blogPost.likes.includes(user._id))
+        }
       } catch (error) {
         console.error("Error fetching user details:", error);
       }

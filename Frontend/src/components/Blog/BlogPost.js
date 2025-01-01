@@ -236,8 +236,6 @@ const BlogPost = () => {
     return <div>Blog post not found</div>;
   }
 
-  console.log(content);
-
   return (
     <>
     <Helmet>
