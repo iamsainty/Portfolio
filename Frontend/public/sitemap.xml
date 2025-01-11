@@ -47,13 +47,6 @@
     <priority>0.6</priority>
   </url>
 
-  <!-- NotFound Page -->
-  <url>
-    <loc>https://hey-sainty.web.app/*</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.1</priority>
-  </url>
-
   <!-- Dynamic Blog Pages -->
   <url>
     <loc>https://hey-sainty.web.app/blog/the-vidyapeeth-library</loc>
