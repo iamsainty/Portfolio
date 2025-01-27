@@ -3,12 +3,12 @@ const dotenv = require('dotenv');
 const connectToMongo = require('./config/db');
 const cors = require('cors');
 const path = require('path'); // Import path module
-const {connectToMySQL} = require('./config/aws-rds-mysql');
+// const { connectToSupabase } = require('./config/supabase-db');
 
 dotenv.config();
 
 connectToMongo();
-connectToMySQL();
+// connectToSupabase();
 
 const app = express();
 
