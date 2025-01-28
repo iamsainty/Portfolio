@@ -10,7 +10,6 @@ import { FaTag } from "react-icons/fa";
 import { RiBarChartFill } from "react-icons/ri";
 import CommentSection from "./Comment/CommentSection";
 import { Helmet } from "react-helmet-async";
-import BlogLike from "./BlogLike";
 
 const BlogContainer = styled(Container)`
   margin-top: 10vh;
@@ -358,7 +357,6 @@ const BlogPost = () => {
               );
             })}
             <hr style={{ margin: "3vh 0" }} />
-            <BlogLike blogPost={blogPost} />
             <h3 style={{ fontWeight: "bolder", fontSize: "35px" }}>Comments</h3>
             <CommentSection blogId={blogPost._id} blogUrl={blogPost.permalink} />
           </div>

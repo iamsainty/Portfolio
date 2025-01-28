@@ -187,29 +187,4 @@ router.delete("/deleteblog/:id", userdetails, async (req, res) => {
   }
 });
 
-router.put("/blog-liked", validateUserToken, async (req, res) => {
-  try {
-    const userId = req.user.id;
-
-    const { blogId } = req.body;
-
-    const blogPost = await BlogPost.findById(blogId);
-
-    if (!blogPost) {
-      return res.status(404).send("Blog post not found");
-    }
-    const liked = blogPost.likes.includes(userId);
-    if (liked) {
-      blogPost.likes = blogPost.likes.filter((id) => id !== userId);
-    } else {
-      blogPost.likes.push(userId);
-    }
-    await blogPost.save();
-    res.status(200).send(blogPost);
-  } catch (error) {
-    console.error(error);
-    res.status(500).send("Some Error occurred");
-  }
-});
-
 module.exports = router;
