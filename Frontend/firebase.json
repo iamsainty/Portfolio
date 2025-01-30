@@ -1,6 +1,18 @@
 {
   "hosting": {
     "public": "build",
+    "redirects": [
+      {
+        "source": "http://www.hey-sainty.web.app",
+        "destination": "https://hey-sainty.web.app",
+        "type": 301
+      },
+      {
+        "source": "https://www.hey-sainty.web.app",
+        "destination": "https://hey-sainty.web.app",
+        "type": 301
+      }
+    ],
     "rewrites": [
       {
         "source": "**",

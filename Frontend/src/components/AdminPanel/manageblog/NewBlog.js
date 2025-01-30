@@ -166,16 +166,46 @@ const NewBlog = () => {
       const editor = new EditorJs({
         holder: "editorjs",
         tools: {
-          header: Header,
-          paragraph: Paragraph,
-          list: List,
-          code: Code,
-          quote: Quote,
-          linkTool: LinkTool,
-          table: Table,
-          delimiter: Delimiter,
-          inlineCode: InlineCode,
-          raw: Raw,
+          header: {
+            class: Header,
+            inlineToolbar: ["link"],
+          },
+          paragraph: {
+            class: Paragraph,
+            inlineToolbar: true,
+          },
+          list: {
+            class: List,
+            inlineToolbar: true,
+          },
+          code: {
+            class: Code,
+            inlineToolbar: true,
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+          },
+          linkTool: {
+            class: LinkTool,
+            inlineToolbar: true,
+          },
+          table: {
+            class: Table,
+            inlineToolbar: true,
+          },
+          delimiter: {
+            class: Delimiter,
+            inlineToolbar: true,
+          },
+          inlineCode:{
+            class: InlineCode,
+            inlineToolbar: true,
+          },
+          raw: {
+            class : Raw,
+            inlineToolbar: true,
+          },
         },
         placeholder: "Start typing your blog content here...",
       });
