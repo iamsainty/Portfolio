@@ -98,7 +98,7 @@ const Navbar = ({ user }) => {
             {NavbarLinks.map((link) => (
               <NavigationMenuItem key={link.href}>
                 <Link href={link.href} legacyBehavior passHref>
-                  <NavigationMenuLink className="text-md rounded-md cursor-pointer transition-all duration-500">
+                  <NavigationMenuLink className="text-md rounded-md cursor-pointer">
                     {link.label}
                   </NavigationMenuLink>
                 </Link>
@@ -108,7 +108,7 @@ const Navbar = ({ user }) => {
             {/* Account Dropdown */}
             <NavigationMenuItem>
               <Button className="text-md rounded-full px-5 py-2">
-                Hop In <RxEnter />
+                Get In <RxEnter />
               </Button>
             </NavigationMenuItem>
           </NavigationMenuList>
@@ -119,24 +119,28 @@ const Navbar = ({ user }) => {
             <RxHamburgerMenu />
           </SheetTrigger>
           <SheetContent
-            side={"left"}
-            className="flex flex-col justify-start items-center gap-10 pt-24"
+            side={"right"}
+            className="flex flex-col w-4/5 justify-start items-center gap-10 pt-24"
           >
             <SheetTitle className="text-2xl">Hey Sainty</SheetTitle>
             <SheetDescription>
               <NavigationMenu>
-                <NavigationMenuList className="flex flex-col items-center justify-evenly gap-2">
+                <NavigationMenuList className="flex flex-col items-center justify-evenly gap-3">
                   {NavbarLinks.map((link) => (
                     <NavigationMenuItem key={link.href}>
                       <Link href={link.href} legacyBehavior passHref>
-                        <NavigationMenuLink
-                          className={`${navigationMenuTriggerStyle()} text-xl rounded-md cursor-pointer`}
-                        >
+                        <NavigationMenuLink className="text-lg rounded-md cursor-pointer">
                           {link.label}
                         </NavigationMenuLink>
                       </Link>
                     </NavigationMenuItem>
                   ))}
+
+                  <NavigationMenuItem>
+                    <Button className="text-md rounded-full px-5 py-2">
+                      Get In <RxEnter />
+                    </Button>
+                  </NavigationMenuItem>
                 </NavigationMenuList>
               </NavigationMenu>
             </SheetDescription>
