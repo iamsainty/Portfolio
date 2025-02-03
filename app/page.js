@@ -1,4 +1,5 @@
 import AboutSection from "./AboutSection";
+import BlogSection from "./BlogSection";
 import HeroSection from "./HeroSection";
 import ProjectSection from "./ProjectSection";
 
@@ -8,6 +9,7 @@ export default function Home() {
       <HeroSection />
       <AboutSection />
       <ProjectSection />
+      <BlogSection />
     </div>
   );
 }
