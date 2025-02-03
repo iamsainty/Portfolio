@@ -13,10 +13,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { RxHamburgerMenu } from "react-icons/rx";
-import { RxEnter } from "react-icons/rx";
 
 import Link from "next/link";
-import { Button } from "./ui/button";
 import { ModeToggle } from "./ModeToggleButton";
 
 const NavbarLinks = [
@@ -26,10 +24,10 @@ const NavbarLinks = [
   { label: "Blog", href: "/blog" },
 ];
 
-const Navbar = ({ user }) => {
+const Navbar = () => {
   return (
-    <header className="flex justify-center w-full">
-      <nav className="fixed top-8 w-4/5 sm:w-3/5 container border border-black dark:border-white px-5 sm:pl-10 sm:pr-2 py-1 sm:py-2 rounded-full flex justify-between items-center">
+    <header className="flex justify-center w-full h-[15vh]">
+      <nav className="fixed top-8 w-4/5 sm:w-3/5 container bg-white dark:bg-black border border-black dark:border-white px-5 sm:pl-10 sm:pr-2 py-1 sm:py-2 rounded-full flex justify-between items-center">
         {/* Logo / Brand */}
         <Link href="/" aria-label="Homepage" title="Hey Sainty - Home">
           <span className="text-md sm:text-lg font-semibold">Hey Sainty</span>
@@ -40,10 +38,10 @@ const Navbar = ({ user }) => {
           <NavigationMenuList className="flex items-center justify-between gap-7">
             {NavbarLinks.map((link) => (
               <NavigationMenuItem key={link.href}>
-                <Link href={link.href} passHref>
-                  <NavigationMenuLink className="text-md rounded-md cursor-pointer">
+                <Link href={link.href}>
+                  {/* <NavigationMenuLink className="text-md rounded-md cursor-pointer"> */}
                     {link.label}
-                  </NavigationMenuLink>
+                  {/* </NavigationMenuLink> */}
                 </Link>
               </NavigationMenuItem>
             ))}
