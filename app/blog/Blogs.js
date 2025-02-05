@@ -11,8 +11,6 @@ import React from "react";
 import { FaRegComments } from "react-icons/fa";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 
-
-
 const Blogs = ({ blogs }) => {
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-5 my-20">

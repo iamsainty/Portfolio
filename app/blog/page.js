@@ -14,7 +14,7 @@ async function fetchBlogs() {
 }
 
 export default async function Page() {
-  const blogs = await fetchBlogs(); // Fetching blogs directly in the server-side component
+  const blogs = await fetchBlogs();
 
   return (
     <div className="flex flex-col items-center">
