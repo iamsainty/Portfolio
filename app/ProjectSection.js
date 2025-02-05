@@ -12,6 +12,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 const projects = [
   {
@@ -59,76 +60,65 @@ const projects = [
       { linkType: "Blog", icon: <RxReader />, url: "https://linktoblog3.com" },
     ],
   },
-  {
-    title: "Project 4",
-    description: "This is a description of project 4",
-    imageUrl:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-    projectLinks: [
-      {
-        linkType: "GitHub",
-        icon: <FaGithub />,
-        url: "https://github.com/project4",
-      },
-      { linkType: "Live", icon: <FaEye />, url: "https://linktoproject4.com" },
-      { linkType: "Blog", icon: <RxReader />, url: "https://linktoblog4.com" },
-    ],
-  },
 ];
 
 const ProjectSection = () => {
   return (
-    <section className="w-[85vw] lg:w-[75vw] flex flex-col lg:flex-row justify-between gap-16 mx-auto">
+    <section className="w-[85vw] min-h-[80vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-12 mx-auto my-10">
       {/* Left Side - Sticky Content */}
-      <div className="lg:h-[75vh] w-full lg:w-5/12 flex flex-col justify-center items-center lg:sticky top-24 gap-5">
-        <h2 className="font-bold lg:font-extrabold text-2xl sm:text-3xl lg:text-4xl">
+      <div className="w-full lg:w-2/5 flex flex-col justify-center items-center gap-5">
+        <h2 className="font-bold lg:font-extrabold text-3xl lg:text-4xl text-center">
           Projects
         </h2>
-        <p className="mt-4 text-lg text-center">
-          I can build full stack web apps using React, Next.js, and other
-          technologies. Here are some of my projects.
+        <p className="mt-4 text-base lg:text-lg text-center ">
+          I build full-stack web applications with React, Next.js, Node.js, and
+          other modern technologies. Here are some of my recent projects.
         </p>
-        <Link href={"/projects"}>
+        <Link href={"/projects"} className="hidden lg:flex">
           <Button className="mt-4">View all projects</Button>
         </Link>
       </div>
 
       {/* Right Side - Scrolling Content */}
-      <div className="w-full flex flex-col items-center lg:w-7/12 gap-10 lg:px-10 overflow-auto">
-        {projects.map((project) => (
-          <Card
-            key={project.title}
-            className="border w-full border-black dark:border-white"
-          >
-            <CardHeader>
-              <CardTitle className="text-md lg:text-xl font-bold">
-                {project.title}
-              </CardTitle>
-              <CardDescription className="text-sm lg:text-lg text-muted-foreground">
-                {project.description}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Image
-                src={project.imageUrl}
-                alt={project.title}
-                className="w-full h-auto object-cover rounded-lg shadow-md"
-                height={200}
-                width={300}
-              />
-            </CardContent>
-            {/* <CardFooter className="flex gap-3 mt-2">
-              {project.projectLinks.map((link) => (
-                <Link key={link.linkType} href={link.url} target="_blank">
-                  <Button variant="outline" className="rounded-lg px-4 py-2">
-                    {link.icon} {link.linkType}
-                  </Button>
-                </Link>
-              ))}
-            </CardFooter> */}
-          </Card>
-        ))}
-      </div>
+      <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap">
+        <div className="flex min-w-full space-x-3 lg:space-x-5">
+          {projects.map((project) => (
+            <Card key={project.title} className="border-2 w-[80vw] lg:w-[30vw]">
+              <CardHeader>
+                <Image
+                  src={project.imageUrl}
+                  alt={project.title}
+                  className="w-full h-auto object-cover rounded-lg shadow-md"
+                  height={200}
+                  width={300}
+                />
+              </CardHeader>
+              <CardContent>
+                <CardTitle className="text-md lg:text-xl font-bold">
+                  {project.title}
+                </CardTitle>
+                <CardDescription className="text-sm lg:text-lg text-muted-foreground">
+                  {project.description}
+                </CardDescription>
+              </CardContent>
+              <CardFooter className="flex justify-around gap-3 w-full">
+                {project.projectLinks.map((link) => (
+                  <Link key={link.linkType} href={link.url} target="_blank">
+                    <Button variant="outline" className="px-4">
+                      {link.icon}
+                      <span className="hidden md:flex"> {link.linkType} </span>
+                    </Button>
+                  </Link>
+                ))}
+              </CardFooter>
+            </Card>
+          ))}
+        </div>
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+      <Link href={"/projects"} className="lg:hidden">
+        <Button>View all projects</Button>
+      </Link>
     </section>
   );
 };

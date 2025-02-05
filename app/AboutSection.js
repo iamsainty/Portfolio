@@ -30,12 +30,12 @@ const socialHandles = [
 
 const AboutSection = () => {
   return (
-    <section className="mx-5 w-[85vw] lg:w-[75vw] flex flex-col justify-evenly items-center gap-16 lg:h-[80vh]">
-      <h2 className="font-bold lg:font-extrabold text-2xl sm:text-3xl lg:text-4xl text-center">
-        Get to Know Me
+    <section className="mx-5 w-[85vw] lg:w-[75vw] flex flex-col justify-evenly items-center gap-16 lg:h-[80vh] mb-16 lg:mb-0">
+      <h2 className="lg:hidden font-bold lg:font-extrabold text-3xl sm:text-3xl text-center">
+        About Myself
       </h2>
-      <div className="flex flex-col lg:flex-row lg:items-center gap-12">
-        <div className="w-full lg:w-1/3 flex flex-col items-center gap-6">
+      <div className="flex flex-col lg:flex-row lg:items-center gap-8">
+        <div className="w-full lg:w-1/3 flex flex-col items-center gap-6 justify-between">
           <Image
             src={
               "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/heroImage-heysainty.png"
@@ -45,7 +45,7 @@ const AboutSection = () => {
             height={200}
             className="rounded-full border border-black dark:border-white lg:w-[250px]"
           />
-          <h3 className="font-semibold text-xl lg:text-2xl">
+          <h3 className="font-semibold lg:font-bold text-xl lg:text-2xl">
             Priyanshu Chaurasiya
           </h3>
           <div className="flex gap-4">
@@ -53,7 +53,7 @@ const AboutSection = () => {
               <Button
                 variant="outline"
                 key={handle.link}
-                className="p-2"
+                className="p-2 border-2"
                 href={handle.link}
                 target="_blank"
               >
@@ -62,19 +62,21 @@ const AboutSection = () => {
             ))}
           </div>
         </div>
-        <div className="w-full lg:w-2/3 text-center flex flex-col items-center gap-8">
+        <div className="w-full lg:w-2/3 text-center flex flex-col items-center gap-6">
+          <h2 className="hidden lg:flex font-bold lg:font-extrabold text-2xl sm:text-3xl lg:text-4xl text-center">
+            About Myself
+          </h2>
           <p className="text-lg hidden lg:flex">
-            I&apos;m a software developer and tech
-            enthusiast. I build web applications and enjoy sharing my journey
-            through blogs about technology, lifestyle, tutorials, and my
-            personal learnings.
+            I&apos;m a software developer and tech enthusiast. I build web
+            applications and enjoy sharing my journey through blogs about
+            technology, lifestyle, tutorials, and my personal learnings.
           </p>
           <p className="lg:hidden text-md">
-            I&apos;m a tech enthusiast and web developer.
-            I build web apps, write blogs to share my learnings.
+            I&apos;m a tech enthusiast and web developer. I build web apps,
+            write blogs to share my learnings.
           </p>
           <Button asChild>
-            <Link href="/sainty">Know More</Link>
+            <Link href="/sainty" className="text-base">Know More</Link>
           </Button>
         </div>
       </div>
