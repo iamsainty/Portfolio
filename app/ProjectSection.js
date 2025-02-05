@@ -64,7 +64,7 @@ const projects = [
 
 const ProjectSection = () => {
   return (
-    <section className="w-[85vw] min-h-[80vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-12 mx-auto my-10">
+    <section className="sticky top-[5vh] lg:top-[10vh] w-[85vw] min-h-[90vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 mx-auto mb-[5vh] bg-white dark:bg-black">
       {/* Left Side - Sticky Content */}
       <div className="w-full lg:w-2/5 flex flex-col justify-center items-center gap-5">
         <h2 className="font-bold lg:font-extrabold text-3xl lg:text-4xl text-center">
@@ -83,7 +83,10 @@ const ProjectSection = () => {
       <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap">
         <div className="flex min-w-full space-x-3 lg:space-x-5">
           {projects.map((project) => (
-            <Card key={project.title} className="border-2 w-[80vw] lg:w-[30vw]">
+            <Card
+              key={project.title}
+              className="border-2 dark:border-2 w-[80vw] lg:w-[30vw]"
+            >
               <CardHeader>
                 <Image
                   src={project.imageUrl}

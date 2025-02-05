@@ -5,7 +5,7 @@ import { RxReader } from "react-icons/rx";
 
 const HeroSection = () => {
   return (
-    <header className="min-h-[80vh] mb-[5vh] mx-5 flex flex-col justify-center items-center gap-10 px-4 text-center">
+    <header className="sticky top-[15vh] min-h-[75vh] mx-5 flex flex-col justify-center items-center gap-10 px-4 text-center">
       <h2 className="text-base lg:text-3xl font-medium">
         Welcome, I&apos;m glad you&apos;re here.
       </h2>

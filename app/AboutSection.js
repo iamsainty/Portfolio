@@ -30,7 +30,7 @@ const socialHandles = [
 
 const AboutSection = () => {
   return (
-    <section className="mx-5 w-[85vw] lg:w-[75vw] flex flex-col justify-evenly items-center gap-16 lg:h-[80vh] mb-16 lg:mb-0">
+    <section className="sticky top-[5vh] lg:top-[10vh] mx-5 w-[85vw] lg:w-[75vw] flex flex-col justify-evenly items-center gap-6 lg:gap-12 min-h-[90vh] mb-16 lg:mb-0 bg-white dark:bg-black">
       <h2 className="lg:hidden font-bold lg:font-extrabold text-3xl sm:text-3xl text-center">
         About Myself
       </h2>

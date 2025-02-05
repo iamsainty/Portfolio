@@ -51,7 +51,7 @@ const blogs = [
 
 const BlogSection = () => {
   return (
-    <section className="w-[85vw] min-h-[80vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-12 mx-auto my-10">
+    <section className="sticky top-[5vh] lg:top-[10vh] bg-white dark:bg-black w-[85vw] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 py-[5vh] mx-auto min-h-[100vh]">
       {/* Left Side - Sticky Content */}
       <div className="w-full lg:w-2/5 flex flex-col justify-center items-center gap-5">
         <h2 className="font-bold lg:font-extrabold text-3xl lg:text-4xl text-center">
@@ -70,7 +70,10 @@ const BlogSection = () => {
       <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap">
         <div className="flex min-w-full space-x-3 lg:space-x-5">
           {blogs.map((blog) => (
-            <Card key={blog.title} className="border-2 w-[80vw] lg:w-[30vw]">
+            <Card
+              key={blog.title}
+              className="border-2 dark:border-2 w-[80vw] lg:w-[30vw]"
+            >
               <CardHeader>
                 <Image
                   src={blog.imageUrl}
