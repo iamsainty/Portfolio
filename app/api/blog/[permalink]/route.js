@@ -1,4 +1,5 @@
 import { connectToMongo } from "@/lib/mongodb";
+import BlogPost from "@/models/blogposts";
 import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
@@ -6,7 +7,7 @@ export async function GET(request, { params }) {
     const db = await connectToMongo();
     const { permalink } = await params;
 
-    const blogPost = await db.collection("blogposts").findOne({ permalink });
+    const blogPost = await BlogPost.findOne({ permalink });
     if (!blogPost) {
       return NextResponse.json(
         { message: "Blog post not found" },
