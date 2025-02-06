@@ -26,7 +26,7 @@ const BlogSection = ({ blogs }) => {
           I write blog articles about tech, lifestyle, and tutorials, sharing my
           journey of learning and discovering new tools and trends{" "}
         </p>
-        <Link href={"/blogs"} className="hidden lg:flex">
+        <Link href={"/blog"} className="hidden lg:flex">
           <Button className="mt-4">View all blogs</Button>
         </Link>
       </div>
@@ -36,52 +36,54 @@ const BlogSection = ({ blogs }) => {
         <div className="flex min-w-full space-x-3 lg:space-x-5">
           {blogs &&
             blogs.map((blog) => (
-              <Card
-                key={blog.title}
-                className="border-2 dark:border-2 w-[80vw] lg:w-[30vw]"
-              >
-                <CardHeader>
-                  <Image
-                    src={blog.coverimage}
-                    alt={blog.title}
-                    className="w-full h-auto object-cover rounded-lg shadow-md"
-                    height={200}
-                    width={300}
-                  />
-                </CardHeader>
-                <CardContent>
-                  <CardTitle className="text-md lg:text-xl font-bold text-wrap">
-                    {blog.title}
-                  </CardTitle>
-                  <CardDescription className="text-sm lg:text-md text-muted-foreground text-wrap">
-                    {blog.summary}
-                  </CardDescription>
-                </CardContent>
-                <CardFooter className="flex flex-col items-start gap-3 text-sm text-muted-foreground">
-                  <div className="flex items-center gap-2">
-                    <IoTimeOutline className="text-base " />
-                    <span className="font-medium">
-                      {new Date(blog.dateCreated).toLocaleDateString("en-US", {
-                        year: "numeric",
-                        month: "long",
-                        day: "numeric",
-                      })}
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <IoEyeOutline className="text-base " />
-                    <span className="font-medium">
-                      {blog.views.toLocaleString()} views
-                    </span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <FaRegComments className="text-base " />
-                    <span className="font-medium">
-                      {blog.comments.toLocaleString()} comments
-                    </span>
-                  </div>
-                </CardFooter>
-              </Card>
+              <Link key={blog._id} href={`/blog/${blog.permalink}`}>
+                <Card className="border-2 dark:border-2 w-[80vw] lg:w-[30vw]">
+                  <CardHeader>
+                    <Image
+                      src={blog.coverimage}
+                      alt={blog.title}
+                      className="w-full h-auto object-cover rounded-lg shadow-md"
+                      height={200}
+                      width={300}
+                    />
+                  </CardHeader>
+                  <CardContent>
+                    <CardTitle className="text-md lg:text-xl font-bold text-wrap">
+                      {blog.title}
+                    </CardTitle>
+                    <CardDescription className="text-sm lg:text-md text-muted-foreground text-wrap">
+                      {blog.summary}
+                    </CardDescription>
+                  </CardContent>
+                  <CardFooter className="flex flex-col items-start gap-3 text-sm text-muted-foreground">
+                    <div className="flex items-center gap-2">
+                      <IoTimeOutline className="text-base " />
+                      <span className="font-medium">
+                        {new Date(blog.dateCreated).toLocaleDateString(
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <IoEyeOutline className="text-base " />
+                      <span className="font-medium">
+                        {blog.views.toLocaleString()} views
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <FaRegComments className="text-base " />
+                      <span className="font-medium">
+                        {blog.comments.toLocaleString()} comments
+                      </span>
+                    </div>
+                  </CardFooter>
+                </Card>
+              </Link>
             ))}
         </div>
         <ScrollBar orientation="horizontal" />
