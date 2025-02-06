@@ -227,6 +227,9 @@ const NewBlog = () => {
     setLoading(true);
     setMsg("");
     try {
+            // Save editor content
+            const savedData = await editorRef.current.save();
+            console.log( savedData );
       if (!title || !summary || !permalink) {
         setMsg("All fields are required");
         setLoading(false);
@@ -262,8 +265,8 @@ const NewBlog = () => {
         }
       }
 
-      // Save editor content
-      const savedData = await editorRef.current.save();
+
+
 
       const error = await newBlog(
         title,
