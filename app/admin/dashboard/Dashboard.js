@@ -1,27 +1,14 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React from "react";
 
-const Dashboard = ({ adminProfile, status }) => {
-  const router = useRouter();
-
-  useEffect(() => {
-    if (status !== 200) {
-      router.replace("/admin/login");
-    }
-  }, [status, router]);
-
-  if (status !== 200) {
-    return null;
-  }
-
+const Dashboard = ({ admin }) => {
   return (
-  <div>
-    <Button>Project</Button>
-  </div>
-);
+    <div>
+      <Button>Project</Button>
+    </div>
+  );
 };
 
 export default Dashboard;

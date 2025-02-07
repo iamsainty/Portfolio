@@ -43,7 +43,8 @@ export async function POST(req) {
       jwtSecretKey
     );
 
-    cookies().set("adminToken", token, {
+    const cookieStore = await cookies();
+    cookieStore.set("adminToken", token, {
       maxAge: 7 * 24 * 60 * 60,
     });
 

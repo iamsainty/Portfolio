@@ -1,34 +1,25 @@
-import { cookies } from "next/headers";
+"use client";
+
 import React from "react";
+import { useRouter } from "next/navigation";
 import Dashboard from "./Dashboard";
+import { useAdminAuth } from "@/context/adminAuthContext";
 
-async function getAdminProfile(adminToken) {
-  const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/adminprofile`,
-    {
-      method: "GET",
-      headers: {
-        adminToken: adminToken, // Ensure it's a valid string
-        "Content-Type": "application/json",
-      },
-    }
-  );
-  
-  const status = response.status;
-  const data = await response.json();
+export default function Page() {
+  const { admin, loading } = useAdminAuth();
+  const router = useRouter();
 
-  return { status, data };
-}
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-export default async function Page() {
-  const cookiesStore = await cookies();
-  const adminToken = cookiesStore.get("adminToken")?.value; // No `await` needed
-
-  const adminProfile = await getAdminProfile(adminToken);
+  if (!admin) {
+    router.push("/admin/login");
+  }
 
   return (
     <div>
-      <Dashboard adminProfile={adminProfile.data} status={adminProfile.status} />
+      <Dashboard adminProfile={admin} />
     </div>
   );
 }
