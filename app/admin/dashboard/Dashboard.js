@@ -1,12 +1,11 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
 import React from "react";
 
-const Dashboard = ({ admin }) => {
+const Dashboard = () => {
   return (
     <div>
-      <Button>Project</Button>
+      
     </div>
   );
 };
