@@ -6,11 +6,16 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Calendar } from "@/components/ui/calendar";
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover";
+import {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+} from "@/components/ui/popover";
 import { format } from "date-fns";
 import { useState } from "react";
 import { CalendarIcon } from "lucide-react";
 import Image from "next/image";
+import { useProject } from "@/context/projectContext";
 
 export default function Page() {
   const [startDate, setStartDate] = useState(null);
@@ -25,40 +30,44 @@ export default function Page() {
   const [projectBlog, setProjectBlog] = useState("");
   const [status, setStatus] = useState("in-progress");
 
+  const { addProject, loading } = useProject();
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setImage(URL.createObjectURL(e.target.files[0])); // Store the file instead of Base64
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const projectData = {
-      title,
-      description,
-      technologies,
-      permalink,
-      liveLink,
-      githubRepo,
-      projectBlog,
-      startDate,
-      endDate,
-      status,
-      image
-    };
 
-    // Handle the project data (e.g., send it to an API, save to a database, etc.)
-    console.log("Project Data:", projectData);
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      formData.append("title", title);
+      formData.append("description", description);
+      formData.append("technologies", technologies);
+      formData.append("permalink", permalink);
+      formData.append("liveLink", liveLink);
+      formData.append("githubRepo", githubRepo);
+      formData.append("projectBlog", projectBlog);
+      formData.append("startDate", startDate ? startDate.toISOString() : "");
+      formData.append("endDate", endDate ? endDate.toISOString() : "");
+      formData.append("status", status);
+
+      await addProject(formData);
+    } catch (error) {
+      console.error("Error adding project:", error);
+      alert("Failed to add project. Please try again.");
+    }
   };
 
   return (
     <section className="p-8 mx-20 mb-24">
-      <h2 className="text-5xl font-extrabold opacity-90 mb-8">Add a new project</h2>
+      <h2 className="text-5xl font-extrabold opacity-90 mb-8">
+        Add a new project
+      </h2>
 
       <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
         {/* File Upload */}
@@ -76,7 +85,9 @@ export default function Page() {
               height={48}
             />
           ) : (
-            <span className="text-muted-foreground">Click to select an image</span>
+            <span className="text-muted-foreground">
+              Click to select an image
+            </span>
           )}
         </div>
         <Input
@@ -154,24 +165,38 @@ export default function Page() {
           <div className="flex gap-8">
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full flex justify-between">
+                <Button
+                  variant="outline"
+                  className="w-full flex justify-between"
+                >
                   {startDate ? format(startDate, "PPP") : "Start Date"}
                   <CalendarIcon className="w-5 h-5" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar mode="single" selected={startDate} onSelect={setStartDate} />
+                <Calendar
+                  mode="single"
+                  selected={startDate}
+                  onSelect={setStartDate}
+                />
               </PopoverContent>
             </Popover>
             <Popover>
               <PopoverTrigger asChild>
-                <Button variant="outline" className="w-full flex justify-between">
+                <Button
+                  variant="outline"
+                  className="w-full flex justify-between"
+                >
                   {endDate ? format(endDate, "PPP") : "End Date"}
                   <CalendarIcon className="w-5 h-5" />
                 </Button>
               </PopoverTrigger>
               <PopoverContent>
-                <Calendar mode="single" selected={endDate} onSelect={setEndDate} />
+                <Calendar
+                  mode="single"
+                  selected={endDate}
+                  onSelect={setEndDate}
+                />
               </PopoverContent>
             </Popover>
           </div>
@@ -195,7 +220,9 @@ export default function Page() {
         </RadioGroup>
 
         {/* Submit Button */}
-        <Button className="mt-4 w-full text-lg" type="submit">Add Project</Button>
+        <Button className="mt-4 w-full text-lg" type="submit">
+          Add Project
+        </Button>
       </form>
     </section>
   );
