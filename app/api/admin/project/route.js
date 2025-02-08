@@ -52,3 +52,19 @@ export async function POST(req, res) {
     );
   }
 }
+
+export async function GET() {
+  try {
+    await connectToMongo();
+
+    const projects = await Projects.find().sort({ createdAt: -1 });
+
+    return NextResponse.json({ projects }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    return NextResponse.json(
+      { message: "Error fetching projects", error: error.message },
+      { status: 500 }
+    );
+  }
+}

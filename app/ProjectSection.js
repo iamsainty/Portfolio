@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { FaEye, FaGithub } from "react-icons/fa";
@@ -13,56 +15,21 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-
-const projects = [
-  {
-    title: "Project 1",
-    description: "This is a description of project 1",
-    imageUrl:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-    projectLinks: [
-      {
-        linkType: "GitHub",
-        icon: <FaGithub />,
-        url: "https://github.com/project1",
-      },
-      { linkType: "Live", icon: <FaEye />, url: "https://linktoproject1.com" },
-      { linkType: "Blog", icon: <RxReader />, url: "https://linktoblog1.com" },
-    ],
-  },
-  {
-    title: "Project 2",
-    description: "This is a description of project 2",
-    imageUrl:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-    projectLinks: [
-      {
-        linkType: "GitHub",
-        icon: <FaGithub />,
-        url: "https://github.com/project2",
-      },
-      { linkType: "Live", icon: <FaEye />, url: "https://linktoproject2.com" },
-      { linkType: "Blog", icon: <RxReader />, url: "https://linktoblog2.com" },
-    ],
-  },
-  {
-    title: "Project 3",
-    description: "This is a description of project 3",
-    imageUrl:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-    projectLinks: [
-      {
-        linkType: "GitHub",
-        icon: <FaGithub />,
-        url: "https://github.com/project3",
-      },
-      { linkType: "Live", icon: <FaEye />, url: "https://linktoproject3.com" },
-      { linkType: "Blog", icon: <RxReader />, url: "https://linktoblog3.com" },
-    ],
-  },
-];
+import { useProject } from "@/context/projectContext";
 
 const ProjectSection = () => {
+  const { getProjects, projects } = useProject();
+
+  useEffect(() => {
+    getProjects();
+  }, []);
+
+  const [showAll, setShowAll] = useState(false);
+
+  const toggleTechStack = () => {
+    setShowAll((prev) => !prev);
+  };
+
   return (
     <section className="sticky top-[5vh] lg:top-[10vh] w-[85vw] min-h-[90vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 mx-auto mb-[5vh] bg-white dark:bg-black">
       {/* Left Side - Sticky Content */}
@@ -80,45 +47,117 @@ const ProjectSection = () => {
       </div>
 
       {/* Right Side - Scrolling Content */}
-      <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap">
+      <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap rounded-0 py-4">
         <div className="flex min-w-full space-x-3 lg:space-x-5">
           {projects.map((project) => (
             <Card
-              key={project.title}
-              className="border-2 dark:border-2 w-[80vw] lg:w-[30vw]"
+              key={project._id}
+              className=" border-2 w-[80vw] lg:w-[30vw] flex flex-col gap-4"
             >
               <CardHeader>
                 <Image
-                  src={project.imageUrl}
+                  src={project.image}
                   alt={project.title}
-                  className="w-full h-auto object-cover rounded-lg shadow-md"
-                  height={200}
-                  width={300}
+                  className="w-full h-auto object-cover"
+                  height={125}
+                  width={222}
                 />
               </CardHeader>
-              <CardContent>
-                <CardTitle className="text-md lg:text-xl font-bold">
+              <CardContent className="flex flex-col gap-3">
+                <CardTitle className="text-lg lg:text-2xl font-bold">
                   {project.title}
                 </CardTitle>
-                <CardDescription className="text-sm lg:text-lg text-muted-foreground">
-                  {project.description}
+                <CardDescription className="text-sm lg:text-md text-wrap text-muted-foreground">
+                  {project.description.slice(0, 100)}...
                 </CardDescription>
+
+                <div className="flex items-center gap-2 my-2 flex-wrap">
+                  <span className="text-sm font-semibold">Tech Stack :</span>
+                  {showAll
+                    ? project.technologies.map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 text-xs font-medium border rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))
+                    : project.technologies.slice(0, 1).map((tech, index) => (
+                        <span
+                          key={index}
+                          className="px-3 py-1 text-xs font-medium border rounded-full"
+                        >
+                          {tech}
+                        </span>
+                      ))}
+
+                  {project.technologies.length > 1 && !showAll && (
+                    <span
+                      onClick={toggleTechStack}
+                      className="px-3 py-1 text-xs font-medium text-muted-foreground cursor-pointer"
+                    >
+                      +{project.technologies.length - 1} more
+                    </span>
+                  )}
+                  {showAll && project.technologies.length > 1 && (
+                    <span
+                      onClick={toggleTechStack}
+                      className="px-3 py-1 text-xs font-medium text-muted-foreground cursor-pointer"
+                    >
+                      Show less
+                    </span>
+                  )}
+                </div>
+
+                {/* Displaying Project Status */}
+                <div className="text-sm font-semibold">
+                  <span>Status:</span>
+                  <span
+                    className={`mt-2 text-xs font-normal ml-2 px-4 py-1 rounded-full ${
+                      project.status === "completed"
+                        ? "bg-green-200 dark:bg-green-800 text-green-950 dark:text-green-100"
+                        : "bg-yellow-200 dark:bg-yellow-800 text-yellow-950 dark:text-yellow-100"
+                    }`}
+                  >
+                    {project.status === "completed"
+                      ? "Completed"
+                      : "In Progress"}
+                  </span>
+                </div>
               </CardContent>
-              <CardFooter className="flex justify-around gap-3 w-full">
-                {project.projectLinks.map((link) => (
-                  <Link key={link.linkType} href={link.url} target="_blank">
+              <CardFooter className="flex justify-around w-full">
+                {project.liveLink && (
+                  <Link href={project.liveLink} target="_blank">
                     <Button variant="outline" className="px-4">
-                      {link.icon}
-                      <span className="hidden md:flex"> {link.linkType} </span>
+                      <FaEye />
+                      <span className=" md:flex"> Live </span>
                     </Button>
                   </Link>
-                ))}
+                )}
+                {project.githubRepo && (
+                  <Link href={project.githubRepo} target="_blank">
+                    <Button variant="outline" className="px-4">
+                      <FaGithub />
+                      <span className=" md:flex"> Github </span>
+                    </Button>
+                  </Link>
+                )}
+                {project.projectBlog && (
+                  <Link href={project.projectBlog} target="_blank">
+                    <Button variant="outline" className="px-4">
+                      <RxReader />
+                      <span className=" md:flex"> Blog </span>
+                    </Button>
+                  </Link>
+                )}
               </CardFooter>
             </Card>
           ))}
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
+
+      {/* Mobile View Link to View All Projects */}
       <Link href={"/projects"} className="lg:hidden">
         <Button>View all projects</Button>
       </Link>

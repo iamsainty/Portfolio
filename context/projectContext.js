@@ -48,8 +48,31 @@ export const ProjectProvider = ({ children }) => {
     }
   };
 
+  const getProjects = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/project`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      const data = await response.json();
+      setProjects(data.projects);
+    } catch (error) {
+      console.error("Error during project fetching:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <ProjectContext.Provider value={{ loading, projects, addProject }}>
+    <ProjectContext.Provider
+      value={{ loading, projects, addProject, getProjects }}
+    >
       {children}
     </ProjectContext.Provider>
   );
