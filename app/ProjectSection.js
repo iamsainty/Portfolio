@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import { FaEye, FaGithub } from "react-icons/fa";
+import { FaEye, FaGithub, FaRegCalendarPlus } from "react-icons/fa";
 import { RxReader } from "react-icons/rx";
 import Link from "next/link";
 import {
@@ -17,18 +17,18 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { useProject } from "@/context/projectContext";
 
+const formatDate = (dateString) => {
+  if (!dateString) return "Ongoing";
+  const date = new Date(dateString);
+  return date.toLocaleDateString("en-US", { month: "short", year: "numeric" });
+};
+
 const ProjectSection = () => {
   const { getProjects, projects } = useProject();
 
   useEffect(() => {
     getProjects();
   }, []);
-
-  const [showAll, setShowAll] = useState(false);
-
-  const toggleTechStack = () => {
-    setShowAll((prev) => !prev);
-  };
 
   return (
     <section className="sticky top-[5vh] lg:top-[10vh] w-[85vw] min-h-[90vh] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 mx-auto mb-[5vh] bg-white dark:bg-black">
@@ -41,7 +41,7 @@ const ProjectSection = () => {
           I build full-stack web applications with React, Next.js, Node.js, and
           other modern technologies. Here are some of my recent projects.
         </p>
-        <Link href={"/projects"} className="hidden lg:flex">
+        <Link href={"/project"} className="hidden lg:flex">
           <Button className="mt-4">View all projects</Button>
         </Link>
       </div>
@@ -72,57 +72,32 @@ const ProjectSection = () => {
                 </CardDescription>
 
                 <div className="flex items-center gap-2 my-2 flex-wrap">
-                  <span className="text-sm font-semibold">Tech Stack :</span>
-                  {showAll
-                    ? project.technologies.map((tech, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 text-xs font-medium border rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))
-                    : project.technologies.slice(0, 1).map((tech, index) => (
-                        <span
-                          key={index}
-                          className="px-3 py-1 text-xs font-medium border rounded-full"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-
-                  {project.technologies.length > 1 && !showAll && (
+                  {project.technologies.slice(0, 2).map((tech, index) => (
                     <span
-                      onClick={toggleTechStack}
-                      className="px-3 py-1 text-xs font-medium text-muted-foreground cursor-pointer"
+                      key={index}
+                      className="px-3 py-1 text-xs font-medium border bg-muted rounded-full"
                     >
-                      +{project.technologies.length - 1} more
+                      {tech}
                     </span>
-                  )}
-                  {showAll && project.technologies.length > 1 && (
+                  ))}
+
+                  {project.technologies.length > 2 && (
                     <span
-                      onClick={toggleTechStack}
                       className="px-3 py-1 text-xs font-medium text-muted-foreground cursor-pointer"
                     >
-                      Show less
+                      +{project.technologies.length - 2} more
                     </span>
                   )}
                 </div>
 
                 {/* Displaying Project Status */}
-                <div className="text-sm font-semibold">
-                  <span>Status:</span>
-                  <span
-                    className={`mt-2 text-xs font-normal ml-2 px-4 py-1 rounded-full ${
-                      project.status === "completed"
-                        ? "bg-green-200 dark:bg-green-800 text-green-950 dark:text-green-100"
-                        : "bg-yellow-200 dark:bg-yellow-800 text-yellow-950 dark:text-yellow-100"
-                    }`}
-                  >
-                    {project.status === "completed"
-                      ? "Completed"
-                      : "In Progress"}
-                  </span>
+                <div className="flex items-center gap-2">
+                  <FaRegCalendarPlus className="text-muted-foreground" />
+                  <p className="text-sm text-muted-foreground">
+                    <strong> Duration : </strong>{" "}
+                    {formatDate(project.startDate)} -{" "}
+                    {formatDate(project.endDate)}
+                  </p>
                 </div>
               </CardContent>
               <CardFooter className="flex justify-around w-full">

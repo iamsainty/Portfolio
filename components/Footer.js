@@ -7,7 +7,7 @@ const footerSections = [
     items: [
       { label: "Home", url: "/" },
       { label: "About", url: "/page/about" },
-      { label: "Projects", url: "/projects" },
+      { label: "Project", url: "/project" },
       { label: "Blog", url: "/blog" },
     ],
   },

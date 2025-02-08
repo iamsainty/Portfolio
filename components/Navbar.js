@@ -20,7 +20,7 @@ import { ModeToggle } from "./ModeToggleButton";
 const NavbarLinks = [
   { label: "Home", href: "/" },
   { label: "About", href: "/about" },
-  { label: "Projects", href: "/projects" },
+  { label: "Project", href: "/project" },
   { label: "Blog", href: "/blog" },
 ];
 
@@ -40,7 +40,7 @@ const Navbar = () => {
               <NavigationMenuItem key={link.href}>
                 <Link href={link.href}>
                   {/* <NavigationMenuLink className="text-md rounded-md cursor-pointer"> */}
-                    {link.label}
+                  {link.label}
                   {/* </NavigationMenuLink> */}
                 </Link>
               </NavigationMenuItem>
