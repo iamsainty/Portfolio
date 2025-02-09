@@ -19,7 +19,7 @@ import { ModeToggle } from "./ModeToggleButton";
 
 const NavbarLinks = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
+  { label: "About", href: "/page/about" },
   { label: "Project", href: "/project" },
   { label: "Blog", href: "/blog" },
 ];
