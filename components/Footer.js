@@ -24,9 +24,9 @@ const footerSections = [
   {
     title: "Site Information",
     items: [
+      { label: "Contact", url: "/page/contact" },
       { label: "Disclaimer", url: "/page/disclaimer" },
       { label: "Privacy Policy", url: "/page/privacy-policy" },
-      { label: "GDPR Compliance", url: "/page/gdpr-compliance" },
       { label: "Sitemap", url: "/sitemap.xml" },
     ],
   },
@@ -73,7 +73,8 @@ const Footer = () => {
               </Link>
             </p>
             <p className="text-white font-medium">
-              Designed and Developed with &hearts; by <span className="font-bold text-base">Priyanshu Chaurasiya</span>
+              Designed and Developed with &hearts; by{" "}
+              <span className="font-bold text-base">Priyanshu Chaurasiya</span>
             </p>
           </div>
         </div>
