@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Footer from "@/components/Footer";
 import { AdminAuthProvider } from "@/context/adminAuthContext";
 import { ProjectProvider } from "@/context/projectContext";
+import { BlogProvider } from "@/context/blogContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -35,16 +36,18 @@ export default function RootLayout({ children }) {
       >
         <AdminAuthProvider>
           <ProjectProvider>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="system"
-              enableSystem
-              disableTransitionOnChange
-            >
-              <Navbar />
-              {children}
-              <Footer />
-            </ThemeProvider>
+            <BlogProvider>
+              <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+              >
+                <Navbar />
+                {children}
+                <Footer />
+              </ThemeProvider>
+            </BlogProvider>
           </ProjectProvider>
         </AdminAuthProvider>
       </body>

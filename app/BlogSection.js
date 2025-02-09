@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,8 +15,14 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 import { FaRegComments } from "react-icons/fa";
+import { useBlog } from "@/context/blogContext";
 
-const BlogSection = ({ blogs }) => {
+const BlogSection = () => {
+  const { blogs, getBlogs } = useBlog();
+  useEffect(() => {
+    getBlogs();
+    // eslint-disable-next-line
+  }, []);
   return (
     <section className="sticky top-[5vh] lg:top-[10vh] bg-white dark:bg-black w-[85vw] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 py-[5vh] mx-auto min-h-[100vh]">
       {/* Left Side - Sticky Content */}

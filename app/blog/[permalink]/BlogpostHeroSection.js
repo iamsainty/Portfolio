@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -10,9 +12,19 @@ import {
 import Image from "next/image";
 import { Dot } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
+import { useBlog } from "@/context/blogContext";
+import BlogNotFound from "./BlogNotFound";
 
-const BlogpostHeroSection = ({ blogpost }) => {
-  if (!blogpost) return null;
+const BlogpostHeroSection = ({ permalink }) => {
+  const { blogpost, loading, getBlogpost } = useBlog();
+  useEffect(() => {
+    getBlogpost(permalink);
+    // eslint-disable-next-line
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
+  if (!blogpost) return <BlogNotFound />;
 
   // Convert date to "time ago" format
   const timeAgo = formatDistanceToNow(new Date(blogpost.dateCreated), {

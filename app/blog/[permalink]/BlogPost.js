@@ -1,4 +1,6 @@
-import React from "react";
+"use client";
+
+import React, { useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -7,12 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import SyntaxHighlighter from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import { useBlog } from "@/context/blogContext";
 
-const BlogPost = ({ blogpost }) => {
+const BlogPost = ({ permalink }) => {
+  const { blogpost, loading, getBlogpost } = useBlog();
+  useEffect(() => {
+    getBlogpost(permalink);
+    // eslint-disable-next-line
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+
   if (!blogpost) return null;
-
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;
   return (
     <section className="md:w-4/5 lg:w-3/5 container px-6 flex flex-col gap-3">

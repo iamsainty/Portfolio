@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -6,13 +8,19 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useBlog } from "@/context/blogContext";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaRegComments } from "react-icons/fa";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 
-const Blogs = ({ blogs }) => {
+const Blogs = () => {
+  const { blogs, getBlogs } = useBlog();
+  useEffect(() => {
+    getBlogs();
+    // eslint-disable-next-line
+  }, []);
   return (
     <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-5 my-20">
       {blogs &&
