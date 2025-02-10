@@ -1,3 +1,38 @@
+export const metadata = {
+  title: "Privacy Policy - Hey Sainty",
+  description:
+    "At Hey Sainty, your privacy is important to us. This Privacy Policy explains how we collect, use, protect, and share your personal data when you use this website.",
+  keywords: [
+    "Privacy Policy",
+    "Hey Sainty Privacy",
+    "Data Protection",
+    "Personal Data",
+    "Privacy Policy Hey Sainty",
+  ],
+  author: "Priyanshu Chaurasiya",
+  canonical: "https://hey-sainty.web.app/page/privacy-policy",
+  openGraph: {
+    type: "website",
+    site_name: "Hey Sainty",
+    title: "Privacy Policy - Hey Sainty",
+    description:
+      "Read the privacy policy for Hey Sainty to understand how we collect and manage your personal data to enhance your experience on the website.",
+    url: "https://hey-sainty.web.app/page/privacy-policy",
+    image:
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Privacy Policy - Hey Sainty",
+    description:
+      "Learn how we protect your personal data on Hey Sainty with our detailed privacy policy.",
+    image:
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    creator: "@iam__sainty",
+  },
+};
+
 export default function PrivacyPolicy() {
   return (
     <div className="w-full lg:w-3/5 mx-auto p-6">

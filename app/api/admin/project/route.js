@@ -57,7 +57,7 @@ export async function GET() {
   try {
     await connectToMongo();
 
-    const projects = await Projects.find().sort({ createdAt: -1 });
+    const projects = await Projects.find().sort({ startDate: -1 });
 
     return NextResponse.json({ projects }, { status: 200 });
   } catch (error) {

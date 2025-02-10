@@ -1,7 +1,45 @@
+export const metadata = {
+  title:
+    "About Hey Sainty - My Journey as a Developer, Tech Enthusiast & Blogger",
+  description:
+    "Hey Sainty started as a simple React project and grew into a full-stack platform for sharing tech blogs, personal projects, and insights. Learn more about my journey, vision, and what you can explore on this evolving tech-focused website!",
+  keywords: [
+    "Hey Sainty",
+    "Priyanshu Chaurasiya",
+    "Priyanshu Sainty",
+    "About Hey Sainty",
+    "About Sainty",
+  ],
+  author: "Priyanshu Chaurasiya",
+  canonical: "https://hey-sainty.web.app/page/about",
+  openGraph: {
+    type: "website",
+    site_name: "Hey Sainty",
+    title: "About - Hey Sainty",
+    description:
+      "Hey Sainty is a tech-focused platform where I share blogs, projects, and insights from my journey as a developer. Explore programming topics, tech trends, and more!",
+    url: "https://hey-sainty.web.app/page/about",
+    image:
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "About - Hey Sainty",
+    description:
+      "Hey Sainty is a tech-focused platform where I share blogs, projects, and insights from my journey as a developer. Explore programming topics, tech trends, and more!",
+    image:
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    creator: "@iam__sainty",
+  },
+};
+
 export default function Page() {
   return (
     <div className="w-full lg:w-3/5 mx-auto p-6">
-      <h1 className="text-3xl lg:text-5xl font-extrabold my-10">About Hey Sainty!</h1>
+      <h1 className="text-3xl lg:text-5xl font-extrabold my-10">
+        About Hey Sainty!
+      </h1>
       <p className="text-lg mb-8 leading-relaxed text-justify">
         Hey Sainty started as a simple hands-on project to learn React, but it
         quickly evolved into something much bigger. What began as an experiment
@@ -49,7 +87,9 @@ export default function Page() {
         </li>
       </ul>
 
-      <h2 className="text-xl lg:text-3xl font-bold mt-10 mb-4">What Can You Do Here?</h2>
+      <h2 className="text-xl lg:text-3xl font-bold mt-10 mb-4">
+        What Can You Do Here?
+      </h2>
       <p className="text-lg">As a visitor or a registered user, you can:</p>
       <ul className="list-disc pl-8 text-lg space-y-3 mt-4">
         <li className="leading-relaxed text-justify">
@@ -73,7 +113,9 @@ export default function Page() {
         </li>
       </ul>
 
-      <h2 className="text-xl lg:text-3xl font-bold mt-10 mb-4">The Journey Ahead</h2>
+      <h2 className="text-xl lg:text-3xl font-bold mt-10 mb-4">
+        The Journey Ahead
+      </h2>
       <p className="text-xl mb-8 leading-relaxed text-justify">
         Hey Sainty is a work in progress, and I&apos;m excited about the
         possibilities. I have plans to enhance user experience, introduce more

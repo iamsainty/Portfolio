@@ -24,14 +24,14 @@ const projectSchema = new mongoose.Schema({
   projectBlog: {
     type: String,
   },
-    startDate: {
-      type: Date,
-      default: Date.now(),
-    },
-    endDate: {
-      type: Date,
-      default: null,
-    },
+  startDate: {
+    type: Date,
+    default: Date.now(),
+  },
+  endDate: {
+    type: Date,
+    default: null,
+  },
   status: {
     type: String,
     enum: ["completed", "in-progress"],
