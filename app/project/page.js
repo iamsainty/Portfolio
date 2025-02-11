@@ -4,13 +4,13 @@ import Projects from "./Projects";
 export async function generateMetadata() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/project`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/project`,
       {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
-        cache: "no-store",
+        next: { revalidate: 3600 },
       }
     );
 

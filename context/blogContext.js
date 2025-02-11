@@ -19,6 +19,7 @@ export const BlogProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
+          next: { revalidate: 3600 },
         }
       );
       const blogs = await response.json();
@@ -40,6 +41,7 @@ export const BlogProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
+          next: { revalidate: 3600 },
         }
       );
 

@@ -23,7 +23,7 @@ export const ProjectProvider = ({ children }) => {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/project`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/project`,
         {
           method: "POST",
           headers: {
@@ -52,7 +52,7 @@ export const ProjectProvider = ({ children }) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/project`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/project`,
         {
           method: "GET",
           headers: {
