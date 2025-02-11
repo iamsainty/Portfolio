@@ -40,7 +40,7 @@ const BlogSection = () => {
       </div>
 
       {/* Right Side - Scrolling Content */}
-      <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap">
+      <ScrollArea className="w-full lg:w-3/5 whitespace-nowrap p-4">
         <div className="flex min-w-full space-x-3 lg:space-x-5">
           {blogs &&
             blogs.map((blog) => (

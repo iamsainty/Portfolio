@@ -32,7 +32,7 @@ const AboutSection = () => {
   return (
     <section className="sticky top-[5vh] lg:top-[10vh] mx-5 w-[85vw] lg:w-[75vw] flex flex-col justify-evenly items-center gap-6 lg:gap-12 min-h-[90vh] mb-16 lg:mb-0 bg-white dark:bg-black">
       <h2 className="lg:hidden font-bold lg:font-extrabold text-3xl sm:text-3xl text-center">
-        About Myself
+        Know Myself
       </h2>
       <div className="flex flex-col lg:flex-row lg:items-center gap-8">
         <div className="w-full lg:w-1/3 flex flex-col items-center gap-6 justify-between">
@@ -53,7 +53,7 @@ const AboutSection = () => {
               <Button
                 variant="outline"
                 key={handle.link}
-                className="p-2 border-2"
+                className="p-2 border-2 bg-muted"
                 href={handle.link}
                 target="_blank"
               >
@@ -64,7 +64,7 @@ const AboutSection = () => {
         </div>
         <div className="w-full lg:w-2/3 text-center flex flex-col items-center gap-6">
           <h2 className="hidden lg:flex font-bold lg:font-extrabold text-2xl sm:text-3xl lg:text-4xl text-center">
-            About Myself
+            Know Myself
           </h2>
           <p className="text-lg hidden lg:flex">
             I&apos;m a software developer and tech enthusiast. I build web

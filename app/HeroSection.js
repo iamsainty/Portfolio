@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 import React from "react";
 import { IoIosCode } from "react-icons/io";
 import { RxReader } from "react-icons/rx";
@@ -21,19 +22,23 @@ const HeroSection = () => {
       <nav aria-label="Primary">
         <ul className="flex w-full flex-col sm:flex-row gap-4">
           <li>
-            <Button className="flex w-full items-center gap-2 px-5 py-3 text-md lg:text-lg">
-              <IoIosCode className="text-xl" />
-              View Projects
-            </Button>
+            <Link href={"/project"}>
+              <Button className="flex w-full items-center gap-2 px-5 py-3 text-md lg:text-lg">
+                <IoIosCode className="text-xl" />
+                View Projects
+              </Button>
+            </Link>
           </li>
           <li>
-            <Button
-              variant="outline"
-              className="flex items-center w-full gap-2 px-5 py-3 text-md lg:text-lg border border-black dark:border-white"
-            >
-              <RxReader className="text-xl" />
-              Read Blogs
-            </Button>
+            <Link href={"/blog"}>
+              <Button
+                variant="outline"
+                className="flex items-center w-full gap-2 px-5 py-3 text-md lg:text-lg border border-black dark:border-white"
+              >
+                <RxReader className="text-xl" />
+                Read Blogs
+              </Button>
+            </Link>
           </li>
         </ul>
       </nav>
