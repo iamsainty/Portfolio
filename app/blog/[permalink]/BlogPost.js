@@ -18,7 +18,7 @@ const BlogPost = ({ permalink }) => {
     // eslint-disable-next-line
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if(loading) return null;
 
   if (!blogpost) return null;
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;

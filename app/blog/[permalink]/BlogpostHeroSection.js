@@ -14,6 +14,7 @@ import { Dot } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useBlog } from "@/context/blogContext";
 import BlogNotFound from "./BlogNotFound";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const BlogpostHeroSection = ({ permalink }) => {
   const { blogpost, loading, getBlogpost } = useBlog();
@@ -22,7 +23,34 @@ const BlogpostHeroSection = ({ permalink }) => {
     // eslint-disable-next-line
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) {
+    return (
+      <div className="px-6 py-10 md:py-14 lg:py-16 flex flex-col justify-evenly items-center gap-10 lg:w-3/5 mx-auto">
+        {/* Breadcrumb Skeleton */}
+        <div className="border px-4 py-2 rounded-full mb-8 bg-gray-50 dark:bg-gray-800 dark:text-white">
+          <div className="flex space-x-2 text-xs md:text-sm">
+            <Skeleton className="h-4 w-12" />
+            <span>/</span>
+            <Skeleton className="h-4 w-12" />
+            <span>/</span>
+            <Skeleton className="h-4 w-16" />
+          </div>
+        </div>
+
+        {/* Blog Title & Author Skeleton */}
+        <div className="text-center w-full mx-auto flex flex-col items-center gap-4 md:gap-6 lg:gap-8">
+          <Skeleton className="h-10 w-full" /> {/* Title */}
+          <div className="flex flex-row items-center justify-center space-x-2 text-sm md:text-base text-muted-foreground">
+            <Skeleton className="h-6 w-24" /> {/* Author */}
+            <Skeleton className="h-6 w-16" /> {/* Time ago */}
+          </div>
+        </div>
+
+        {/* Blog Cover Image Skeleton */}
+          <Skeleton className="w-full h-[300px] md:h-[450px] lg:h-[600px] rounded-xl" />
+      </div>
+    );
+  }
 
   if (!blogpost) return <BlogNotFound />;
 

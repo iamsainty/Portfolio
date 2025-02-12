@@ -61,12 +61,15 @@ export const ProjectProvider = ({ children }) => {
         }
       );
       const data = await response.json();
+
       setProjects(data.projects);
     } catch (error) {
       console.error("Error during project fetching:", error);
     } finally {
+    setTimeout(() => {
       setLoading(false);
-    }
+    }, 1000);
+  }
   };
 
   return (
