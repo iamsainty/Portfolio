@@ -6,6 +6,7 @@ import Footer from "@/components/Footer";
 import { AdminAuthProvider } from "@/context/adminAuthContext";
 import { ProjectProvider } from "@/context/projectContext";
 import { BlogProvider } from "@/context/blogContext";
+import Script from "next/script";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +27,30 @@ const funnelSans = Funnel_Sans({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=G-0RVS5CP3S2`}
+          strategy="afterInteractive"
+        />
+        <Script id="google-analytics" strategy="afterInteractive">
+          {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-0RVS5CP3S2');
+  `}
+        </Script>
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="nUb5b+mJnjM5CCCEkPXVlA"
+          async
+        />
+        <meta
+          name="google-site-verification"
+          content="GhtSs3z27IAUGukWh38CcKxeUUO_o_y9OCRaozedRUg"
+        />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
       >
