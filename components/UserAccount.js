@@ -11,6 +11,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { FaUserCircle } from "react-icons/fa";
+import UserSignUpDialog from "./userAuth/UserSignUpDialog";
+import UserSignInDialog from "./userAuth/UserSignInDialog";
 
 export function UserAccount() {
   const [open, setOpen] = useState(false);
@@ -25,11 +27,21 @@ export function UserAccount() {
           <FaUserCircle size={28} className="hidden md:flex" />
           <FaUserCircle size={20} className="md:hidden" />
         </DropdownMenuTrigger>
-        <DropdownMenuContent>
+        <DropdownMenuContent className="mr-8 mt-4 border border-muted-foreground ">
           <DropdownMenuLabel>Access your account</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem>Sign in</DropdownMenuItem>
-          <DropdownMenuItem>Sign up</DropdownMenuItem>
+          <DropdownMenuSeparator className="bg-muted-foreground" />
+          <div className="flex flex-col gap-1 items-start my-2">
+            <DropdownMenuItem asChild>
+              <div className="flex justify-center w-full hover:bg-muted-foreground">
+                <UserSignInDialog />
+              </div>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <div className="flex justify-center w-full hover:bg-muted-foreground">
+                <UserSignUpDialog />
+              </div>
+            </DropdownMenuItem>
+          </div>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>
