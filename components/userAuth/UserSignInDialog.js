@@ -1,23 +1,35 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+"use client";
+
+import React, { useState } from "react";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import UserSignUpDialog from "./UserSignUpDialog";
 
 const UserSignInDialog = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
-      <DialogTrigger className="rounded-lg text-center">Sign in</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        className="rounded-lg text-center"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(true);
+        }}
+      >
+        Sign in
+      </DialogTrigger>
 
       <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
         <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
           {/* Left Section */}
           <div className="flex items-center justify-center lg:w-1/2 px-4">
             <div className="text-center space-y-3">
-              <h2 className="text-xl lg:text-2xl font-semibold">
+              <DialogTitle className="text-xl lg:text-2xl font-semibold">
                 Welcome Back
-              </h2>
+              </DialogTitle>
               <p className="text-sm text-muted-foreground">
                 Sign in to continue where you left off.
               </p>
@@ -55,7 +67,13 @@ const UserSignInDialog = () => {
             {/* Sign Up Link */}
             <p className="text-xs text-center text-muted-foreground">
               Don’t have an account?{" "}
-              <span className="text-primary hover:underline cursor-pointer transition">
+              <span
+                className="text-primary hover:underline cursor-pointer transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(false);
+                }}
+              >
                 <UserSignUpDialog />
               </span>
             </p>

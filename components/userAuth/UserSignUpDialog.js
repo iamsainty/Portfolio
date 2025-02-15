@@ -1,21 +1,33 @@
-import React from "react";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+"use client"
+
+import React, { useState } from "react";
+import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import UserSignInDialog from "./UserSignInDialog";
 
 const UserSignUpDialog = () => {
+  const [open, setOpen] = useState(false);
+
   return (
-    <Dialog>
-      <DialogTrigger className="rounded-lg text-center">Sign up</DialogTrigger>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger
+        className="rounded-lg text-center"
+        onClick={(e) => {
+          e.stopPropagation();
+          setOpen(true);
+        }}
+      >
+        Sign up
+      </DialogTrigger>
 
       <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
         <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
           {/* Left Section - Sign-Up Message */}
           <div className="flex items-center justify-center lg:w-1/2 px-4">
             <div className="text-center space-y-3">
-              <h2 className="text-xl lg:text-2xl font-semibold">Join now</h2>
+              <DialogTitle className="text-xl lg:text-2xl font-semibold">Join now</DialogTitle>
               <p className="text-sm text-muted-foreground">
                 Create an account to get started
               </p>
@@ -60,7 +72,13 @@ const UserSignUpDialog = () => {
             {/* Sign In Link */}
             <p className="text-xs text-center text-muted-foreground">
               Already have an account?{" "}
-              <span className="text-primary hover:underline cursor-pointer transition">
+              <span
+                className="text-primary hover:underline cursor-pointer transition"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setOpen(false);
+                }}
+              >
                 <UserSignInDialog />
               </span>
             </p>

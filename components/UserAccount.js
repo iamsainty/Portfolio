@@ -30,14 +30,21 @@ export function UserAccount() {
         <DropdownMenuContent className="mr-8 mt-4 border border-muted-foreground ">
           <DropdownMenuLabel>Access your account</DropdownMenuLabel>
           <DropdownMenuSeparator className="bg-muted-foreground" />
-          <div className="flex flex-col gap-1 items-start my-2">
-            <DropdownMenuItem asChild>
-              <div className="flex justify-center w-full hover:bg-muted-foreground">
+          <div className="flex flex-col gap-1 items-center my-2 w-full">
+            <DropdownMenuItem>
+              <div
+                className="flex justify-center w-full px-8"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <UserSignInDialog />
               </div>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <div className="flex justify-center w-full hover:bg-muted-foreground">
+
+            <DropdownMenuItem>
+              <div
+                className="flex justify-center w-full px-8"
+                onClick={(e) => e.stopPropagation()}
+              >
                 <UserSignUpDialog />
               </div>
             </DropdownMenuItem>
