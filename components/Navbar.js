@@ -16,6 +16,7 @@ import { RxHamburgerMenu } from "react-icons/rx";
 
 import Link from "next/link";
 import { ModeToggle } from "./ModeToggleButton";
+import { UserAccount } from "./UserAccount";
 
 const NavbarLinks = [
   { label: "Home", href: "/" },
@@ -26,7 +27,7 @@ const NavbarLinks = [
 
 const Navbar = () => {
   return (
-    <header className="flex justify-center w-full h-[15vh]">
+    <header className="flex justify-center w-full h-[15vh] items-center">
       <nav className="fixed top-8 w-4/5 sm:w-3/5 container bg-white dark:bg-black border border-black dark:border-white px-5 sm:pl-10 sm:pr-2 py-1 sm:py-2 rounded-full flex justify-between items-center z-10">
         {/* Logo / Brand */}
         <Link href="/" aria-label="Homepage" title="Hey Sainty - Home">
@@ -55,7 +56,8 @@ const Navbar = () => {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center justify-between gap-1">
+          <UserAccount />
           <ModeToggle />
 
           <Sheet>
