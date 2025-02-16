@@ -7,6 +7,7 @@ import { AdminAuthProvider } from "@/context/adminAuthContext";
 import { ProjectProvider } from "@/context/projectContext";
 import { BlogProvider } from "@/context/blogContext";
 import Script from "next/script";
+import { UserAuthProvider } from "@/context/user/authContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -54,22 +55,24 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
       >
-        <AdminAuthProvider>
-          <ProjectProvider>
-            <BlogProvider>
-              <ThemeProvider
-                attribute="class"
-                defaultTheme="system"
-                enableSystem
-                disableTransitionOnChange
-              >
-                <Navbar />
-                {children}
-                <Footer />
-              </ThemeProvider>
-            </BlogProvider>
-          </ProjectProvider>
-        </AdminAuthProvider>
+        <UserAuthProvider>
+          <AdminAuthProvider>
+            <ProjectProvider>
+              <BlogProvider>
+                <ThemeProvider
+                  attribute="class"
+                  defaultTheme="system"
+                  enableSystem
+                  disableTransitionOnChange
+                >
+                  <Navbar />
+                  {children}
+                  <Footer />
+                </ThemeProvider>
+              </BlogProvider>
+            </ProjectProvider>
+          </AdminAuthProvider>
+        </UserAuthProvider>
       </body>
     </html>
   );

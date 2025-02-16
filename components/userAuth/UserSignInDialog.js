@@ -13,14 +13,19 @@ import { FcGoogle } from "react-icons/fc";
 import UserSignUpDialog from "./UserSignUpDialog";
 import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
+import { useUserAuth } from "@/context/user/authContext";
 
 const UserSignInDialog = () => {
   const [open, setOpen] = useState(false);
 
+  const { googleAuth } = useUserAuth();
+
   const handleGoogleAuth = async () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
-      console.log(result.user);
+      const user = result.user;
+      googleAuth(user.displayName, user.email, user.uid, user.photoURL);
+      window.location.reload();
     } catch (error) {
       console.error(error);
     }
