@@ -1,14 +1,30 @@
-"use client"
+"use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import UserSignInDialog from "./UserSignInDialog";
+import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const UserSignUpDialog = () => {
   const [open, setOpen] = useState(false);
+
+  const handleGoogleAuth = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log(result.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -27,7 +43,9 @@ const UserSignUpDialog = () => {
           {/* Left Section - Sign-Up Message */}
           <div className="flex items-center justify-center lg:w-1/2 px-4">
             <div className="text-center space-y-3">
-              <DialogTitle className="text-xl lg:text-2xl font-semibold">Join now</DialogTitle>
+              <DialogTitle className="text-xl lg:text-2xl font-semibold">
+                Join now
+              </DialogTitle>
               <p className="text-sm text-muted-foreground">
                 Create an account to get started
               </p>
@@ -64,6 +82,7 @@ const UserSignUpDialog = () => {
             <Button
               variant="outline"
               className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
+              onClick={handleGoogleAuth}
             >
               <FcGoogle size={20} />
               <span className="text-sm">Sign up with Google</span>
@@ -76,7 +95,6 @@ const UserSignUpDialog = () => {
                 className="text-primary hover:underline cursor-pointer transition"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpen(false);
                 }}
               >
                 <UserSignInDialog />

@@ -1,14 +1,30 @@
 "use client";
 
 import React, { useState } from "react";
-import { Dialog, DialogContent, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
 import UserSignUpDialog from "./UserSignUpDialog";
+import { auth, googleProvider } from "@/lib/firebase";
+import { signInWithPopup } from "firebase/auth";
 
 const UserSignInDialog = () => {
   const [open, setOpen] = useState(false);
+
+  const handleGoogleAuth = async () => {
+    try {
+      const result = await signInWithPopup(auth, googleProvider);
+      console.log(result.user);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -59,6 +75,7 @@ const UserSignInDialog = () => {
             <Button
               variant="outline"
               className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
+              onClick={handleGoogleAuth}
             >
               <FcGoogle size={20} />
               <span className="text-sm">Sign in with Google</span>
@@ -71,7 +88,6 @@ const UserSignInDialog = () => {
                 className="text-primary hover:underline cursor-pointer transition"
                 onClick={(e) => {
                   e.stopPropagation();
-                  setOpen(false);
                 }}
               >
                 <UserSignUpDialog />
