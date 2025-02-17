@@ -15,18 +15,20 @@ export async function POST(req) {
 
     if (!user) {
       return NextResponse.json(
-        { message: "User with  this email does not exist" },
+        { message: "User with this email does not exist" },
         { status: 404 }
       );
     }
 
-    if (user && user.password === null) {
+    // Check if user password is null or undefined
+    if (!user.password) {
       return NextResponse.json(
         { message: "This email is linked with Google Sign-In" },
         { status: 400 }
       );
     }
 
+    // Compare passwords
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
@@ -36,6 +38,7 @@ export async function POST(req) {
       );
     }
 
+    // Create and return the token
     const userToken = jwt.sign({ email: email, id: user._id }, jwtSecretKey);
 
     return NextResponse.json(userToken, { status: 200 });

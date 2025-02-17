@@ -14,11 +14,14 @@ import UserSignUpDialog from "./UserSignUpDialog";
 import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useUserAuth } from "@/context/user/authContext";
+import { LuLoaderCircle } from "react-icons/lu";
 
 const UserSignInDialog = () => {
   const [open, setOpen] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-  const { googleAuth } = useUserAuth();
+  const { googleAuth, loading, error, signInEmailPass } = useUserAuth();
 
   const handleGoogleAuth = async () => {
     try {
@@ -26,6 +29,14 @@ const UserSignInDialog = () => {
       const user = result.user;
       googleAuth(user.displayName, user.email, user.uid, user.photoURL);
       window.location.reload();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleSignIn = async () => {
+    try {
+      await signInEmailPass(email, password);
     } catch (error) {
       console.error(error);
     }
@@ -64,6 +75,8 @@ const UserSignInDialog = () => {
               type="email"
               placeholder="Email"
               className="py-3 px-4 text-sm border rounded-lg"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
 
             <Input
@@ -71,11 +84,28 @@ const UserSignInDialog = () => {
               type="password"
               placeholder="Password"
               className="py-3 px-4 text-sm border rounded-lg"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
 
-            <Button className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md">
-              Sign In
-            </Button>
+            {error && <p className="text-red-500 text-sm">{error}</p>}
+
+            {loading ? (
+              <>
+                <Button className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md">
+                  <LuLoaderCircle className="animate-spin" />
+                </Button>
+              </>
+            ) : (
+              <>
+                <Button
+                  className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
+                  onClick={handleSignIn}
+                >
+                  Sign In
+                </Button>
+              </>
+            )}
 
             <Button
               variant="outline"
