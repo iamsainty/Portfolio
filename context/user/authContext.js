@@ -1,6 +1,6 @@
 "use client";
 
-const { createContext, useContext, useState } = require("react");
+const { createContext, useContext, useState, useEffect } = require("react");
 
 const UserAuthContext = createContext();
 
@@ -31,6 +31,8 @@ export const UserAuthProvider = ({ children }) => {
       }
 
       const userToken = data.userToken;
+
+      console.log(userToken);
 
       document.cookie = `userToken=${userToken}`;
     } catch (error) {
@@ -113,6 +115,44 @@ export const UserAuthProvider = ({ children }) => {
       setLoading(false);
     }
   };
+
+  const getUserData = async () => {
+    try {
+      setLoading(true);
+      const userToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("userToken="))
+        ?.split("=")[1];
+
+      if (!userToken) {
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getuserdata`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            userToken: userToken,
+          },
+        }
+      );
+
+      const data = await response.json();
+      setUser(data.user);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  useEffect(() => {
+    getUserData();
+  }, []);
 
   return (
     <UserAuthContext.Provider

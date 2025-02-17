@@ -27,7 +27,7 @@ const UserSignInDialog = () => {
     try {
       const result = await signInWithPopup(auth, googleProvider);
       const user = result.user;
-      googleAuth(user.displayName, user.email, user.uid, user.photoURL);
+      await googleAuth(user.displayName, user.email, user.uid, user.photoURL);
       window.location.reload();
     } catch (error) {
       console.error(error);
