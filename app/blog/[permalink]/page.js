@@ -1,6 +1,7 @@
 import React from "react";
 import BlogPost from "./BlogPost";
 import BlogpostHeroSection from "./BlogpostHeroSection";
+import CommentSection from "./CommentSection";
 
 export async function generateMetadata({ params }) {
   const { permalink } = await params;
@@ -135,6 +136,7 @@ export default async function Page({ params }) {
     <div className="flex flex-col items-center w-full mb-20">
       <BlogpostHeroSection permalink={permalink} />
       <BlogPost permalink={permalink} />
+      <CommentSection />
     </div>
   );
 }

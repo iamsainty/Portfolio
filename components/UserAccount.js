@@ -25,8 +25,7 @@ export function UserAccount() {
   const handleLogout = () => {
     try {
       // delete userToken cookie
-      document.cookie =
-        "userToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";
+      document.cookie = `userToken=${null}`;
       window.location.reload();
     } catch (error) {
       console.error(error);
