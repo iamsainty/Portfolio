@@ -8,6 +8,7 @@ import { ProjectProvider } from "@/context/projectContext";
 import { BlogProvider } from "@/context/blogContext";
 import Script from "next/script";
 import { UserAuthProvider } from "@/context/user/authContext";
+import { BlogCommentProvider } from "@/context/blogCommentContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -59,16 +60,18 @@ export default function RootLayout({ children }) {
           <AdminAuthProvider>
             <ProjectProvider>
               <BlogProvider>
-                <ThemeProvider
-                  attribute="class"
-                  defaultTheme="system"
-                  enableSystem
-                  disableTransitionOnChange
-                >
-                  <Navbar />
-                  {children}
-                  <Footer />
-                </ThemeProvider>
+                <BlogCommentProvider>
+                  <ThemeProvider
+                    attribute="class"
+                    defaultTheme="system"
+                    enableSystem
+                    disableTransitionOnChange
+                  >
+                    <Navbar />
+                    {children}
+                    <Footer />
+                  </ThemeProvider>
+                </BlogCommentProvider>
               </BlogProvider>
             </ProjectProvider>
           </AdminAuthProvider>
