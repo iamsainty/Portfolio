@@ -4,12 +4,30 @@ import UserSignInDialog from "@/components/userAuth/UserSignInDialog";
 import UserSignUpDialog from "@/components/userAuth/UserSignUpDialog";
 import { useUserAuth } from "@/context/user/authContext";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { useBlogComment } from "@/context/blogCommentContext";
+import { useBlog } from "@/context/blogContext";
 
-const NewComment = () => {
+const NewComment = ({ permalink }) => {
   const { user, loading } = useUserAuth();
+  const { newComment } = useBlogComment();
+  const { blogpost, getBlogpost } = useBlog();
+  useEffect(() => {
+    getBlogpost(permalink);
+    // eslint-disable-next-line
+  }, []);
+
+  const [comment, setComment] = useState("");
+
+  const handlePostComment = async () => {
+    try {
+      await newComment(blogpost._id, comment);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   if (loading)
     return (
@@ -44,8 +62,13 @@ const NewComment = () => {
             placeholder="Write your thoughts here..."
             rows={4}
             className="text-lg rounded-xl border border-muted-foreground focus:ring-2 focus:ring-primary outline-none p-4"
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
           />
-          <Button className="rounded-lg md:w-fit font-semibold px-6 py-2">
+          <Button
+            className="rounded-lg md:w-fit font-semibold px-6 py-2"
+            onClick={handlePostComment}
+          >
             Post Comment
           </Button>
         </div>

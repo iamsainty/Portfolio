@@ -6,6 +6,7 @@ const UserAuthContext = createContext();
 
 export const UserAuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
+  const [userInfo, setUserInfo] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -154,6 +155,29 @@ export const UserAuthProvider = ({ children }) => {
     getUserData();
   }, []);
 
+  const getUserInfo = async (userId) => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/getuserdata/${userId}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      const data = await response.json();
+      return data.user;
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <UserAuthContext.Provider
       value={{
@@ -163,6 +187,8 @@ export const UserAuthProvider = ({ children }) => {
         user,
         signInEmailPass,
         signUpEmailPass,
+        userInfo,
+        getUserInfo,
       }}
     >
       {children}

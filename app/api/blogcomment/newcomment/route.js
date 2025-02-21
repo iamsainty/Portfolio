@@ -1,6 +1,7 @@
 import { connectToMongo } from "@/lib/mongodb";
 import { validateUsertoken } from "@/middleware/validateUsertoken";
 import blogComment from "@/models/blogComment";
+import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -9,7 +10,7 @@ export async function POST(req) {
 
     const { blogId, comment } = await req.json();
 
-    const response = await validateUsertoken();
+    const response = await validateUsertoken(req);
 
     if (response.status === 200) {
       const commentCreated = await blogComment.create({

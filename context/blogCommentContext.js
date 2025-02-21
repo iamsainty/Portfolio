@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-const { createContext, useContext, useState } = require("react");
+const { createContext, useContext, useState, useEffect } = require("react");
 
 const blogCommentContext = createContext();
 
@@ -16,6 +16,8 @@ export const BlogCommentProvider = ({ children }) => {
         .split("; ")
         .find((row) => row.startsWith("userToken="))
         ?.split("=")[1];
+
+      console.log(userToken);
 
       if (!userToken) {
         setLoading(false);

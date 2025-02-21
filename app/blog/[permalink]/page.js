@@ -136,7 +136,7 @@ export default async function Page({ params }) {
     <div className="flex flex-col items-center w-full mb-20">
       <BlogpostHeroSection permalink={permalink} />
       <BlogPost permalink={permalink} />
-      <CommentSection />
+      <CommentSection permalink={permalink} />
     </div>
   );
 }
