@@ -6,9 +6,9 @@ export async function GET(request, { params }) {
   try {
     await connectToMongo();
 
-    const { blogId } = await params;
+    const { permalink } = await params;
 
-    const comments = await blogComment.find({ blogId }).sort({ createdAt: -1 });
+    const comments = await blogComment.find({ permalink }).sort({ createdAt: -1 });
 
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {

@@ -4,7 +4,7 @@ import { NextResponse } from "next/server";
 
 export async function GET(request, { params }) {
   try {
-    const db = await connectToMongo();
+    await connectToMongo();
     const { permalink } = await params;
 
     const blogPost = await BlogPost.findOne({ permalink });
@@ -13,6 +13,18 @@ export async function GET(request, { params }) {
         { message: "Blog post not found" },
         { status: 404 }
       );
+    }
+    const currentTime = new Date();
+    const lastViewedTime = blogPost.lastViewed
+      ? new Date(blogPost.lastViewed)
+      : new Date(0);
+
+    const timeDifference = currentTime - lastViewedTime;
+
+    if (timeDifference > 10000) {
+      blogPost.views += 1;
+      blogPost.lastViewed = currentTime;
+      await blogPost.save();
     }
 
     return NextResponse.json(blogPost, { status: 200 });

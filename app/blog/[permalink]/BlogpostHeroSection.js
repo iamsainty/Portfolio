@@ -47,7 +47,7 @@ const BlogpostHeroSection = ({ permalink }) => {
         </div>
 
         {/* Blog Cover Image Skeleton */}
-          <Skeleton className="w-full h-[300px] md:h-[450px] lg:h-[600px] rounded-xl" />
+        <Skeleton className="w-full h-[300px] md:h-[450px] lg:h-[600px] rounded-xl" />
       </div>
     );
   }

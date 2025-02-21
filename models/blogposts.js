@@ -16,6 +16,10 @@ const blogPostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  lastViewed : {
+    type: Date,
+    default: Date.now,
+  },
   title: {
     type: String,
     required: true,

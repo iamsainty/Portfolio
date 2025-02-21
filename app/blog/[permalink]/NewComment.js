@@ -4,26 +4,20 @@ import UserSignInDialog from "@/components/userAuth/UserSignInDialog";
 import UserSignUpDialog from "@/components/userAuth/UserSignUpDialog";
 import { useUserAuth } from "@/context/user/authContext";
 import Image from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useBlogComment } from "@/context/blogCommentContext";
-import { useBlog } from "@/context/blogContext";
 
 const NewComment = ({ permalink }) => {
   const { user, loading } = useUserAuth();
   const { newComment } = useBlogComment();
-  const { blogpost, getBlogpost } = useBlog();
-  useEffect(() => {
-    getBlogpost(permalink);
-    // eslint-disable-next-line
-  }, []);
 
   const [comment, setComment] = useState("");
 
   const handlePostComment = async () => {
     try {
-      await newComment(blogpost._id, comment);
+      await newComment(permalink, comment);
     } catch (error) {
       console.error(error);
     }

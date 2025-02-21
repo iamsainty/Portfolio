@@ -1,6 +1,6 @@
 "use client";
 
-const { createContext, useContext, useState, useEffect } = require("react");
+const { createContext, useContext, useState } = require("react");
 
 const blogCommentContext = createContext();
 
@@ -9,7 +9,7 @@ export const BlogCommentProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const newComment = async (blogId, comment) => {
+  const newComment = async (permalink, comment) => {
     try {
       setLoading(true);
       const userToken = document.cookie
@@ -32,7 +32,7 @@ export const BlogCommentProvider = ({ children }) => {
             "Content-Type": "application/json",
             userToken: userToken,
           },
-          body: JSON.stringify({ blogId, comment }),
+          body: JSON.stringify({ permalink, comment }),
         }
       );
 
@@ -53,11 +53,11 @@ export const BlogCommentProvider = ({ children }) => {
     }
   };
 
-  const getBlogComments = async (blogId) => {
+  const getBlogComments = async (permalink) => {
     try {
       setLoading(true);
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/getcomment/${blogId}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/getcomment/${permalink}`,
         {
           method: "GET",
           headers: {

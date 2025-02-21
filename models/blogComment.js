@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 
 const blogCommentSchema = new mongoose.Schema({
   blogId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
