@@ -29,11 +29,13 @@ export function AdminSidebar() {
   const { admin } = useAdminAuth();
 
   return (
-    <aside className="w-1/5 h-[85vh] pl-14 flex pt-10">
+    <aside className="sticky top-24 w-1/5 h-[75vh] pl-14 flex pt-10">
       <nav className="space-y-6 w-full flex flex-col gap-6">
-        <div className="mb-4">
-          <p className="text-base">Welcome</p>
-          {admin?.name && <h2 className="text-4xl font-bold">{admin.name}</h2>}
+        <div className="mb-4 space-y-2">
+          <p className="text-lg text-muted-foreground">Welcome</p>
+          {admin?.name && (
+            <h2 className="text-3xl font-bold">{admin.name.split(" ")[0]}</h2>
+          )}
         </div>
 
         <ul className="space-y-3">
