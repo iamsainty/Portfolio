@@ -4,19 +4,20 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import EditorJs from "@editorjs/editorjs";
-import Header from "@editorjs/header";
-import Paragraph from "@editorjs/paragraph";
-import List from "@editorjs/list";
-import Code from "@editorjs/code";
-import Quote from "@editorjs/quote";
-import LinkTool from "@editorjs/link";
-import Table from "@editorjs/table";
-import Delimiter from "@editorjs/delimiter";
-import InlineCode from "@editorjs/inline-code";
-import Raw from "@editorjs/raw";
+const EditorJs = dynamic(() => import('@editorjs/editorjs'), { ssr: false });
+const Header = dynamic(() => import('@editorjs/header'), { ssr: false });
+const Paragraph = dynamic(() => import('@editorjs/paragraph'), { ssr: false });
+const List = dynamic(() => import('@editorjs/list'), { ssr: false });
+const Code = dynamic(() => import('@editorjs/code'), { ssr: false });
+const Quote = dynamic(() => import('@editorjs/quote'), { ssr: false });
+const LinkTool = dynamic(() => import('@editorjs/link'), { ssr: false });
+const Table = dynamic(() => import('@editorjs/table'), { ssr: false });
+const Delimiter = dynamic(() => import('@editorjs/delimiter'), { ssr: false });
+const InlineCode = dynamic(() => import('@editorjs/inline-code'), { ssr: false });
+const Raw = dynamic(() => import('@editorjs/raw'), { ssr: false });
 import { blogCoverUpload } from "@/service/uploadToAWS";
 import { useBlog } from "@/context/blogContext";
+import dynamic from "next/dynamic";
 
 export default function Page() {
   const [image, setImage] = useState(null);
@@ -124,7 +125,7 @@ export default function Page() {
 
       setImageUrl(url);
 
-      await newBlog(title, summary, content, tags, permalink, url);
+      await newBlog(title, summary, content, tags, permalink, imageUrl);
     } catch (error) {
       if (error.message.includes("network")) {
         setError("Network error. Please try again later.");
@@ -144,7 +145,7 @@ export default function Page() {
         >
           {image ? (
             <Image
-              src={image}
+              src={URL.createObjectURL(image)}
               alt="Blog cover"
               className="object-cover w-full h-full rounded-md"
               width={64}
