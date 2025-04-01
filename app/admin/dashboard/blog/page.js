@@ -1,3 +1,8 @@
-export default function page(){
-    
+import Hello from "./Hello";
+
+export default function page() {
+  return (
+    <>
+    </>
+  );
 }

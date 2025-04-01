@@ -15,21 +15,26 @@ import Table from "@editorjs/table";
 import Delimiter from "@editorjs/delimiter";
 import InlineCode from "@editorjs/inline-code";
 import Raw from "@editorjs/raw";
+import { blogCoverUpload } from "@/service/uploadToAWS";
+import { useBlog } from "@/context/blogContext";
 
 export default function Page() {
   const [image, setImage] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
+  const [content, setContent] = useState("");
   const [permalink, setPermalink] = useState("");
   const [tags, setTags] = useState("");
+  const [error, setError] = useState(null);
+
+  const { newBlog, getBlogpost, blogpost, loading } = useBlog();
 
   const editorRef = useRef(null);
 
   useEffect(() => {
-    // Check if the editor is already initialized
-    if (editorRef.current) return; // Prevent multiple initializations
+    if (editorRef.current) return;
 
-    // Ensure the DOM element is available
     const editorElement = document.getElementById("editorjs");
 
     if (editorElement) {
@@ -68,22 +73,21 @@ export default function Page() {
             class: Delimiter,
             inlineToolbar: true,
           },
-          inlineCode:{
+          inlineCode: {
             class: InlineCode,
             inlineToolbar: true,
           },
           raw: {
-            class : Raw,
+            class: Raw,
             inlineToolbar: true,
           },
         },
-        placeholder: "Start typing your blog content here...",
+        placeholder: "Start writing your post...",
       });
 
       editorRef.current = editor;
     }
 
-    // Cleanup function to destroy the editor when the component is unmounted or updated
     return () => {
       if (editorRef.current && editorRef.current.destroy) {
         editorRef.current.destroy();
@@ -92,18 +96,47 @@ export default function Page() {
     };
   }, []);
 
-
   const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(e.target.files[0])); // Store the file instead of Base64
+    setImage(e.target.files[0]);
+  };
+
+  const handlePublish = async () => {
+    try {
+      const post = await editorRef.current.save();
+      setContent(post);
+
+      if (!title || !content || !image || !permalink) {
+        setError("Please fill all the required fields.");
+        return;
+      }
+
+      await getBlogpost(permalink);
+      if (blogpost !== null) {
+        setError("Permalink is already in use.");
+        return;
+      }
+
+      const url = await blogCoverUpload(image, permalink);
+      if (url === null) {
+        setError("Failed to upload image. Please try again.");
+        return;
+      }
+
+      setImageUrl(url);
+
+      await newBlog(title, summary, content, tags, permalink, url);
+    } catch (error) {
+      if (error.message.includes("network")) {
+        setError("Network error. Please try again later.");
+      } else {
+        setError("Failed to publish the blog. Please try again.");
+      }
     }
   };
+
   return (
     <section className="p-8 mb-24">
-      <h2 className="text-4xl font-extrabold mb-8">
-        Add a new blog post
-      </h2>
+      <h2 className="text-4xl font-extrabold mb-8">Create a New Blog Post</h2>
       <div className="flex flex-col gap-12">
         <div
           className="w-[666px] h-[375px] border-2 bg-muted hover:bg-transparent rounded-lg cursor-pointer flex items-center justify-center"
@@ -112,14 +145,14 @@ export default function Page() {
           {image ? (
             <Image
               src={image}
-              alt="Project"
+              alt="Blog cover"
               className="object-cover w-full h-full rounded-md"
               width={64}
               height={48}
             />
           ) : (
             <span className="text-muted-foreground">
-              Click to select blog cover image
+              Click to select a cover image
             </span>
           )}
         </div>
@@ -133,7 +166,7 @@ export default function Page() {
 
         <input
           type="text"
-          placeholder="Blog title..."
+          placeholder="Enter blog title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="text-4xl font-bold focus:outline-none bg-transparent"
@@ -141,31 +174,39 @@ export default function Page() {
 
         <input
           type="text"
-          placeholder="Blog summary..."
+          placeholder="Provide a short summary"
           value={summary}
           onChange={(e) => setSummary(e.target.value)}
-          className=" focus:outline-none bg-transparent"
+          className="focus:outline-none bg-transparent"
         />
 
         <div id="editorjs"></div>
 
         <input
           type="text"
-          placeholder="Blog tags separated by comma..."
+          placeholder="Add tags (comma separated)"
           value={tags}
           onChange={(e) => setTags(e.target.value)}
-          className=" focus:outline-none bg-transparent"
+          className="focus:outline-none bg-transparent"
         />
 
         <input
           type="text"
-          placeholder="Permalink"
+          placeholder="Enter permalink"
           value={permalink}
           onChange={(e) => setPermalink(e.target.value)}
           className="focus:outline-none bg-transparent"
         />
 
-        <Button className="w-fit">Publish the blog</Button>
+        {error && <div className="text-red-500 mt-4">{error}</div>}
+
+        {loading ? (
+          <div className="mt-4 text-gray-500">Publishing...</div>
+        ) : (
+          <Button className="w-fit" onClick={handlePublish}>
+            Publish the blog
+          </Button>
+        )}
       </div>
     </section>
   );

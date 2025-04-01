@@ -5,15 +5,24 @@ import { NextResponse } from "next/server";
 export async function GET(request, { params }) {
   try {
     await connectToMongo();
-    const { permalink } = await params;
+
+    if (!params?.permalink) {
+      return NextResponse.json(
+        { error: "Missing or invalid permalink parameter." },
+        { status: 400 }
+      );
+    }
+
+    const { permalink } = params;
 
     const blogPost = await BlogPost.findOne({ permalink });
     if (!blogPost) {
       return NextResponse.json(
-        { message: "Blog post not found" },
+        { error: "Blog post not found. Please check the URL." },
         { status: 404 }
       );
     }
+
     const currentTime = new Date();
     const lastViewedTime = blogPost.lastViewed
       ? new Date(blogPost.lastViewed)
@@ -29,9 +38,9 @@ export async function GET(request, { params }) {
 
     return NextResponse.json(blogPost, { status: 200 });
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching blog post:", error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { error: "Internal Server Error. Please try again later." },
       { status: 500 }
     );
   }
