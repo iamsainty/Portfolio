@@ -1,93 +1,62 @@
 "use client";
 
+import { useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
-const EditorJs = dynamic(() => import('@editorjs/editorjs'), { ssr: false });
-const Header = dynamic(() => import('@editorjs/header'), { ssr: false });
-const Paragraph = dynamic(() => import('@editorjs/paragraph'), { ssr: false });
-const List = dynamic(() => import('@editorjs/list'), { ssr: false });
-const Code = dynamic(() => import('@editorjs/code'), { ssr: false });
-const Quote = dynamic(() => import('@editorjs/quote'), { ssr: false });
-const LinkTool = dynamic(() => import('@editorjs/link'), { ssr: false });
-const Table = dynamic(() => import('@editorjs/table'), { ssr: false });
-const Delimiter = dynamic(() => import('@editorjs/delimiter'), { ssr: false });
-const InlineCode = dynamic(() => import('@editorjs/inline-code'), { ssr: false });
-const Raw = dynamic(() => import('@editorjs/raw'), { ssr: false });
 import { blogCoverUpload } from "@/service/uploadToAWS";
 import { useBlog } from "@/context/blogContext";
-import dynamic from "next/dynamic";
+
+const EditorJs = dynamic(() => import("@editorjs/editorjs"), { ssr: false });
 
 export default function Page() {
   const [image, setImage] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
   const [title, setTitle] = useState("");
   const [summary, setSummary] = useState("");
-  const [content, setContent] = useState("");
-  const [permalink, setPermalink] = useState("");
   const [tags, setTags] = useState("");
+  const [permalink, setPermalink] = useState("");
   const [error, setError] = useState(null);
-
   const { newBlog, getBlogpost, blogpost, loading } = useBlog();
-
   const editorRef = useRef(null);
 
   useEffect(() => {
-    if (editorRef.current) return;
+    if (typeof window === "undefined" || editorRef.current) return;
 
-    const editorElement = document.getElementById("editorjs");
+    async function loadEditor() {
+      const EditorJS = (await import("@editorjs/editorjs")).default;
+      const Header = (await import("@editorjs/header")).default;
+      const Paragraph = (await import("@editorjs/paragraph")).default;
+      const List = (await import("@editorjs/list")).default;
+      const Code = (await import("@editorjs/code")).default;
+      const Quote = (await import("@editorjs/quote")).default;
+      const LinkTool = (await import("@editorjs/link")).default;
+      const Table = (await import("@editorjs/table")).default;
+      const Delimiter = (await import("@editorjs/delimiter")).default;
+      const InlineCode = (await import("@editorjs/inline-code")).default;
+      const Raw = (await import("@editorjs/raw")).default;
 
-    if (editorElement) {
-      const editor = new EditorJs({
+      const editor = new EditorJS({
         holder: "editorjs",
         tools: {
-          header: {
-            class: Header,
-            inlineToolbar: ["link"],
-          },
-          paragraph: {
-            class: Paragraph,
-            inlineToolbar: true,
-          },
-          list: {
-            class: List,
-            inlineToolbar: true,
-          },
-          code: {
-            class: Code,
-            inlineToolbar: true,
-          },
-          quote: {
-            class: Quote,
-            inlineToolbar: true,
-          },
-          linkTool: {
-            class: LinkTool,
-            inlineToolbar: true,
-          },
-          table: {
-            class: Table,
-            inlineToolbar: true,
-          },
-          delimiter: {
-            class: Delimiter,
-            inlineToolbar: true,
-          },
-          inlineCode: {
-            class: InlineCode,
-            inlineToolbar: true,
-          },
-          raw: {
-            class: Raw,
-            inlineToolbar: true,
-          },
+          header: { class: Header, inlineToolbar: ["link"] },
+          paragraph: { class: Paragraph, inlineToolbar: true },
+          list: { class: List, inlineToolbar: true },
+          code: { class: Code, inlineToolbar: true },
+          quote: { class: Quote, inlineToolbar: true },
+          linkTool: { class: LinkTool, inlineToolbar: true },
+          table: { class: Table, inlineToolbar: true },
+          delimiter: { class: Delimiter, inlineToolbar: true },
+          inlineCode: { class: InlineCode, inlineToolbar: true },
+          raw: { class: Raw, inlineToolbar: true },
         },
         placeholder: "Start writing your post...",
       });
 
       editorRef.current = editor;
     }
+
+    loadEditor();
 
     return () => {
       if (editorRef.current && editorRef.current.destroy) {
@@ -97,16 +66,12 @@ export default function Page() {
     };
   }, []);
 
-  const handleImageChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  const handleImageChange = (e) => setImage(e.target.files[0]);
 
   const handlePublish = async () => {
     try {
       const post = await editorRef.current.save();
-      setContent(post);
-
-      if (!title || !content || !image || !permalink) {
+      if (!title || !post || !image || !permalink) {
         setError("Please fill all the required fields.");
         return;
       }
@@ -117,21 +82,15 @@ export default function Page() {
         return;
       }
 
-      const url = await blogCoverUpload(image, permalink);
-      if (url === null) {
+      const imageUrl = await blogCoverUpload(image, permalink);
+      if (!imageUrl) {
         setError("Failed to upload image. Please try again.");
         return;
       }
 
-      setImageUrl(url);
-
-      await newBlog(title, summary, content, tags, permalink, imageUrl);
+      await newBlog(title, summary, post, tags, permalink, imageUrl);
     } catch (error) {
-      if (error.message.includes("network")) {
-        setError("Network error. Please try again later.");
-      } else {
-        setError("Failed to publish the blog. Please try again.");
-      }
+      setError("Failed to publish the blog. Please try again.");
     }
   };
 
