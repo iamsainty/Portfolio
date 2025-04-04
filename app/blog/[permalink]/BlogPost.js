@@ -49,7 +49,7 @@ const BlogPost = ({ permalink }) => {
                     <li
                       key={index}
                       className="text-md lg:text-lg"
-                      dangerouslySetInnerHTML={{ __html: item }}
+                      dangerouslySetInnerHTML={{ __html: item.content }}
                     />
                   ))}
                 </ol>
@@ -59,7 +59,7 @@ const BlogPost = ({ permalink }) => {
                     <li
                       key={index}
                       className="text-md lg:text-lg"
-                      dangerouslySetInnerHTML={{ __html: item }}
+                      dangerouslySetInnerHTML={{ __html: item.content }}
                     />
                   ))}
                 </ul>

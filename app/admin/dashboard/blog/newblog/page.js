@@ -88,7 +88,7 @@ export default function Page() {
         return;
       }
 
-      await newBlog(title, summary, post, tags, permalink, imageUrl);
+      await newBlog(title, summary, JSON.stringify(post), tags, permalink, imageUrl);
     } catch (error) {
       setError("Failed to publish the blog. Please try again.");
     }
