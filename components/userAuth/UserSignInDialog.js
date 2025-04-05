@@ -16,10 +16,10 @@ import { signInWithPopup } from "firebase/auth";
 import { useUserAuth } from "@/context/user/authContext";
 import { LuLoaderCircle } from "react-icons/lu";
 
-const UserSignInDialog = () => {
-  const [open, setOpen] = useState(false);
+const UserSignInDialog = ({ open, setOpen }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const { googleAuth, loading, error, signInEmailPass } = useUserAuth();
 
@@ -43,8 +43,9 @@ const UserSignInDialog = () => {
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger
+    <>
+      <Dialog open={open} onOpenChange={setOpen}>
+        {/* <DialogTrigger
         className="rounded-lg text-center"
         onClick={(e) => {
           e.stopPropagation();
@@ -52,86 +53,89 @@ const UserSignInDialog = () => {
         }}
       >
         Sign in
-      </DialogTrigger>
+      </DialogTrigger> */}
 
-      <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
-        <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
-          {/* Left Section */}
-          <div className="flex items-center justify-center lg:w-1/2 px-4">
-            <div className="text-center space-y-3">
-              <DialogTitle className="text-xl lg:text-2xl font-semibold">
-                Welcome Back
-              </DialogTitle>
-              <p className="text-sm text-muted-foreground">
-                Sign in to continue where you left off.
+        <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
+          <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
+            {/* Left Section */}
+            <div className="flex items-center justify-center lg:w-1/2 px-4">
+              <div className="text-center space-y-3">
+                <DialogTitle className="text-xl lg:text-2xl font-semibold">
+                  Welcome Back
+                </DialogTitle>
+                <p className="text-sm text-muted-foreground">
+                  Sign in to continue where you left off.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Section (Sign-In Form) */}
+            <div className="flex flex-col w-full lg:w-1/2 gap-5">
+              <Input
+                id="email"
+                type="email"
+                placeholder="Email"
+                className="py-3 px-4 text-sm border rounded-lg"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+
+              <Input
+                id="password"
+                type="password"
+                placeholder="Password"
+                className="py-3 px-4 text-sm border rounded-lg"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+
+              {error && <p className="text-red-500 text-sm">{error}</p>}
+
+              {loading ? (
+                <>
+                  <Button className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md">
+                    <LuLoaderCircle className="animate-spin" />
+                  </Button>
+                </>
+              ) : (
+                <>
+                  <Button
+                    className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
+                    onClick={handleSignIn}
+                  >
+                    Sign In
+                  </Button>
+                </>
+              )}
+
+              <Button
+                variant="outline"
+                className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
+                onClick={handleGoogleAuth}
+              >
+                <FcGoogle size={20} />
+                <span className="text-sm">Sign in with Google</span>
+              </Button>
+
+              {/* Sign Up Link */}
+              <p className="text-xs text-center text-muted-foreground">
+                Don’t have an account?{" "}
+                <span
+                  className="text-primary hover:underline cursor-pointer transition"
+                  onClick={() => {
+                    setShowSignUp(true);
+                  }}
+                >
+                  Sign up
+                </span>
               </p>
             </div>
           </div>
+        </DialogContent>
+      </Dialog>
 
-          {/* Right Section (Sign-In Form) */}
-          <div className="flex flex-col w-full lg:w-1/2 gap-5">
-            <Input
-              id="email"
-              type="email"
-              placeholder="Email"
-              className="py-3 px-4 text-sm border rounded-lg"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
-            <Input
-              id="password"
-              type="password"
-              placeholder="Password"
-              className="py-3 px-4 text-sm border rounded-lg"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-
-            {error && <p className="text-red-500 text-sm">{error}</p>}
-
-            {loading ? (
-              <>
-                <Button className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md">
-                  <LuLoaderCircle className="animate-spin" />
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
-                  onClick={handleSignIn}
-                >
-                  Sign In
-                </Button>
-              </>
-            )}
-
-            <Button
-              variant="outline"
-              className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
-              onClick={handleGoogleAuth}
-            >
-              <FcGoogle size={20} />
-              <span className="text-sm">Sign in with Google</span>
-            </Button>
-
-            {/* Sign Up Link */}
-            <p className="text-xs text-center text-muted-foreground">
-              Don’t have an account?{" "}
-              <span
-                className="text-primary hover:underline cursor-pointer transition"
-                onClick={(e) => {
-                  e.stopPropagation();
-                }}
-              >
-                <UserSignUpDialog />
-              </span>
-            </p>
-          </div>
-        </div>
-      </DialogContent>
-    </Dialog>
+      {/* <UserSignUpDialog open={showSignUp} setOpen={setShowSignUp} /> */}
+    </>
   );
 };
 
