@@ -5,22 +5,19 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
-import UserSignInDialog from "./UserSignInDialog";
 import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useUserAuth } from "@/context/user/authContext";
 import { LuLoaderCircle } from "react-icons/lu";
 
-const UserSignUpDialog = ({ open, setOpen }) => {
+const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showSignIn, setShowSignIn] = useState(false);
   const { googleAuth, loading, error, signUpEmailPass } = useUserAuth();
 
   const handleGoogleAuth = async () => {
@@ -45,16 +42,6 @@ const UserSignUpDialog = ({ open, setOpen }) => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        {/* <DialogTrigger
-        className="rounded-lg text-center"
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen(true);
-        }}
-      >
-        Sign up
-      </DialogTrigger> */}
-
         <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
           <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
             {/* Left Section - Sign-Up Message */}
@@ -132,7 +119,8 @@ const UserSignUpDialog = ({ open, setOpen }) => {
                 <span
                   className="text-primary hover:underline cursor-pointer transition"
                   onClick={() => {
-                    setShowSignIn(true);
+                    setOpen(false)
+                    setSignIn(true);
                   }}
                 >
                   Sign in
@@ -142,7 +130,6 @@ const UserSignUpDialog = ({ open, setOpen }) => {
           </div>
         </DialogContent>
       </Dialog>
-      {/* <UserSignInDialog open={showSignIn} setOpen={setShowSignIn} /> */}
     </>
   );
 };

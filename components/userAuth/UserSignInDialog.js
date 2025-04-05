@@ -5,21 +5,18 @@ import {
   Dialog,
   DialogContent,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
-import UserSignUpDialog from "./UserSignUpDialog";
 import { auth, googleProvider } from "@/lib/firebase";
 import { signInWithPopup } from "firebase/auth";
 import { useUserAuth } from "@/context/user/authContext";
 import { LuLoaderCircle } from "react-icons/lu";
 
-const UserSignInDialog = ({ open, setOpen }) => {
+const UserSignInDialog = ({ open, setOpen, setSignUp }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showSignUp, setShowSignUp] = useState(false);
 
   const { googleAuth, loading, error, signInEmailPass } = useUserAuth();
 
@@ -45,16 +42,6 @@ const UserSignInDialog = ({ open, setOpen }) => {
   return (
     <>
       <Dialog open={open} onOpenChange={setOpen}>
-        {/* <DialogTrigger
-        className="rounded-lg text-center"
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen(true);
-        }}
-      >
-        Sign in
-      </DialogTrigger> */}
-
         <DialogContent className="w-[90vw] lg:max-w-[50vw] min-h-[55vh] border border-muted-foreground rounded-xl p-6">
           <div className="flex flex-col lg:flex-row gap-6 items-center justify-center">
             {/* Left Section */}
@@ -123,7 +110,8 @@ const UserSignInDialog = ({ open, setOpen }) => {
                 <span
                   className="text-primary hover:underline cursor-pointer transition"
                   onClick={() => {
-                    setShowSignUp(true);
+                    setOpen(false);
+                    setSignUp(true);
                   }}
                 >
                   Sign up
@@ -133,8 +121,6 @@ const UserSignInDialog = ({ open, setOpen }) => {
           </div>
         </DialogContent>
       </Dialog>
-
-      {/* <UserSignUpDialog open={showSignUp} setOpen={setShowSignUp} /> */}
     </>
   );
 };

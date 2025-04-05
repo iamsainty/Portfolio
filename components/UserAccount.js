@@ -97,8 +97,8 @@ export function UserAccount() {
         </DropdownMenu>
       </div>
 
-      <UserSignInDialog open={showSignIn} setOpen={setShowSignIn} />
-      <UserSignUpDialog open={showSignUp} setOpen={setShowSignUp} />
+      <UserSignInDialog open={showSignIn} setOpen={setShowSignIn} setSignUp={setShowSignUp} />
+      <UserSignUpDialog open={showSignUp} setOpen={setShowSignUp} setSignIn={setShowSignIn} />
     </>
   );
 }
