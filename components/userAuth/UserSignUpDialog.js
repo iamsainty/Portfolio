@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
@@ -18,7 +20,12 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const { googleAuth, loading, error, signUpEmailPass } = useUserAuth();
+  const [otpSent, setOtpSent] = useState(null);
+  const [otpReceived, setOtpReceived] = useState("");
+  const [dialog, setDialog] = useState("signUp");
+  const [error, setError] = useState(null);
+  const { googleAuth, loading, signUpEmailPass, checkAccount, sendSignUpOtp } =
+    useUserAuth();
 
   const handleGoogleAuth = async () => {
     try {
@@ -31,11 +38,67 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
     }
   };
 
+  const handleSignUpRequest = async () => {
+    try {
+      if (!name.trim()) {
+        setError("Name cannot be empty");
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        setError("Please enter a valid email address.");
+        return;
+      }
+
+      if (password.length < 6 || password.length > 10) {
+        setError("Password must be 6-10 characters long.");
+        return;
+      }
+
+      const message = await checkAccount(email);
+
+      if (message === "No account associated with this email.") {
+        try {
+          const otp = await sendSignUpOtp(name, email);
+          if (!otp) {
+            setError("Failed to send OTP. Please try again.");
+            return;
+          }
+          setOtpSent(otp);
+          setDialog("verifyOtp");
+        } catch (otpError) {
+          console.error("Error sending OTP:", otpError);
+          setError("Failed to send OTP. Please try again.");
+        }
+      } else {
+        setError(message);
+      }
+    } catch (error) {
+      console.error("Signup request error:", error);
+      setError("Something went wrong. Please try again.");
+    }
+  };
+
   const handleSignUp = async () => {
     try {
-      await signUpEmailPass(name, email, password);
+      if (otpReceived != otpSent) {
+        setError("Invalid OTP");
+        setOtpSent(null);
+        setOtpReceived("");
+        return;
+      }
+
+      const message = await signUpEmailPass(name, email, password);
+
+      if (message === "Signup successful") {
+        window.location.reload();
+      } else {
+        setError(message);
+      }
     } catch (error) {
-      console.error(error);
+      console.error("Signup Error:", error);
+      setError("Something went wrong");
     }
   };
 
@@ -48,42 +111,77 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
             <div className="flex items-center justify-center lg:w-1/2 px-4">
               <div className="text-center space-y-3">
                 <DialogTitle className="text-xl lg:text-2xl font-semibold">
-                  Join now
+                  {dialog === "signUp" ? "Join now" : "Verify OTP"}
                 </DialogTitle>
                 <p className="text-sm text-muted-foreground">
-                  Create an account to get started
+                  {dialog === "signUp"
+                    ? "Create an account to get started"
+                    : "Enter the OTP sent to your email"}
                 </p>
               </div>
             </div>
 
             {/* Right Section - Sign-Up Form */}
             <div className="flex flex-col w-full lg:w-1/2 gap-5">
-              <Input
-                id="name"
-                type="text"
-                placeholder="Name"
-                className="py-3 px-4 text-sm border rounded-lg"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
+              {dialog === "signUp" ? (
+                <>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="Name"
+                    className="py-3 px-4 text-sm border rounded-lg"
+                    value={name}
+                    onChange={(e) => {
+                      setName(e.target.value);
+                      setError(null);
+                    }}
+                  />
 
-              <Input
-                id="email"
-                type="email"
-                placeholder="Email"
-                className="py-3 px-4 text-sm border rounded-lg"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="Email"
+                    className="py-3 px-4 text-sm border rounded-lg"
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      setError(null);
+                    }}
+                  />
 
-              <Input
-                id="password"
-                type="password"
-                placeholder="Password"
-                className="py-3 px-4 text-sm border rounded-lg"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
+                  <Input
+                    id="password"
+                    type="password"
+                    placeholder="Password"
+                    className="py-3 px-4 text-sm border rounded-lg"
+                    value={password}
+                    onChange={(e) => {
+                      setPassword(e.target.value);
+                      setError(null);
+                    }}
+                  />
+                </>
+              ) : (
+                <div className="flex w-full justify-center">
+                  <InputOTP
+                    maxLength={4}
+                    value={otpReceived}
+                    onChange={(value) => {
+                      if (/^\d*$/.test(value)) setOtpReceived(value);
+                    }}
+                  >
+                    <InputOTPGroup className="w-full flex gap-3">
+                      {[0, 1, 2, 3].map((index) => (
+                        <InputOTPSlot
+                          key={index}
+                          index={index}
+                          className="border border-muted-foreground rounded-md"
+                        />
+                      ))}
+                    </InputOTPGroup>
+                  </InputOTP>
+                </div>
+              )}
 
               {error && <p className="text-red-500 text-sm">{error}</p>}
 
@@ -95,37 +193,53 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
                 </>
               ) : (
                 <>
-                  <Button
-                    className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
-                    onClick={handleSignUp}
-                  >
-                    Sign up
-                  </Button>
+                  {dialog === "signUp" ? (
+                    <>
+                      <Button
+                        className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
+                        onClick={handleSignUpRequest}
+                      >
+                        Sign Up
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button
+                        className="w-full py-3 rounded-lg text-[15px] font-medium shadow-md"
+                        onClick={handleSignUp}
+                      >
+                        Verify OTP
+                      </Button>
+                    </>
+                  )}
                 </>
               )}
 
-              <Button
-                variant="outline"
-                className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
-                onClick={handleGoogleAuth}
-              >
-                <FcGoogle size={20} />
-                <span className="text-sm">Sign up with Google</span>
-              </Button>
+              {dialog === "signUp" && (
+                <>
+                  <Button
+                    variant="outline"
+                    className="flex items-center justify-center gap-2 w-full py-3 border border-muted-foreground rounded-lg hover:bg-muted transition"
+                    onClick={handleGoogleAuth}
+                  >
+                    <FcGoogle size={20} />
+                    <span className="text-sm">Sign up with Google</span>
+                  </Button>
 
-              {/* Sign In Link */}
-              <p className="text-xs text-center text-muted-foreground">
-                Already have an account?{" "}
-                <span
-                  className="text-primary hover:underline cursor-pointer transition"
-                  onClick={() => {
-                    setOpen(false)
-                    setSignIn(true);
-                  }}
-                >
-                  Sign in
-                </span>
-              </p>
+                  <p className="text-xs text-center text-muted-foreground">
+                    Already have an account?{" "}
+                    <span
+                      className="text-primary hover:underline cursor-pointer transition"
+                      onClick={() => {
+                        setOpen(false);
+                        setSignIn(true);
+                      }}
+                    >
+                      Sign in
+                    </span>
+                  </p>
+                </>
+              )}
             </div>
           </div>
         </DialogContent>
