@@ -212,6 +212,9 @@ export const UserAuthProvider = ({ children }) => {
       console.error("SendSignUpOtp Error:", error);
       return "Something went wrong";
     }
+    finally{
+      setLoading(false);
+    }
   };
 
   return (

@@ -12,8 +12,11 @@ export async function POST(req) {
 
     const { name, email, password, otp } = await req.json();
 
+    console.log(name, email, password, otp);
+    
+
     const emailOtp = await EmailOtp.findOne({ email });
-    if (emailOtp && emailOtp.otp !== otp) {
+    if (emailOtp && emailOtp.otp != otp) {
       return NextResponse.json({ message: "Invalid OTP" }, { status: 400 });
     }
 
@@ -26,7 +29,7 @@ export async function POST(req) {
     return NextResponse.json(
       {
         message: "Signup successful",
-        token: userToken,
+        userToken: userToken,
         status: "success",
       },
       { status: 201 }

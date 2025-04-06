@@ -60,12 +60,11 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
 
       if (message === "No account associated with this email.") {
         try {
-          const otp = await sendSignUpOtp(name, email);
-          if (!otp) {
-            setError("Failed to send OTP. Please try again.");
+          const response = await sendSignUpOtp(name, email);
+          if (response != "OTP has been sent") {
+            setError(response);
             return;
           }
-          setOtpSent(otp);
           setDialog("verifyOtp");
         } catch (otpError) {
           console.error("Error sending OTP:", otpError);
@@ -92,6 +91,18 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
     } catch (error) {
       console.error("Signup Error:", error);
       setError("Something went wrong");
+    }
+  };
+
+  const resendOtp = async () => {
+    try {
+      const response = await sendSignUpOtp(name, email);
+      if (response != "OTP has been sent") {
+        setError(response);
+      }
+    } catch (error) {
+      console.error("Error sending OTP:", error);
+      setError("Failed to send OTP. Please try again.");
     }
   };
 
@@ -208,7 +219,7 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
                 </>
               )}
 
-              {dialog === "signUp" && (
+              {dialog === "signUp" ? (
                 <>
                   <Button
                     variant="outline"
@@ -229,6 +240,18 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
                       }}
                     >
                       Sign in
+                    </span>
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p className="text-xs text-center text-muted-foreground">
+                    Didn’t receive ?{" "}
+                    <span
+                      className="text-primary hover:underline cursor-pointer transition"
+                      onClick={resendOtp}
+                    >
+                      Resend OTP
                     </span>
                   </p>
                 </>
