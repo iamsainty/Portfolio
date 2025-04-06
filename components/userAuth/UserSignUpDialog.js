@@ -82,14 +82,7 @@ const UserSignUpDialog = ({ open, setOpen, setSignIn }) => {
 
   const handleSignUp = async () => {
     try {
-      if (otpReceived != otpSent) {
-        setError("Invalid OTP");
-        setOtpSent(null);
-        setOtpReceived("");
-        return;
-      }
-
-      const message = await signUpEmailPass(name, email, password);
+      const message = await signUpEmailPass(name, email, password, otpReceived);
 
       if (message === "Signup successful") {
         window.location.reload();

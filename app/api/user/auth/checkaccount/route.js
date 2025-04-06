@@ -11,23 +11,32 @@ export async function POST(req) {
 
     if (!user) {
       return NextResponse.json(
-        { message: "Account with this email does not exist" },
+        { message: "No account associated with this email.", status: "error" },
         { status: 404 }
       );
     }
 
     if (user.password) {
-      return NextResponse.json({ message: "" }, { status: 400 });
+      return NextResponse.json(
+        {
+          message: "An account already exists with this email.",
+          status: "error",
+        },
+        { status: 400 }
+      );
     }
 
     return NextResponse.json(
-      { message: "Account with this email already exists" },
-      { status: 500 }
+      { message: "This email is linked to a Google account.", status: "error" },
+      { status: 400 }
     );
   } catch (error) {
-    console.error(error);
+    console.error("Check account error:", error);
     return NextResponse.json(
-      { message: "Something went wrong." },
+      {
+        message: "Unable to process your request. Please try again.",
+        status: "error",
+      },
       { status: 500 }
     );
   }

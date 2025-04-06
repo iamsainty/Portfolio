@@ -80,7 +80,7 @@ export const UserAuthProvider = ({ children }) => {
     }
   };
 
-  const signUpEmailPass = async (name, email, password) => {
+  const signUpEmailPass = async (name, email, password, otp) => {
     try {
       setLoading(true);
 
@@ -91,27 +91,21 @@ export const UserAuthProvider = ({ children }) => {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ name, email, password }),
+          body: JSON.stringify({ name, email, password, otp }),
         }
       );
 
       const data = await response.json();
 
-      console.log(data);
-
-      if (data.message) {
-        setError(data.message);
-        setTimeout(() => {
-          setError(null);
-        }, 3000);
-        return;
+      if (response.ok) {
+        const userToken = data.token;
+        document.cookie = `userToken=${userToken}`;
       }
 
-      const userToken = data.userToken;
-
-      document.cookie = `userToken=${userToken}`;
+      return data.message;
     } catch (error) {
-      console.error(error);
+      console.error("Signup Error:", error);
+      return "Network error";
     } finally {
       setLoading(false);
     }
@@ -178,6 +172,55 @@ export const UserAuthProvider = ({ children }) => {
     }
   };
 
+  const checkAccount = async (email) => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth/checkaccount`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error("CheckAccount Error:", error);
+      return "Something went wrong";
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendSignUpOtp = async (name, email) => {
+    try {
+      setLoading(true);
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/auth/sendsignupotp`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.message;
+    } catch (error) {
+      console.error("SendSignUpOtp Error:", error);
+      return "Something went wrong";
+    }
+  };
+
   return (
     <UserAuthContext.Provider
       value={{
@@ -189,6 +232,8 @@ export const UserAuthProvider = ({ children }) => {
         signUpEmailPass,
         userInfo,
         getUserInfo,
+        checkAccount,
+        sendSignUpOtp,
       }}
     >
       {children}
