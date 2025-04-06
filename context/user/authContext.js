@@ -60,19 +60,12 @@ export const UserAuthProvider = ({ children }) => {
 
       const data = await response.json();
 
-      console.log(data);
-
-      if (data.message) {
-        setError(data.message);
-        setTimeout(() => {
-          setError(null);
-        }, 3000);
-        return;
+      if (response.ok) {
+        const userToken = data.userToken;
+        document.cookie = `userToken=${userToken}`;
       }
 
-      const userToken = data.userToken;
-
-      document.cookie = `userToken=${userToken}`;
+      return data.message;
     } catch (error) {
       console.error(error);
     } finally {
@@ -98,7 +91,7 @@ export const UserAuthProvider = ({ children }) => {
       const data = await response.json();
 
       if (response.ok) {
-        const userToken = data.token;
+        const userToken = data.userToken;
         document.cookie = `userToken=${userToken}`;
       }
 

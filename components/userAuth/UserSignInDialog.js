@@ -1,11 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-} from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { FcGoogle } from "react-icons/fc";
@@ -17,8 +13,9 @@ import { LuLoaderCircle } from "react-icons/lu";
 const UserSignInDialog = ({ open, setOpen, setSignUp }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
 
-  const { googleAuth, loading, error, signInEmailPass } = useUserAuth();
+  const { googleAuth, loading, signInEmailPass, checkAccount } = useUserAuth();
 
   const handleGoogleAuth = async () => {
     try {
@@ -28,14 +25,25 @@ const UserSignInDialog = ({ open, setOpen, setSignUp }) => {
       window.location.reload();
     } catch (error) {
       console.error(error);
+      setError("Failed to sign in with Google");
     }
   };
 
   const handleSignIn = async () => {
     try {
-      await signInEmailPass(email, password);
+      const message = await checkAccount(email);
+      if (message != "An account already exists with this email.") {
+        setError(message);
+        return;
+      }
+      const response = await signInEmailPass(email, password);
+      if (response == "Login successful") {
+        window.location.reload();
+      }
+      setError(response);
     } catch (error) {
       console.error(error);
+      setError("An error occurred while signing in.");
     }
   };
 

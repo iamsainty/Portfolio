@@ -15,37 +15,38 @@ export async function POST(req) {
 
     if (!user) {
       return NextResponse.json(
-        { message: "User with this email does not exist" },
+        { message: "No account found with this email." },
         { status: 404 }
       );
     }
 
-    // Check if user password is null or undefined
+    // Check if the user signed up via Google
     if (!user.password) {
       return NextResponse.json(
-        { message: "This email is linked with Google Sign-In" },
+        { message: "This email is registered via Google Sign-In." },
         { status: 400 }
       );
     }
 
-    // Compare passwords
     const isValidPassword = await bcrypt.compare(password, user.password);
 
     if (!isValidPassword) {
       return NextResponse.json(
-        { message: "Invalid password" },
+        { message: "Incorrect password. Please try again." },
         { status: 400 }
       );
     }
 
-    // Create and return the token
     const userToken = jwt.sign({ email: email, id: user._id }, jwtSecretKey);
 
-    return NextResponse.json(userToken, { status: 200 });
-  } catch (error) {
-    console.error(error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { message: "Login successful", userToken },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Login Error:", error);
+    return NextResponse.json(
+      { message: "Something went wrong. Please try again." },
       { status: 500 }
     );
   }
