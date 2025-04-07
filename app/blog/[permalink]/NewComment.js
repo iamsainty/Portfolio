@@ -12,6 +12,8 @@ import { useBlogComment } from "@/context/blogCommentContext";
 const NewComment = ({ permalink }) => {
   const { user, loading } = useUserAuth();
   const { newComment } = useBlogComment();
+  const [showSignIn, setShowSignIn] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
 
   const [comment, setComment] = useState("");
 
@@ -35,57 +37,70 @@ const NewComment = ({ permalink }) => {
     );
 
   return (
-    <section className="w-full">
-      {user ? (
-        <div className="flex flex-col gap-5">
-          <div className="flex gap-3 md:gap-5 items-center">
-            <div className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200">
-              <Image
-                src={user.profilePicture || "/default-avatar.png"}
-                alt="profile picture"
-                width={40}
-                height={40}
-                className="rounded-full object-cover"
-              />
+    <>
+      <section className="w-full">
+        {user ? (
+          <div className="flex flex-col gap-5">
+            <div className="flex gap-3 md:gap-5 items-center">
+              <div className="w-[40px] h-[40px] rounded-full overflow-hidden bg-gray-200">
+                <Image
+                  src={user.profilePicture || "/default-avatar.png"}
+                  alt="profile picture"
+                  width={40}
+                  height={40}
+                  className="rounded-full object-cover"
+                />
+              </div>
+              <p className="text-sm md:text-lg">
+                Comment as <span className="font-semibold">{user.name}</span>
+              </p>
             </div>
-            <p className="text-sm md:text-lg">
-              Comment as <span className="font-semibold">{user.name}</span>
-            </p>
-          </div>
-          <Textarea
-            placeholder="Write your thoughts here..."
-            rows={4}
-            className="text-lg rounded-xl border border-muted-foreground focus:ring-2 focus:ring-primary outline-none p-4"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-          />
-          <Button
-            className="rounded-lg md:w-fit font-semibold px-6 py-2"
-            onClick={handlePostComment}
-          >
-            Post Comment
-          </Button>
-        </div>
-      ) : (
-        <div className="flex flex-col gap-2 border border-muted-foreground rounded-xl p-6">
-          <h4 className="text-lg font-semibold">Have something to share?</h4>
-          <p className="text-sm text-muted-foreground">
-            Join the conversation by signing in below!
-          </p>
-          <div className="flex gap-3 mt-3">
-            <Button className="px-5 py-2">
-              <UserSignInDialog />
-            </Button>
+            <Textarea
+              placeholder="Write your thoughts here..."
+              rows={4}
+              className="text-lg rounded-xl border border-muted-foreground focus:ring-2 focus:ring-primary outline-none p-4"
+              value={comment}
+              onChange={(e) => setComment(e.target.value)}
+            />
             <Button
-              variant="outline"
-              className="px-5 py-2 border border-muted-foreground"
+              className="rounded-lg md:w-fit font-semibold px-6 py-2"
+              onClick={handlePostComment}
             >
-              <UserSignUpDialog />
+              Post Comment
             </Button>
           </div>
-        </div>
-      )}
-    </section>
+        ) : (
+          <div className="flex flex-col gap-2 border border-muted-foreground rounded-xl p-6">
+            <h4 className="text-lg font-semibold">Have something to share?</h4>
+            <p className="text-sm text-muted-foreground">
+              Join the conversation by signing in below!
+            </p>
+            <div className="flex gap-3 mt-3">
+              <Button className="px-5 py-2" onClick={() => setShowSignIn(true)}>
+                Sign in
+              </Button>
+              <Button
+                variant="outline"
+                className="px-5 py-2 border border-muted-foreground"
+                onClick={() => setShowSignUp(true)}
+              >
+                Sign up
+              </Button>
+            </div>
+          </div>
+        )}
+      </section>
+      <UserSignInDialog
+        open={showSignIn}
+        setOpen={setShowSignIn}
+        setSignUp={setShowSignUp}
+      />
+      <UserSignUpDialog
+        open={showSignUp}
+        setOpen={setShowSignUp}
+        setSignIn={setShowSignIn}
+      />
+    </>
   );
 };
 
