@@ -28,13 +28,10 @@ const BlogPost = ({ permalink }) => {
         return (
           <section key={index}>
             {block.type === "header" &&
-              React.createElement(
-                `h${block.data.level}`,
-                {
-                  className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 heading-level-${block.data.level}`,
-                },
-                block.data.text
-              )}
+              React.createElement(`h${block.data.level}`, {
+                className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 heading-level-${block.data.level}`,
+                dangerouslySetInnerHTML: { __html: block.data.text },
+              })}
 
             {block.type === "paragraph" && (
               <div
