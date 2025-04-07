@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const blogCommentSchema = new mongoose.Schema({
-  blogId: {
+  blogPermalink: {
     type: String,
   },
   userId: {

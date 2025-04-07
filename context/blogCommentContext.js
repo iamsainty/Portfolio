@@ -17,12 +17,10 @@ export const BlogCommentProvider = ({ children }) => {
         .find((row) => row.startsWith("userToken="))
         ?.split("=")[1];
 
-      console.log(userToken);
-
       if (!userToken) {
         setLoading(false);
         return;
-      }
+      }      
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/newcomment`,

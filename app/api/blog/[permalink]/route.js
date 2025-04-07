@@ -6,14 +6,7 @@ export async function GET(request, { params }) {
   try {
     await connectToMongo();
 
-    if (!params?.permalink) {
-      return NextResponse.json(
-        { error: "Missing or invalid permalink parameter." },
-        { status: 400 }
-      );
-    }
-
-    const { permalink } = params;
+    const { permalink } = await params;
 
     const blogPost = await BlogPost.findOne({ permalink });
     if (!blogPost) {

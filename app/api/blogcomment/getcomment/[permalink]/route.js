@@ -8,7 +8,7 @@ export async function GET(request, { params }) {
 
     const { permalink } = await params;
 
-    const comments = await blogComment.find({ permalink }).sort({ createdAt: -1 });
+    const comments = await blogComment.find({ blogPermalink : permalink }).sort({ createdAt: -1 });
 
     return NextResponse.json({ comments }, { status: 200 });
   } catch (error) {

@@ -15,7 +15,7 @@ export async function POST(req) {
 
     if (response.status === 200) {
       const commentCreated = await blogComment.create({
-        blog: permalink,
+        blogPermalink: permalink,
         userId: new mongoose.Types.ObjectId(response.id),
         comment,
         createdAt: new Date(),

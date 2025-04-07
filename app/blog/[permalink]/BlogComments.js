@@ -14,6 +14,14 @@ const BlogComments = ({ permalink }) => {
     // eslint-disable-next-line
   }, [permalink]);
 
+  if (comments.length === 0) {
+    return (
+      <div>
+        <p>No comments yet, Start the conversation!</p>
+      </div>
+    );
+  }
+
   return (
     <div>
       {comments.map((comment, index) => (
