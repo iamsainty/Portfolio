@@ -2,10 +2,11 @@ import { cookies } from "next/headers";
 import UserNavigation from "./UserNavigation";
 import { redirect } from "next/navigation";
 
-export default function UserRootLayout({ children }) {
-  const userToken = cookies().get("userToken")?.value;
+export default async function UserRootLayout({ children }) {
+  const cookieStore = await cookies();
+  const userToken = cookieStore.get("userToken")?.value;
   if (!userToken) {
-    redirect("/"); 
+    redirect("/");
   }
 
   return (
