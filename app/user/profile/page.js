@@ -4,7 +4,7 @@ import UserStats from './UserStats'
 
 const page = () => {
   return (
-    <div>
+    <div className='flex flex-col gap-5'>
       <UserProfile />
       <UserStats />
     </div>
