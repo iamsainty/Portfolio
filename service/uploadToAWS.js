@@ -20,10 +20,29 @@ export async function blogCoverUpload(file, permalink) {
       ContentType: file.type,
     };
 
-   await s3.send(new PutObjectCommand(params));
+    await s3.send(new PutObjectCommand(params));
 
-   const imageUrl =  `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
-    
+    const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
+
+    return imageUrl;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function uploadUserProfilePicture(file, name, email) {
+  try {
+    const fileName = `profile-pictures/${name}-${email}-${Date.now()}.jpg`;
+    const arrayBuffer = await file.arrayBuffer();
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: arrayBuffer,
+      ContentType: file.type,
+    };
+    await s3.send(new PutObjectCommand(params));
+    const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
     return imageUrl;
   } catch (error) {
     console.error(error);

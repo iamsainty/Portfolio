@@ -211,9 +211,68 @@ export const UserAuthProvider = ({ children }) => {
     } catch (error) {
       console.error("SendSignUpOtp Error:", error);
       return "Something went wrong";
-    }
-    finally{
+    } finally {
       setLoading(false);
+    }
+  };
+
+  const editname = async (name) => {
+    try {
+      const userToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("userToken="))
+        ?.split("=")[1];
+
+      if (!userToken) {
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/edit-profile/edit-name`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            userToken: userToken,
+          },
+          body: JSON.stringify({ name }),
+        }
+      );
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error("EditName Error:", error);
+      return "Something went wrong";
+    }
+  };
+
+  const editProfilePicture = async (newPictureUrl) => {
+    try {
+      const userToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("userToken="))
+        ?.split("=")[1];
+
+      if (!userToken) {
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/user/edit-profile/edit-profilepicture`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            userToken: userToken,
+          },
+          body: JSON.stringify({ newPictureUrl }),
+        }
+      );
+      const data = await response.json();
+      return data.message;
+    } catch (error) {
+      console.error("EditProfilePicture Error:", error);
+      return "Something went wrong";
     }
   };
 
@@ -230,6 +289,8 @@ export const UserAuthProvider = ({ children }) => {
         getUserInfo,
         checkAccount,
         sendSignUpOtp,
+        editname,
+        editProfilePicture
       }}
     >
       {children}
