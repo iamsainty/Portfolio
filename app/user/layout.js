@@ -11,9 +11,9 @@ export default async function UserRootLayout({ children }) {
 
   return (
     <div lang="en">
-      <div className="flex w-full">
+      <div className="flex flex-col lg:flex-row w-full">
         <UserNavigation />
-        <main className="w-4/5">{children}</main>
+        <main className="max-w-full lg:w-4/5">{children}</main>
       </div>
     </div>
   );
