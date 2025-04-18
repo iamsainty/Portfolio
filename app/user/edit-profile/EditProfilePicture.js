@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { useUserAuth } from "@/context/user/authContext";
 import { uploadUserProfilePicture } from "@/service/uploadToAWS";
 import Image from "next/image";
@@ -56,42 +57,70 @@ const EditProfilePicture = () => {
     }
   };
 
+  if (!user) {
+    return (
+      <section className="flex flex-col gap-8">
+        <div className="md:w-1/2 flex flex-col gap-2">
+          <h2 className="text-2xl font-semibold">
+            <Skeleton className="h-6 w-1/3" />
+          </h2>
+          <p className="text-sm text-muted-foreground leading-relaxed">
+            <Skeleton className="h-4 w-3/4" />
+          </p>
+        </div>
+
+        <div className="md:w-1/2 flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <Skeleton className="h-[150px] w-[150px] rounded-2xl" />
+          </div>
+
+          <div className="flex items-center gap-2 mt-2">
+            <Skeleton className="h-10 w-24 rounded-md" />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
   return (
-    <section className="m-12 flex flex-col gap-6">
-      <div className="flex flex-col gap-1.5">
+    <section className="flex flex-col gap-8">
+      <div className="md:w-1/2 flex flex-col gap-2">
         <h2 className="text-2xl font-semibold">Edit Profile Picture</h2>
-        <p className="text-sm text-muted-foreground">
-          Update your profile picture — make it truly yours.
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          Upload a new profile picture by clicking on your current one.
         </p>
       </div>
 
-      <div className="flex flex-col gap-4">
-        <Image
-          src={profilePicture}
-          alt="Profile Picture"
-          width={150}
-          height={150}
-          className="rounded-2xl cursor-pointer hover:brightness-50 transition"
-          onClick={() => {
-            document.getElementById("profilePictureInput")?.click();
-          }}
-        />
-        <Input
-          type="file"
-          accept="image/*"
-          onChange={handleFileChange}
-          className="hidden"
-          id="profilePictureInput"
-        />
-        <Button onClick={handleUpload} className="w-fit">
-          Save
-        </Button>
+      <div className="md:w-1/2 flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
+          <Image
+            src={profilePicture}
+            alt="Profile Picture"
+            width={150}
+            height={150}
+            className="rounded-2xl cursor-pointer hover:brightness-50 transition border border-muted"
+            onClick={() => {
+              document.getElementById("profilePictureInput")?.click();
+            }}
+          />
+          <Input
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            className="hidden"
+            id="profilePictureInput"
+          />
+        </div>
+
+        <div className="flex items-center gap-2 mt-2">
+          <Button onClick={handleUpload}>Save Changes</Button>
+          {error && (
+            <p className="text-sm text-destructive bg-destructive/10 px-3 py-1.5 rounded-md">
+              {error}
+            </p>
+          )}
+        </div>
       </div>
-      {error && (
-        <p className="text-sm text-destructive bg-destructive/10 px-4 py-2 rounded-md w-fit">
-          {error}
-        </p>
-      )}
     </section>
   );
 };
