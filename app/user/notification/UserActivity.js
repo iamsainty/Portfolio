@@ -1,13 +1,11 @@
 "use client";
 
-import { useUserAuth } from "@/context/user/authContext";
+import { Skeleton } from "@/components/ui/skeleton";
 import React from "react";
 import Activity from "../Activity";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { Skeleton } from "@/components/ui/skeleton";
+import { useUserAuth } from "@/context/user/authContext";
 
-const RecentActivity = () => {
+const UserActivity = () => {
   const { user } = useUserAuth();
 
   if (!user) {
@@ -18,7 +16,7 @@ const RecentActivity = () => {
           <Skeleton className="h-5 w-2/3 sm:w-1/2 md:w-1/3" />
         </div>
         <ul className="space-y-4">
-          {[...Array(3)].map((_, index) => (
+          {[...Array(5)].map((_, index) => (
             <li key={index}>
               <Skeleton className="h-16 w-full rounded-xl" />
             </li>
@@ -33,29 +31,24 @@ const RecentActivity = () => {
     <section className="flex flex-col gap-8 sm:gap-10 w-full md:w-2/3">
       <div className="flex flex-col gap-2 pb-1">
         <h2 className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-semibold tracking-tight">
-          Recent Activity
+          Your activity so far
         </h2>
         <p className="text-base sm:text-lg text-muted-foreground">
-          A quick look at your latest interactions and updates.
+          Here’s what’s been happening in your profile and how you are
+          interacting content
         </p>
       </div>
       <ul className="space-y-4">
         {[...user.notifications]
           .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-          .slice(0, 3)
           .map((notification, index) => (
             <li key={index}>
               <Activity notification={notification} />
             </li>
           ))}
       </ul>
-      <Button variant="secondary">
-        <Link href={"/user/notification"} className="w-full">
-          View all
-        </Link>
-      </Button>
     </section>
   );
 };
 
-export default RecentActivity;
+export default UserActivity;
