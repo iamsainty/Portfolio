@@ -9,8 +9,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 const UserProfile = () => {
   const { user } = useUserAuth();
-  // const joinedText = formatDistanceToNow(new Date(user.joinedAt), { addSuffix: true });
-  const joinedText = "3 days ago";
 
   if (!user) {
     return (
@@ -26,6 +24,11 @@ const UserProfile = () => {
       </section>
     );
   }
+
+  const joinedText = formatDistanceToNow(new Date(user?.createdAt), {
+    addSuffix: true,
+  });
+  
   return (
     <section className="flex flex-col md:flex-row items-center gap-8 md:gap-12 min-w-0">
       <div className="p-2">
