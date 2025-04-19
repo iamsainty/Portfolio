@@ -50,16 +50,23 @@ const userSchema = new mongoose.Schema(
       {
         type: {
           type: String,
-          enum: ["activity", "comment", "like", "bookmark"],
+          enum: [
+            "welcomeMessage",
+            "passwordChange",
+            "passwordAdded",
+            "googleLinked",
+            "commentAdded",
+            "commentReplied",
+            "blogLiked",
+            "blogBookmarked",
+            "nameUpdated",
+            "profilePicUpdated",
+            "emailNotifUpdated",
+          ],
           required: true,
         },
-        message: {
+        relatedBlogPermalink: {
           type: String,
-          required: true,
-        },
-        blogId: {
-          type: mongoose.Schema.Types.ObjectId,
-          ref: "Blog",
         },
         relatedUserId: {
           type: mongoose.Schema.Types.ObjectId,

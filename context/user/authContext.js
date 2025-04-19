@@ -157,7 +157,7 @@ export const UserAuthProvider = ({ children }) => {
       );
 
       const data = await response.json();
-      return data.user;
+      setUserInfo(data.user);
     } catch (error) {
       console.error(error);
     } finally {
@@ -290,7 +290,7 @@ export const UserAuthProvider = ({ children }) => {
         checkAccount,
         sendSignUpOtp,
         editname,
-        editProfilePicture
+        editProfilePicture,
       }}
     >
       {children}
