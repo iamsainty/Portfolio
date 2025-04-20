@@ -13,7 +13,6 @@ export async function POST(req) {
     const { name, email, password, otp } = await req.json();
 
     console.log(name, email, password, otp);
-    
 
     const emailOtp = await EmailOtp.findOne({ email });
     if (emailOtp && emailOtp.otp != otp) {
@@ -23,6 +22,15 @@ export async function POST(req) {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = await User.create({ name, email, password: hashedPassword });
+
+    const notification = {
+      type: "welcomeMessage",
+      createdAt: new Date(),
+    };
+
+    user.notifications.push(notification);
+
+    await user.save();
 
     const userToken = jwt.sign({ email: email, id: user._id }, jwtSecretKey);
 

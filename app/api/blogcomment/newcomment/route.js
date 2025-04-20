@@ -2,6 +2,7 @@ import { connectToMongo } from "@/lib/mongodb";
 import { validateUsertoken } from "@/middleware/validateUsertoken";
 import blogComment from "@/models/blogComment";
 import BlogPost from "@/models/blogposts";
+import User from "@/models/user";
 import mongoose from "mongoose";
 import { NextResponse } from "next/server";
 
@@ -12,6 +13,8 @@ export async function POST(req) {
     const { permalink, comment } = await req.json();
 
     const response = await validateUsertoken(req);
+
+    const user = await User.findById(response.id);
 
     if (response.status === 200) {
       const commentCreated = await blogComment.create({
@@ -25,6 +28,17 @@ export async function POST(req) {
 
       blog.comments = blog.comments + 1;
       await blog.save();
+
+      const notification = {
+        type: "commentAdded",
+        relatedBlogPermalink: blog.permalink,
+        createdAt: new Date(),
+      };
+
+      user.notifications.push(notification);
+
+      user.commentCount += 1;
+      await user.save();
 
       return NextResponse.json({ commentCreated }, { status: 201 });
     }

@@ -21,6 +21,15 @@ export async function POST(req) {
         profilePicture,
       });
 
+      const notification = {
+        type: "welcomeMessage",
+        createdAt: new Date(),
+      };
+
+      user.notifications.push(notification);
+
+      await user.save();
+
       const userToken = jwt.sign({ email: email, id: user._id }, jwtSecretKey);
 
       return NextResponse.json({ userToken }, { status: 201 });
@@ -37,6 +46,13 @@ export async function POST(req) {
     }
     if (existingUser.googleId === null) {
       existingUser.googleId = googleId;
+
+      const notification = {
+        type: "googleLinked",
+        createdAt: new Date(),
+      };
+
+      existingUser.notifications.push(notification);
     }
 
     await existingUser.save();

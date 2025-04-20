@@ -22,7 +22,16 @@ export async function POST(req) {
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
     user.name = name;
+
+    const notification = {
+      type: "nameUpdated",
+      createdAt: new Date(),
+    };
+
+    user.notifications.push(notification);
+
     await user.save();
+
     return NextResponse.json(
       { message: "User updated successfully" },
       { status: 200 }

@@ -40,6 +40,14 @@ export async function POST(req) {
     }
 
     user.profilePicture = newPictureUrl;
+
+    const notification = {
+      type: "profilePicUpdated",
+      createdAt: new Date(),
+    };
+
+    user.notifications.push(notification);
+
     await user.save();
 
     return NextResponse.json({
