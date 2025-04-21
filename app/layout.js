@@ -9,6 +9,7 @@ import { BlogProvider } from "@/context/blogContext";
 import Script from "next/script";
 import { UserAuthProvider } from "@/context/user/authContext";
 import { BlogCommentProvider } from "@/context/blogCommentContext";
+import { UserEditProfileProvider } from "@/context/user/profileEditContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -56,26 +57,28 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
       >
-        <UserAuthProvider>
-          <AdminAuthProvider>
-            <ProjectProvider>
-              <BlogProvider>
-                <BlogCommentProvider>
-                  <ThemeProvider
-                    attribute="class"
-                    defaultTheme="system"
-                    enableSystem
-                    disableTransitionOnChange
-                  >
-                    <Navbar />
-                    {children}
-                    <Footer />
-                  </ThemeProvider>
-                </BlogCommentProvider>
-              </BlogProvider>
-            </ProjectProvider>
-          </AdminAuthProvider>
-        </UserAuthProvider>
+        <UserEditProfileProvider>
+          <UserAuthProvider>
+            <AdminAuthProvider>
+              <ProjectProvider>
+                <BlogProvider>
+                  <BlogCommentProvider>
+                    <ThemeProvider
+                      attribute="class"
+                      defaultTheme="system"
+                      enableSystem
+                      disableTransitionOnChange
+                    >
+                      <Navbar />
+                      {children}
+                      <Footer />
+                    </ThemeProvider>
+                  </BlogCommentProvider>
+                </BlogProvider>
+              </ProjectProvider>
+            </AdminAuthProvider>
+          </UserAuthProvider>
+        </UserEditProfileProvider>
       </body>
     </html>
   );

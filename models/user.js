@@ -81,12 +81,12 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
-    emailPreferences: {
-      accountActivity: {
+    notificationPreferences: {
+      accountUpdateEmail: {
         type: Boolean,
         default: true,
       },
-      newBlogs: {
+      newBlogsEmail: {
         type: Boolean,
         default: true,
       },
