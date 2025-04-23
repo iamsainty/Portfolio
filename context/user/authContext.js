@@ -158,6 +158,7 @@ export const UserAuthProvider = ({ children }) => {
 
       const data = await response.json();
       setUserInfo(data.user);
+      return data.user;
     } catch (error) {
       console.error(error);
     } finally {
