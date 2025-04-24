@@ -168,7 +168,7 @@ const ProjectSection = () => {
       </ScrollArea>
 
       {/* Mobile View Link to View All Projects */}
-      <Link href={"/projects"} className="lg:hidden">
+      <Link href={"/project"} className="lg:hidden">
         <Button>View all projects</Button>
       </Link>
     </section>

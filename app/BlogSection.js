@@ -135,7 +135,7 @@ const BlogSection = () => {
         </div>
         <ScrollBar orientation="horizontal" />
       </ScrollArea>
-      <Link href={"/blogs"} className="lg:hidden">
+      <Link href={"/blog"} className="lg:hidden">
         <Button>View all blogs</Button>
       </Link>
     </section>
