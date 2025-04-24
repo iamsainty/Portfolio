@@ -11,14 +11,14 @@ export const metadata = {
     "Liability",
   ],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.web.app/page/disclaimer",
+  canonical: "https://hey-sainty.vercel.app/page/disclaimer",
   openGraph: {
     type: "website",
     site_name: "Hey Sainty",
     title: "Disclaimer - Hey Sainty",
     description:
       "Read the disclaimer for Hey Sainty regarding content accuracy, liability limitations, and external links. Understand the terms before using the website.",
-    url: "https://hey-sainty.web.app/page/disclaimer",
+    url: "https://hey-sainty.vercel.app/page/disclaimer",
     image:
       "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
     locale: "en_US",

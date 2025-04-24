@@ -10,14 +10,14 @@ export const metadata = {
     "Privacy Policy Hey Sainty",
   ],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.web.app/page/privacy-policy",
+  canonical: "https://hey-sainty.vercel.app/page/privacy-policy",
   openGraph: {
     type: "website",
     site_name: "Hey Sainty",
     title: "Privacy Policy - Hey Sainty",
     description:
       "Read the privacy policy for Hey Sainty to understand how we collect and manage your personal data to enhance your experience on the website.",
-    url: "https://hey-sainty.web.app/page/privacy-policy",
+    url: "https://hey-sainty.vercel.app/page/privacy-policy",
     image:
       "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
     locale: "en_US",

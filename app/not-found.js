@@ -8,7 +8,7 @@ export const metadata = {
     "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
   keywords: ["404", "Page Not Found", "Error", "Hey Sainty", "Tech Blog"],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.web.app/404", // Ensure to set your 404 page URL
+  canonical: "https://hey-sainty.vercel.app/404", // Ensure to set your 404 page URL
   openGraph: {
     type: "website",
     title: "Page Not Found - Hey Sainty",
@@ -20,7 +20,7 @@ export const metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Page Not Found | Hey Sainty",
+    title: "Page Not Found - Hey Sainty",
     description:
       "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
     image:

@@ -19,14 +19,14 @@ export const metadata = {
     "Projects",
   ],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.web.app",
+  canonical: "https://hey-sainty.vercel.app",
   openGraph: {
     type: "website",
     site_name: "Hey Sainty",
     title: "Hey Sainty - Explore Tech, Creativity, and Innovation",
     description:
       "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore blogs on programming, tech trends, and personal projects.",
-    url: "https://hey-sainty.web.app",
+    url: "https://hey-sainty.vercel.app",
     image:
       "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
     locale: "en_US",
@@ -53,13 +53,13 @@ export default function Page() {
             "@context": "https://schema.org",
             "@type": "Website",
             name: "Hey Sainty",
-            url: "https://hey-sainty.web.app",
+            url: "https://hey-sainty.vercel.app",
             description:
               "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore my blogs on programming, tech trends, and personal projects.",
             author: {
               "@type": "Person",
               name: "Priyanshu Chaurasiya",
-              url: "https://hey-sainty.web.app",
+              url: "https://hey-sainty.vercel.app",
             },
             sameAs: [
               "https://github.com/iamsainty",

@@ -39,14 +39,14 @@ export async function generateMetadata() {
         ...blogTitles.split(", "), // Adding dynamic blog titles as keywords
       ],
       author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.web.app/blog",
+      canonical: "https://hey-sainty.vercel.app/blog",
       openGraph: {
         type: "website",
         site_name: "Hey Sainty",
         title: "Blog - Tech, Tutorials, Guides & More",
         description:
           "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
-        url: "https://hey-sainty.web.app/blog",
+        url: "https://hey-sainty.vercel.app/blog",
         image:
           "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
         locale: "en_US",
@@ -78,14 +78,14 @@ export async function generateMetadata() {
         "Priyanshu Chaurasiya",
       ],
       author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.web.app/blog",
+      canonical: "https://hey-sainty.vercel.app/blog",
       openGraph: {
         type: "website",
         site_name: "Hey Sainty",
         title: "Blog - Tech, Tutorials, Guides & More",
         description:
           "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
-        url: "https://hey-sainty.web.app/blog",
+        url: "https://hey-sainty.vercel.app/blog",
         image:
           "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
         locale: "en_US",

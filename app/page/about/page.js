@@ -11,14 +11,14 @@ export const metadata = {
     "About Sainty",
   ],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.web.app/page/about",
+  canonical: "https://hey-sainty.vercel.app/page/about",
   openGraph: {
     type: "website",
     site_name: "Hey Sainty",
     title: "About - Hey Sainty",
     description:
       "Hey Sainty is a tech-focused platform where I share blogs, projects, and insights from my journey as a developer. Explore programming topics, tech trends, and more!",
-    url: "https://hey-sainty.web.app/page/about",
+    url: "https://hey-sainty.vercel.app/page/about",
     image:
       "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
     locale: "en_US",
