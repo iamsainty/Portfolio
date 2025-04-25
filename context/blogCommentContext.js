@@ -36,14 +36,11 @@ export const BlogCommentProvider = ({ children }) => {
 
       const data = await response.json();
 
-      if (data.commentCreated) {
-        setComments([...comments, data.commentCreated]);
-      } else {
-        setError(data.message);
-        setTimeout(() => {
-          setError(null);
-        }, 2000);
-      }
+      if (data.comment) {
+        setComments([...comments, data.comment]);
+      } 
+
+      return data.message;
     } catch (error) {
       console.error(error);
     } finally {

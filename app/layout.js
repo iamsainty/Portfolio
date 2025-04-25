@@ -10,6 +10,7 @@ import Script from "next/script";
 import { UserAuthProvider } from "@/context/user/authContext";
 import { BlogCommentProvider } from "@/context/blogCommentContext";
 import { UserEditProfileProvider } from "@/context/user/profileEditContext";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -72,6 +73,7 @@ export default function RootLayout({ children }) {
                       <Navbar />
                       {children}
                       <Footer />
+                      <Toaster />
                     </ThemeProvider>
                   </BlogCommentProvider>
                 </BlogProvider>

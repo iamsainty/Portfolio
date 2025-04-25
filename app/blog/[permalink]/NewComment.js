@@ -8,6 +8,7 @@ import React, { useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useBlogComment } from "@/context/blogCommentContext";
+import { toast } from "sonner";
 
 const NewComment = ({ permalink }) => {
   const { user, loading } = useUserAuth();
@@ -19,9 +20,29 @@ const NewComment = ({ permalink }) => {
 
   const handlePostComment = async () => {
     try {
-      await newComment(permalink, comment);
+      if (!comment || comment.trim() === "") {
+        toast("Comment is empty", {
+          description: "Write something before submitting.",
+        });
+        return;
+      }
+
+      const response = await newComment(permalink, comment);
+
+      if (response === "Comment added successfully.") {
+        toast("Comment posted", {
+          description: "Thanks for sharing your thoughts!",
+        });
+      } else {
+        toast("Post failed", {
+          description: "Please try again later.",
+        });
+      }
     } catch (error) {
       console.error(error);
+      toast("Error", {
+        description: "Couldn't post your comment. Try again.",
+      });
     }
   };
 
