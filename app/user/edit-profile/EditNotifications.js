@@ -7,12 +7,14 @@ import { useUserAuth } from "@/context/user/authContext";
 import { useUserEditProfile } from "@/context/user/profileEditContext";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { RiLoader4Line } from "react-icons/ri"; // ✅ Import the spinner
 
 const EditNotifications = () => {
   const { user } = useUserAuth();
   const { editNotificationPreferences } = useUserEditProfile();
   const [newBlogEmail, setNewBlogEmail] = useState(true);
   const [accountUpdateEmail, setAccountUpdateEmail] = useState(true);
+  const [loading, setLoading] = useState(false); // ✅ Loading state
 
   useEffect(() => {
     if (user) {
@@ -22,6 +24,7 @@ const EditNotifications = () => {
   }, [user]);
 
   const handleSaveChanges = async () => {
+    setLoading(true); // ✅ Start loading
     try {
       const response = await editNotificationPreferences(
         newBlogEmail,
@@ -43,6 +46,8 @@ const EditNotifications = () => {
       toast.error("Error", {
         description: "Could not update preferences. Please try again.",
       });
+    } finally {
+      setLoading(false); // ✅ End loading
     }
   };
 
@@ -105,9 +110,19 @@ const EditNotifications = () => {
         </div>
       </div>
 
-      <Button onClick={handleSaveChanges} className="self-start mt-2">
-        Save Changes
-      </Button>
+      {loading ? (
+        <Button disabled className="self-start mt-2 flex items-center gap-2">
+          <RiLoader4Line className="animate-spin" />
+          Saving
+        </Button>
+      ) : (
+        <Button
+          onClick={handleSaveChanges}
+          className="self-start mt-2 flex items-center gap-2"
+        >
+          Save Changes
+        </Button>
+      )}
     </section>
   );
 };

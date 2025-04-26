@@ -8,11 +8,13 @@ import { uploadUserProfilePicture } from "@/service/uploadToAWS";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { RiLoader4Line } from "react-icons/ri"; // ✅ Spinner icon
 
 const EditProfilePicture = () => {
   const { user, editProfilePicture } = useUserAuth();
   const [file, setFile] = useState(null);
   const [profilePicture, setProfilePicture] = useState("");
+  const [loading, setLoading] = useState(false); // ✅ Loading state
 
   useEffect(() => {
     if (user?.profilePicture) {
@@ -42,6 +44,8 @@ const EditProfilePicture = () => {
       });
       return;
     }
+
+    setLoading(true); // ✅ Start loading
 
     try {
       const imageUrl = await uploadUserProfilePicture(
@@ -73,6 +77,8 @@ const EditProfilePicture = () => {
       toast.error("Error", {
         description: "An error occurred. Please try again.",
       });
+    } finally {
+      setLoading(false); // ✅ End loading
     }
   };
 
@@ -132,7 +138,15 @@ const EditProfilePicture = () => {
         </div>
 
         <div className="flex items-center gap-2 mt-2">
-          <Button onClick={handleUpload}>Save Changes</Button>
+          <Button
+            onClick={handleUpload}
+            disabled={loading} // ✅ Disable while loading
+            className="flex items-center gap-2"
+          >
+            {loading && <RiLoader4Line className="animate-spin" />}{" "}
+            {/* ✅ Spinner */}
+            {loading ? "Saving" : "Save Changes"}
+          </Button>
         </div>
       </div>
     </section>

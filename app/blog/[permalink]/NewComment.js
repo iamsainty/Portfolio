@@ -9,14 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useBlogComment } from "@/context/blogCommentContext";
 import { toast } from "sonner";
+import { RiLoader4Line } from "react-icons/ri"; // ✅ Spinner icon
 
 const NewComment = ({ permalink }) => {
   const { user, loading } = useUserAuth();
   const { newComment } = useBlogComment();
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
-
   const [comment, setComment] = useState("");
+  const [posting, setPosting] = useState(false); // ✅ Posting state
 
   const handlePostComment = async () => {
     if (!comment || comment.trim() === "") {
@@ -26,6 +27,7 @@ const NewComment = ({ permalink }) => {
       return;
     }
 
+    setPosting(true); // ✅ Start posting
     try {
       const response = await newComment(permalink, comment);
 
@@ -33,6 +35,7 @@ const NewComment = ({ permalink }) => {
         toast.success("Comment posted", {
           description: "Thanks for sharing your thoughts!",
         });
+        setComment("");
       } else {
         toast.error("Post failed", {
           description: "Something went wrong. Try again later.",
@@ -43,6 +46,8 @@ const NewComment = ({ permalink }) => {
       toast.error("Error", {
         description: "Couldn't post your comment. Please try again.",
       });
+    } finally {
+      setPosting(false); // ✅ End posting
     }
   };
 
@@ -84,10 +89,13 @@ const NewComment = ({ permalink }) => {
               onChange={(e) => setComment(e.target.value)}
             />
             <Button
-              className="rounded-lg md:w-fit font-semibold px-6 py-2"
+              className="rounded-lg md:w-fit font-semibold px-6 py-2 flex items-center gap-2"
               onClick={handlePostComment}
+              disabled={posting} // ✅ Disable while posting
             >
-              Post Comment
+              {posting && <RiLoader4Line className="animate-spin" />}{" "}
+              {/* ✅ Spinner */}
+              {posting ? "Posting..." : "Post Comment"}
             </Button>
           </div>
         ) : (

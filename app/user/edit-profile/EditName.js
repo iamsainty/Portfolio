@@ -6,11 +6,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useUserAuth } from "@/context/user/authContext";
 import React, { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { RiLoader4Line } from "react-icons/ri";
 
 const EditName = () => {
   const { user, editname } = useUserAuth();
   const [name, setName] = useState("");
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (user?.name) {
@@ -19,10 +20,12 @@ const EditName = () => {
   }, [user]);
 
   const handleSave = async () => {
+    setLoading(true);
     if (name.trim().length < 3) {
       toast.error("Name is too short", {
         description: "It must be at least 3 characters long.",
       });
+      setLoading(false);
       return;
     }
 
@@ -43,6 +46,8 @@ const EditName = () => {
       toast.error("Error", {
         description: "There was an issue updating your name. Please try again.",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -86,13 +91,21 @@ const EditName = () => {
           onChange={(e) => setName(e.target.value)}
           className="w-full border border-muted"
         />
-        <Button onClick={handleSave} className="self-start mt-2">
-          Save Changes
-        </Button>
-        {error && (
-          <p className="text-sm text-destructive bg-destructive/10 px-4 py-2 rounded-md mt-2 w-fit">
-            {error}
-          </p>
+        {loading ? (
+          <Button
+            disabled={true}
+            className="self-start mt-2 flex items-center gap-2"
+          >
+            <RiLoader4Line className="animate-spin" />
+            Saving
+          </Button>
+        ) : (
+          <Button
+            onClick={handleSave}
+            className="self-start mt-2 flex items-center gap-2"
+          >
+            Save Changes
+          </Button>
         )}
       </div>
     </section>
