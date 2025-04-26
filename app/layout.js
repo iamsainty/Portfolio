@@ -64,6 +64,7 @@ export default function RootLayout({ children }) {
           name="google-site-verification"
           content="GhtSs3z27IAUGukWh38CcKxeUUO_o_y9OCRaozedRUg"
         />
+        <meta name="yandex-verification" content="36ed0d13a996b828" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
