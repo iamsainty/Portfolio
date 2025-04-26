@@ -7,12 +7,12 @@ import { useUserAuth } from "@/context/user/authContext";
 import { uploadUserProfilePicture } from "@/service/uploadToAWS";
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const EditProfilePicture = () => {
   const { user, editProfilePicture } = useUserAuth();
   const [file, setFile] = useState(null);
   const [profilePicture, setProfilePicture] = useState("");
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user?.profilePicture) {
@@ -25,15 +25,21 @@ const EditProfilePicture = () => {
     if (selected && selected.type.startsWith("image/")) {
       setFile(selected);
       setProfilePicture(URL.createObjectURL(selected));
-      setError(null);
+      toast.success("Image selected", {
+        description: "You have selected a valid image file.",
+      });
     } else {
-      setError("Please select a valid image file.");
+      toast.error("Invalid file type", {
+        description: "Please select a valid image file.",
+      });
     }
   };
 
   const handleUpload = async () => {
     if (!file) {
-      setError("Please select an image to upload.");
+      toast.error("No image selected", {
+        description: "Please select an image to upload.",
+      });
       return;
     }
 
@@ -45,15 +51,28 @@ const EditProfilePicture = () => {
       );
 
       if (!imageUrl) {
-        setError("Failed to upload image.");
+        toast.error("Upload failed", {
+          description: "Failed to upload image. Please try again.",
+        });
         return;
       }
+
       const response = await editProfilePicture(imageUrl);
+
       if (response !== "Profile picture updated successfully") {
-        setError(response);
+        toast.error("Update failed", {
+          description:
+            response || "Something went wrong. Please try again later.",
+        });
+      } else {
+        toast.success("Profile picture updated", {
+          description: "Your profile picture has been updated successfully.",
+        });
       }
     } catch (err) {
-      setError(err.message);
+      toast.error("Error", {
+        description: "An error occurred. Please try again.",
+      });
     }
   };
 
@@ -114,11 +133,6 @@ const EditProfilePicture = () => {
 
         <div className="flex items-center gap-2 mt-2">
           <Button onClick={handleUpload}>Save Changes</Button>
-          {error && (
-            <p className="text-sm text-destructive bg-destructive/10 px-3 py-1.5 rounded-md">
-              {error}
-            </p>
-          )}
         </div>
       </div>
     </section>

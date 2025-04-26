@@ -6,13 +6,13 @@ import { Switch } from "@/components/ui/switch";
 import { useUserAuth } from "@/context/user/authContext";
 import { useUserEditProfile } from "@/context/user/profileEditContext";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const EditNotifications = () => {
   const { user } = useUserAuth();
   const { editNotificationPreferences } = useUserEditProfile();
   const [newBlogEmail, setNewBlogEmail] = useState(true);
   const [accountUpdateEmail, setAccountUpdateEmail] = useState(true);
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (user) {
@@ -27,12 +27,22 @@ const EditNotifications = () => {
         newBlogEmail,
         accountUpdateEmail
       );
+
       if (response !== "Preferences updated successfully") {
-        setError(response);
+        toast.error("Failed to update", {
+          description: response || "Please try again later.",
+        });
+      } else {
+        toast.success("Preferences updated", {
+          description:
+            "Your notification preferences were updated successfully.",
+        });
       }
     } catch (error) {
       console.error(error);
-      setError("Failed to update preferences");
+      toast.error("Error", {
+        description: "Could not update preferences. Please try again.",
+      });
     }
   };
 
@@ -61,6 +71,7 @@ const EditNotifications = () => {
         <Skeleton className="h-10 w-32 mt-4" />
       </section>
     );
+
   return (
     <section className="flex flex-col gap-12">
       <div className="space-y-1.5">
@@ -97,11 +108,6 @@ const EditNotifications = () => {
       <Button onClick={handleSaveChanges} className="self-start mt-2">
         Save Changes
       </Button>
-      {error && (
-        <p className="text-sm text-destructive bg-destructive/10 px-4 py-2 rounded-md mt-2 w-fit">
-          {error}
-        </p>
-      )}
     </section>
   );
 };

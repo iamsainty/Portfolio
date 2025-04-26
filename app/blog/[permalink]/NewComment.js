@@ -19,29 +19,29 @@ const NewComment = ({ permalink }) => {
   const [comment, setComment] = useState("");
 
   const handlePostComment = async () => {
-    try {
-      if (!comment || comment.trim() === "") {
-        toast("Comment is empty", {
-          description: "Write something before submitting.",
-        });
-        return;
-      }
+    if (!comment || comment.trim() === "") {
+      toast.error("Comment is empty", {
+        description: "Please write something before submitting",
+      });
+      return;
+    }
 
+    try {
       const response = await newComment(permalink, comment);
 
       if (response === "Comment added successfully.") {
-        toast("Comment posted", {
+        toast.success("Comment posted", {
           description: "Thanks for sharing your thoughts!",
         });
       } else {
-        toast("Post failed", {
-          description: "Please try again later.",
+        toast.error("Post failed", {
+          description: "Something went wrong. Try again later.",
         });
       }
     } catch (error) {
       console.error(error);
-      toast("Error", {
-        description: "Couldn't post your comment. Try again.",
+      toast.error("Error", {
+        description: "Couldn't post your comment. Please try again.",
       });
     }
   };

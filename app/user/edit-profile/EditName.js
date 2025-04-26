@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useUserAuth } from "@/context/user/authContext";
 import React, { useEffect, useState } from "react";
+import { toast } from "sonner";
 
 const EditName = () => {
   const { user, editname } = useUserAuth();
@@ -18,16 +19,30 @@ const EditName = () => {
   }, [user]);
 
   const handleSave = async () => {
-    if (name.length < 3) {
-      setError("Name must be at least 3 characters long");
+    if (name.trim().length < 3) {
+      toast.error("Name is too short", {
+        description: "It must be at least 3 characters long.",
+      });
+      return;
     }
+
     try {
       const response = await editname(name);
+
       if (response !== "User updated successfully") {
-        setError(response);
+        toast.error("Update failed", {
+          description: "Something went wrong. Please try again later.",
+        });
+      } else {
+        toast.success("Name updated successfully", {
+          description: "Your name has been updated successfully.",
+        });
       }
     } catch (error) {
-      setError(error.message);
+      console.error(error);
+      toast.error("Error", {
+        description: "There was an issue updating your name. Please try again.",
+      });
     }
   };
 
