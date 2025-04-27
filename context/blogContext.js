@@ -8,7 +8,7 @@ export const BlogProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [blogpost, setBlogpost] = useState(null);
-  const [error, setError] = useState(null);  // Error state for handling errors
+  const [error, setError] = useState(null); // Error state for handling errors
 
   const getBlogs = async () => {
     try {
@@ -127,6 +127,28 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  const newNewsletterRecipient = async (name, email) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/newsletter/new-recipient`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ name, email }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return "Something went wrong";
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -137,6 +159,7 @@ export const BlogProvider = ({ children }) => {
         blogpost,
         getBlogpost,
         newBlog,
+        newNewsletterRecipient,
       }}
     >
       {children}

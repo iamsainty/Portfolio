@@ -7,21 +7,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
+import EmailNewsletter from "@/components/EmailNewsletter";
 
 const BlogHeroSection = () => {
   return (
-    <section className="px-6 py-10 md:py-14 lg:py-16 flex flex-col items-center justify-evenly min-h-[85vh]">
+    <section className="px-6 py-10 md:py-10 lg:py-12 flex flex-col items-center justify-evenly min-h-[85vh]">
       <Breadcrumb className="border-2 px-4 py-2 rounded-full mb-8">
         <BreadcrumbList className="text-xs md:text-sm">
           <BreadcrumbItem>
@@ -41,30 +31,7 @@ const BlogHeroSection = () => {
           Discover tech tutorials, lifestyle inspiration, and stories.
         </p>
       </div>
-      <Card className="shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg lg:text-xl font-semibold">
-            Email Newsletter
-          </CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
-            Subscribe to email newsletter to get the latest updates straight to
-            your inbox.
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex flex-col md:flex-row lg:gap-3">
-          <Input
-            type="email"
-            placeholder="Enter your email"
-            className="w-full border-2 py-3 px-5 text-base"
-          />
-          <Button
-            type="submit"
-            className="w-full md:w-auto px-6 py-3 mt-4  md:mt-0 text-base font-semibold"
-          >
-            Subscribe
-          </Button>
-        </CardContent>
-      </Card>
+      <EmailNewsletter />
     </section>
   );
 };
