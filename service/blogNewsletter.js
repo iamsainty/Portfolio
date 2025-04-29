@@ -13,16 +13,18 @@ export default async function sendNewsletter(
   email,
   title,
   content,
-  link,
-  recepientId
+  permalink,
+  imageUrl,
+  recipientId
 ) {
   const mailContent = wrapInTemplate(
     name,
     email,
     title,
     parseContentToHTML(content),
-    link,
-    recepientId
+    permalink,
+    imageUrl,
+    recipientId
   );
 
   const mailOptions = {
@@ -111,13 +113,21 @@ function parseContentToHTML(content) {
   return html;
 }
 
-function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
+function wrapInTemplate(
+  name,
+  email,
+  title,
+  bodyContent,
+  permalink,
+  imageUrl,
+  recepientId
+) {
   return `
      <div
   style="
     font-family: 'Helvetica Neue', Arial, sans-serif;
     width: 600px;
-    max-width: 90vw;
+    max-width: 95vw;
     margin: 30px auto;
     border: 1px solid #e0e0e0;
     border-radius: 14px;
@@ -140,13 +150,19 @@ function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
       ${title}
     </h2>
 
+    <img 
+      src="${imageUrl}" 
+      alt="Blog image" 
+      style="max-width: 100%; border-radius: 10px; margin-bottom: 20px;"
+    />
+
     <div style="margin: 18px 0 30px; font-size: 14px; color: #333333; line-height: 1.7;">
       ${bodyContent}
     </div>
 
     <div style="text-align: center; margin: 40px 0 10px;">
       <a
-        href="${link}"
+        href="https://hey-sainty.vercel.app/blog/${permalink}"
         style="
           background-color: rgba(0, 0, 0, 0.85);
           color: #ffffff;
@@ -171,11 +187,11 @@ function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
       text-align: center;
     "
   >
-    <h1 style="font-size: 26px; margin: 0; font-weight: 800;">Hey Sainty</h1>
+    <h1 style="font-size: 22px; margin: 0; font-weight: 800;">Hey Sainty</h1>
     <p
       style="
         margin: 14px 0 26px;
-        font-size: 16px;
+        font-size: 13px;
         font-weight: 500;
         opacity: 0.9;
       "
@@ -188,7 +204,7 @@ function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
         border-top: 1px solid rgba(255, 255, 255, 0.15);
         margin-top: 24px;
         padding-top: 22px;
-        font-size: 13px;
+        font-size: 10px;
         opacity: 0.8;
       "
     >
@@ -204,6 +220,10 @@ function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
         >
           Unsubscribe
         </a>
+      </p>
+      <p style="margin: 12px 0 0; opacity : 0.7;">
+        This email was intended for <strong>${email}</strong>.
+        If you believe you received it by mistake, please unsubscribe or contact us.
       </p>
     </div>
 
@@ -233,5 +253,6 @@ function wrapInTemplate(name, email, title, bodyContent, link, recepientId) {
     </div>
   </div>
 </div>
+
     `;
 }

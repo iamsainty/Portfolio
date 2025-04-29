@@ -17,6 +17,6 @@ const recipientSchema = new mongoose.Schema({
 });
 
 const Recipient =
-  mongoose.model.Recipient || mongoose.model("Recipient", recipientSchema);
+  mongoose.models.Recipient || mongoose.model("Recipient", recipientSchema);
 
 export default Recipient;

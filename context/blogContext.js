@@ -149,6 +149,41 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  const sendNewsletter = async (title, content, permalink) => {
+    try {
+      const adminToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("adminToken="))
+        ?.split("=")[1];
+
+      if (!adminToken) {
+        return "Admin token missing. Please login again.";
+      }
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/newsletter/new-letter`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            adminToken: adminToken,
+          },
+          body: JSON.stringify({
+            title,
+            content,
+            permalink,
+          }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return "Something went wrong";
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -160,6 +195,7 @@ export const BlogProvider = ({ children }) => {
         getBlogpost,
         newBlog,
         newNewsletterRecipient,
+        sendNewsletter
       }}
     >
       {children}
