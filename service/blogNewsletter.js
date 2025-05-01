@@ -120,7 +120,7 @@ function wrapInTemplate(
   bodyContent,
   permalink,
   imageUrl,
-  recepientId
+  recipientId
 ) {
   return `
      <div
@@ -211,7 +211,7 @@ function wrapInTemplate(
       <p style="margin: 0 0 12px;">
         Prefer not to hear from us? 
         <a
-          href="https://hey-sainty.vercel.app/blog-newsletter/unsubscribe?recepientId=${recepientId}"
+          href="https://hey-sainty.vercel.app/blog-newsletter/unsubscribe?recipientId=${recipientId}"
           style="
             color: #dddddd;
             font-weight: bold;

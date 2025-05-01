@@ -149,6 +149,50 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  const newsletterUnsubscribe = async (recipientId, reason) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/newsletter/unsubscribe`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ recipientId, reason }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return "Something went wrong";
+    }
+  };
+
+  const newsletterResubscribe = async (recipientId) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/newsletter/resubscribe`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ recipientId }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return "Something went wrong";
+    }
+  };
+
   const sendNewsletter = async (title, content, permalink) => {
     try {
       const adminToken = document.cookie
@@ -184,6 +228,28 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  const getRecipient = async (recipientId) => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/newsletter/recipientdata`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ recipientId }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error(error);
+      return "Something went wrong";
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{
@@ -195,7 +261,10 @@ export const BlogProvider = ({ children }) => {
         getBlogpost,
         newBlog,
         newNewsletterRecipient,
-        sendNewsletter
+        newsletterUnsubscribe,
+        sendNewsletter,
+        getRecipient,
+        newsletterResubscribe,
       }}
     >
       {children}

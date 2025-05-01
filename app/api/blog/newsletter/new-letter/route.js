@@ -19,17 +19,19 @@ export async function POST(req) {
     const recipients = await Recipient.find();
 
     await Promise.all(
-      recipients.map((recipient) =>
-        sendNewsletter(
-          recipient.name,
-          recipient.email,
-          title,
-          content,
-          permalink,
-          blog.coverimage,
-          recipient._id.toString()
+      recipients
+        .filter((recipient) => recipient.isSubscribed)
+        .map((recipient) =>
+          sendNewsletter(
+            recipient.name,
+            recipient.email,
+            title,
+            content,
+            permalink,
+            blog.coverimage,
+            recipient._id.toString()
+          )
         )
-      )
     );
 
     return NextResponse.json(

@@ -14,6 +14,18 @@ const recipientSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  isSubscribed: {
+    type: Boolean,
+    default: true,
+  },
+  unsubscribeReason: {
+    type: String,
+    default: null,
+  },
+  unsubscribedAt: {
+    type: Date,
+    default: null,
+  }
 });
 
 const Recipient =
