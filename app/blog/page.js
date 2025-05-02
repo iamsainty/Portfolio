@@ -47,8 +47,14 @@ export async function generateMetadata() {
         description:
           "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
         url: "https://hey-sainty.vercel.app/blog",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Open Graph Image",
+          },
+        ],
         locale: "en_US",
       },
       twitter: {
@@ -56,8 +62,9 @@ export async function generateMetadata() {
         title: "Blog - Tech, Tutorials, Guides & More",
         description:
           "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
-        image:
+        images: [
           "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        ],
         creator: "@iam__sainty",
       },
     };

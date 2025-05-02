@@ -27,8 +27,14 @@ export const metadata = {
     description:
       "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore blogs on programming, tech trends, and personal projects.",
     url: "https://hey-sainty.vercel.app",
-    image:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    images: [
+      {
+        url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        width: 1200,
+        height: 630,
+        alt: "Hey Sainty Open Graph Image",
+      },
+    ],
     locale: "en_US",
   },
   twitter: {
@@ -36,8 +42,9 @@ export const metadata = {
     title: "Hey Sainty - Explore Tech, Creativity, and Innovation",
     description:
       "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore blogs on programming, tech trends, and personal projects.",
-    image:
+    images: [
       "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    ],
     creator: "@iam__sainty",
   },
 };

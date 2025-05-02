@@ -94,7 +94,7 @@ export async function generateMetadata({ params }) {
       "Development",
       "Blog",
       ...blogpost.title,
-      ...blogpost.tag, // Tags as additional keywords
+      ...blogpost.tag,
     ],
     author: blogpost.author || "Priyanshu Chaurasiya",
     canonical: blogUrl,
@@ -103,9 +103,16 @@ export async function generateMetadata({ params }) {
       title: `${blogpost.title} - Hey Sainty`,
       description: blogpost.summary || "No description available.",
       url: blogUrl,
-      image:
-        blogpost.coverimage ||
-        "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+      images: [
+        {
+          url:
+            blogpost.coverimage ||
+            "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+          width: 1200,
+          height: 630,
+          alt: blogpost.title,
+        },
+      ],
       locale: "en_US",
       article: {
         published_time: blogpost.dateCreated,
@@ -119,9 +126,10 @@ export async function generateMetadata({ params }) {
       card: "summary_large_image",
       title: `${blogpost.title} - Hey Sainty`,
       description: blogpost.summary || "No description available.",
-      image:
+      images: [
         blogpost.coverimage ||
-        "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+      ],
       creator: "@iam__sainty",
     },
     jsonLd: JSON.stringify(jsonLd), // Adding JSON-LD structured data for rich snippets
