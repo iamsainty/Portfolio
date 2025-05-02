@@ -49,10 +49,10 @@ export async function generateMetadata() {
         url: "https://hey-sainty.vercel.app/blog",
         images: [
           {
-            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
             width: 1200,
             height: 630,
-            alt: "Hey Sainty Open Graph Image",
+            alt: "Blog – Hey Sainty",
           },
         ],
         locale: "en_US",
@@ -63,7 +63,7 @@ export async function generateMetadata() {
         description:
           "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
         images: [
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.pngg",
         ],
         creator: "@iam__sainty",
       },
