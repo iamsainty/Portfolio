@@ -106,7 +106,6 @@ const ManageSubscription = () => {
 
           <Skeleton className="h-10 w-1/3 mt-4" />
         </div>
-        /
       </div>
     );
   }
