@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import Link from "next/link";
 import React from "react";
 import { FaGithub, FaInstagram, FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
@@ -75,9 +74,6 @@ const AboutSection = () => {
             I&apos;m a tech enthusiast and web developer. I build web apps,
             write blogs to share my learnings.
           </p>
-          <Button asChild>
-            <Link href="/sainty" className="text-base">Know More</Link>
-          </Button>
         </div>
       </div>
     </section>
