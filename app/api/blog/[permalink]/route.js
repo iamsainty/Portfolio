@@ -11,7 +11,10 @@ export async function GET(request, { params }) {
     const blogPost = await BlogPost.findOne({ permalink });
     if (!blogPost) {
       return NextResponse.json(
-        { error: "Blog post not found. Please check the URL." },
+        {
+          success: false,
+          error: "Blog post not found. Please check the URL.",
+        },
         { status: 404 }
       );
     }
@@ -29,11 +32,17 @@ export async function GET(request, { params }) {
       await blogPost.save();
     }
 
-    return NextResponse.json(blogPost, { status: 200 });
+    return NextResponse.json(
+      { success: true, blogpost: blogPost },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error fetching blog post:", error);
     return NextResponse.json(
-      { error: "Internal Server Error. Please try again later." },
+      {
+        success: false,
+        error: "Internal Server Error. Please try again later.",
+      },
       { status: 500 }
     );
   }

@@ -9,15 +9,15 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useBlogComment } from "@/context/blogCommentContext";
 import { toast } from "sonner";
-import { RiLoader4Line } from "react-icons/ri"; // ✅ Spinner icon
+import { RiLoader4Line } from "react-icons/ri";
 
-const NewComment = ({ permalink }) => {
+const NewComment = ({ blogpost }) => {
   const { user, loading } = useUserAuth();
   const { newComment } = useBlogComment();
   const [showSignIn, setShowSignIn] = useState(false);
   const [showSignUp, setShowSignUp] = useState(false);
   const [comment, setComment] = useState("");
-  const [posting, setPosting] = useState(false); // ✅ Posting state
+  const [posting, setPosting] = useState(false);
 
   const handlePostComment = async () => {
     if (!comment || comment.trim() === "") {
@@ -27,9 +27,9 @@ const NewComment = ({ permalink }) => {
       return;
     }
 
-    setPosting(true); // ✅ Start posting
+    setPosting(true);
     try {
-      const response = await newComment(permalink, comment);
+      const response = await newComment(blogpost.permalink, comment);
 
       if (response === "Comment added successfully.") {
         toast.success("Comment posted", {
@@ -47,7 +47,7 @@ const NewComment = ({ permalink }) => {
         description: "Couldn't post your comment. Please try again.",
       });
     } finally {
-      setPosting(false); // ✅ End posting
+      setPosting(false);
     }
   };
 
@@ -91,10 +91,9 @@ const NewComment = ({ permalink }) => {
             <Button
               className="rounded-lg md:w-fit font-semibold px-6 py-2 flex items-center gap-2"
               onClick={handlePostComment}
-              disabled={posting} // ✅ Disable while posting
+              disabled={posting}
             >
-              {posting && <RiLoader4Line className="animate-spin" />}{" "}
-              {/* ✅ Spinner */}
+              {posting && <RiLoader4Line className="animate-spin" />}
               {posting ? "Posting..." : "Post Comment"}
             </Button>
           </div>
