@@ -14,8 +14,6 @@ const BlogPost = ({ blogpost }) => {
   const isValidHTML = (html) =>
     typeof html === "string" && html.trim().length > 0;
 
-  console.log(blogcontent);
-
   return (
     <section className="md:w-4/5 lg:w-3/5 container px-6 flex flex-col gap-3">
       {blogcontent.map((block, index) => (

@@ -25,7 +25,7 @@ const getBlogpost = async (permalink) => {
     }
     return null;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching blogpost:", error);
     return null;
   }
 };

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import BlogHeroSection from "./BlogHeroSection";
 import Blogs from "./Blogs";
+import Loading from "./loading";
 
-export async function generateMetadata() {
+const fetchBlogs = async () => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
@@ -14,14 +15,20 @@ export async function generateMetadata() {
         next: { revalidate: 3600 },
       }
     );
-
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch blogs: ${response.status} ${response.statusText}`
-      );
+    const data = await response.json();
+    if (data.success) {
+      return data.blogs;
     }
+    return null;
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return null;
+  }
+};
 
-    const blogs = await response.json();
+export async function generateMetadata() {
+  try {
+    const blogs = await fetchBlogs();
     const blogTitles = blogs.map((blog) => blog.title).join(", ");
 
     return {
@@ -36,7 +43,7 @@ export async function generateMetadata() {
         "Development Projects",
         "Tech Insights",
         "Priyanshu Chaurasiya",
-        ...blogTitles.split(", "), // Adding dynamic blog titles as keywords
+        ...blogTitles.split(", "),
       ],
       author: "Priyanshu Chaurasiya",
       canonical: "https://hey-sainty.vercel.app/blog",
@@ -63,7 +70,7 @@ export async function generateMetadata() {
         description:
           "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
         images: [
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.pngg",
+          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
         ],
         creator: "@iam__sainty",
       },
@@ -110,11 +117,22 @@ export async function generateMetadata() {
   }
 }
 
-export default function Page() {
+export default async function Page() {
+  const blogs = await fetchBlogs();
+
+  if (!blogs || blogs.length === 0) {
+    return (
+      <section>
+        <h1>No blogs found</h1>
+      </section>
+    );
+  }
   return (
     <div className="flex flex-col items-center">
       <BlogHeroSection />
-      <Blogs />
+      <Suspense fallback={<Loading />}>
+        <Blogs blogs={blogs} />
+      </Suspense>
     </div>
   );
 }
