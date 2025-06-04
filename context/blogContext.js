@@ -8,7 +8,7 @@ export const BlogProvider = ({ children }) => {
   const [blogs, setBlogs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [blogpost, setBlogpost] = useState(null);
-  const [error, setError] = useState(null); // Error state for handling errors
+  const [error, setError] = useState(null);
 
   const getBlogs = async () => {
     try {
@@ -24,13 +24,12 @@ export const BlogProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to fetch blogs.");
+      const data = await response.json();
+      if (data.success) {
+        setBlogs(data.blogs);
+      } else {
+        setError(data.error || "Failed to fetch blogs.");
       }
-
-      const blogs = await response.json();
-      setBlogs(blogs);
     } catch (error) {
       console.error(error);
       setError(error.message || "An unexpected error occurred.");
