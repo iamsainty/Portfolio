@@ -2,7 +2,7 @@ export const metadata = {
   title: "Sitemap - Hey Sainty",
 };
 
-async function getBlogs() {
+const fetchBlogs = async () => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
@@ -14,27 +14,24 @@ async function getBlogs() {
         next: { revalidate: 3600 },
       }
     );
-
-    if (!response.ok) {
-      console.error("Failed to fetch blogs:", response.statusText);
-      return [];
+    const data = await response.json();
+    if (data.success) {
+      return data.blogs;
     }
-
-    const blogs = await response.json();
-    return Array.isArray(blogs) ? blogs : []; // Ensure blogs is an array
+    return null;
   } catch (error) {
     console.error("Error fetching blogs:", error);
-    return [];
+    return null;
   }
-}
+};
 
 export default async function sitemap() {
-  const blogs = await getBlogs();
+  const blogs = await fetchBlogs();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   const blogsSitemap = blogs.map((blog) => ({
     url: `${baseUrl}/blog/${blog.permalink}`,
-    lastModified: blog.lastUpdated || new Date().toISOString(), // Fallback date
+    lastModified: blog.lastUpdated || new Date().toISOString(),
     changeFrequency: "monthly",
     priority: 0.8,
   }));
