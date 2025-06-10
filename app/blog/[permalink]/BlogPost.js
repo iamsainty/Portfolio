@@ -7,9 +7,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
 const BlogPost = ({ blogpost }) => {
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;
+
+  // console.log(blogcontent);
 
   const isValidHTML = (html) =>
     typeof html === "string" && html.trim().length > 0;
@@ -134,6 +137,31 @@ const BlogPost = ({ blogpost }) => {
                   ))}
               </TableBody>
             </Table>
+          )}
+
+          {block.type === "linkTool" && block.data?.meta && (
+            <a
+              href={block.data.meta.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition"
+            >
+              <Image
+                src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
+                alt="favicon"
+                className="w-8 h-8"
+                width={40}
+                height={40}
+              />
+              <div>
+                <div className="font-semibold text-base line-clamp-1">
+                  {block.data.meta.title}
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {block.data.meta.description}
+                </p>
+              </div>
+            </a>
           )}
 
           {block.type === "delimiter" && (

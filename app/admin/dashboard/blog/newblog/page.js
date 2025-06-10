@@ -44,7 +44,13 @@ export default function Page() {
           list: { class: List, inlineToolbar: true },
           code: { class: Code, inlineToolbar: true },
           quote: { class: Quote, inlineToolbar: true },
-          linkTool: { class: LinkTool, inlineToolbar: true },
+          linkTool: {
+            class: LinkTool,
+            config: {
+              endpoint: `/api/blog/newblog/fetch-link-data`,
+              withCredentials: true,
+            },
+          },
           table: { class: Table, inlineToolbar: true },
           delimiter: { class: Delimiter, inlineToolbar: true },
           inlineCode: { class: InlineCode, inlineToolbar: true },
@@ -88,7 +94,14 @@ export default function Page() {
         return;
       }
 
-      await newBlog(title, summary, JSON.stringify(post), tags, permalink, imageUrl);
+      await newBlog(
+        title,
+        summary,
+        JSON.stringify(post),
+        tags,
+        permalink,
+        imageUrl
+      );
     } catch (error) {
       setError("Failed to publish the blog. Please try again.");
     }
