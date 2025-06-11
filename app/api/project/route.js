@@ -59,11 +59,15 @@ export async function GET() {
 
     const projects = await Projects.find().sort({ startDate: -1 });
 
-    return NextResponse.json({ projects }, { status: 200 });
+    return NextResponse.json({ success: true, projects }, { status: 200 });
   } catch (error) {
     console.error("Error fetching projects:", error);
     return NextResponse.json(
-      { message: "Error fetching projects", error: error.message },
+      {
+        success: false,
+        message: "Error fetching projects",
+        error: error.message,
+      },
       { status: 500 }
     );
   }
