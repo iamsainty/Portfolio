@@ -40,7 +40,9 @@ export function AdminSidebar() {
 
         <ul className="space-y-3">
           {navLinks.map(({ title, link, icon }) => {
-            const isActive = pathname === link;
+            const isExact = pathname === "/admin/dashboard";
+            const isActive =
+              link === "/admin/dashboard" ? isExact : pathname.startsWith(link);
             return (
               <li key={title}>
                 <Link

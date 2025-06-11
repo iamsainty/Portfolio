@@ -25,8 +25,6 @@ export default function Projects() {
     getProjects().then(setProjects);
   }, []);
 
-  console.log(projects);
-
   if (projects.length === 0) {
     return (
       <div className="flex flex-col gap-5">

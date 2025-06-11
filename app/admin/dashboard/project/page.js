@@ -3,6 +3,11 @@ import Link from "next/link";
 import { IoAdd } from "react-icons/io5";
 import Projects from "./Projects";
 
+export const metadata = {
+  title: "Manage Your Projects",
+  description: "The admin dashboard for managing your projects",
+};
+
 export default function Page() {
   return (
     <div className="container mx-auto flex flex-col gap-10 p-8">

@@ -6,6 +6,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import Link from "next/link";
 
 async function getBlogs() {
   const response = await fetch("/api/blog", {
@@ -70,9 +71,11 @@ export default function Blogs() {
             </p>
           </div>
           <div className="flex gap-2 justify-evenly items-center w-[10%]">
-            <Button variant="outline" className="p-2 hover:bg-muted/50">
-              <CiEdit className="text-xl" />
-            </Button>
+            <Link href={`/admin/dashboard/blog/editblog/${blog.permalink}`}>
+              <Button variant="outline" className="p-2 hover:bg-muted/50">
+                <CiEdit className="text-xl" />
+              </Button>
+            </Link>
             <Button
               variant="outline"
               className="p-2 hover:bg-red-500 hover:text-white transition-colors"
