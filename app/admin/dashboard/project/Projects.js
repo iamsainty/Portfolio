@@ -1,12 +1,21 @@
 "use client";
 
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useProject } from "@/context/projectContext";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { CiEdit } from "react-icons/ci";
-
+import { toast } from "sonner";
 async function getProjects() {
   const response = await fetch("/api/project", {
     method: "GET",
@@ -20,10 +29,31 @@ async function getProjects() {
 }
 export default function Projects() {
   const [projects, setProjects] = useState([]);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [deleteProjectId, setDeleteProjectId] = useState(null);
+  const [deleteProjectTitle, setDeleteProjectTitle] = useState("");
+
+  const { deleteProject } = useProject();
 
   useEffect(() => {
     getProjects().then(setProjects);
   }, []);
+
+  const handleDelete = async () => {
+    try {
+      const success = await deleteProject(deleteProjectId);
+      if (success) {
+        setDeleteDialog(false);
+        setProjects(
+          projects.filter((project) => project._id !== deleteProjectId)
+        );
+      }
+      toast.success("Project deleted successfully");
+    } catch (error) {
+      console.error("Error during project deletion:", error);
+      toast.error("Failed to delete project");
+    }
+  };
 
   if (projects.length === 0) {
     return (
@@ -51,6 +81,32 @@ export default function Projects() {
 
   return (
     <div className="flex flex-col gap-5">
+      <AlertDialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+        <AlertDialogContent className="flex flex-col gap-6 rounded-2xl p-6">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-bold">
+              Are you sure?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription className="text-muted-foreground text-base">
+            This action will permanently delete the project below. This action
+            cannot be undone.
+          </AlertDialogDescription>
+
+          <div className="bg-muted/50 px-4 py-3 rounded-md border border-muted-foreground/20 text-sm font-medium text-foreground shadow-sm">
+            <span className="line-clamp-2">{deleteProjectTitle}</span>
+          </div>
+
+          <AlertDialogFooter className="flex gap-3">
+            <Button variant="outline" onClick={() => setDeleteDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Confirm Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
       {projects.map((project) => (
         <div
           key={project._id}
@@ -78,6 +134,11 @@ export default function Projects() {
             <Button
               variant="outline"
               className="p-2 hover:bg-red-500 hover:text-white transition-colors"
+              onClick={() => {
+                setDeleteDialog(true);
+                setDeleteProjectId(project._id);
+                setDeleteProjectTitle(project.title);
+              }}
             >
               <AiOutlineDelete className="text-xl" />
             </Button>

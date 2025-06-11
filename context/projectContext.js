@@ -33,7 +33,6 @@ export const ProjectProvider = ({ children }) => {
         }
       );
 
-      // Only parse response as JSON if it's OK
       const data = response.ok ? await response.json() : null;
 
       if (response.ok) {
@@ -44,7 +43,7 @@ export const ProjectProvider = ({ children }) => {
     } catch (error) {
       console.error("Error during project addition:", error);
     } finally {
-      setLoading(false); // Ensure loading is always set to false
+      setLoading(false);
     }
   };
 
@@ -66,15 +65,47 @@ export const ProjectProvider = ({ children }) => {
     } catch (error) {
       console.error("Error during project fetching:", error);
     } finally {
-    setTimeout(() => {
-      setLoading(false);
-    }, 1000);
-  }
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
+
+  const deleteProject = async (projectId) => {
+    try {
+      const adminToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("adminToken="))
+        ?.split("=")[1];
+
+      if (!adminToken) {
+        return false;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/project/deleteproject`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            adminToken: adminToken,
+          },
+          body: JSON.stringify({ projectId }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.success;
+    } catch (error) {
+      console.error("Error during project deletion:", error);
+      return false;
+    }
   };
 
   return (
     <ProjectContext.Provider
-      value={{ loading, projects, addProject, getProjects }}
+      value={{ loading, projects, addProject, getProjects, deleteProject }}
     >
       {children}
     </ProjectContext.Provider>

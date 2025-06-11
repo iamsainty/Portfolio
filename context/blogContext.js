@@ -250,6 +250,34 @@ export const BlogProvider = ({ children }) => {
     }
   };
 
+  const deleteBlog = async (blogId) => {
+    try {
+      const adminToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("adminToken="))
+        ?.split("=")[1];
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/deleteblog`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            adminToken: adminToken,
+          },
+          body: JSON.stringify({ blogId }),
+        }
+      );
+
+      const data = await response.json();
+
+      return data.success;
+    } catch (error) {
+      console.error("Error during blog deletion:", error);
+      return false;
+    }
+  };
+
   return (
     <BlogContext.Provider
       value={{

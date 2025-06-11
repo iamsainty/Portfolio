@@ -7,6 +7,16 @@ import { CiEdit } from "react-icons/ci";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
 import Link from "next/link";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
+import { useBlog } from "@/context/blogContext";
+import { toast } from "sonner";
 
 async function getBlogs() {
   const response = await fetch("/api/blog", {
@@ -21,10 +31,29 @@ async function getBlogs() {
 }
 export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
+  const [deleteDialog, setDeleteDialog] = useState(false);
+  const [deleteBlogId, setDeleteBlogId] = useState(null);
+  const [deleteBlogTitle, setDeleteBlogTitle] = useState("");
+
+  const { deleteBlog } = useBlog();
 
   useEffect(() => {
     getBlogs().then(setBlogs);
   }, []);
+
+  const handleDelete = async () => {
+    try {
+      const success = await deleteBlog(deleteBlogId);
+      if (success) {
+        setDeleteDialog(false);
+        setBlogs(blogs.filter((blog) => blog._id !== deleteBlogId));
+      }
+      toast.success("Blog deleted successfully");
+    } catch (error) {
+      console.error("Error during blog deletion:", error);
+      toast.error("Failed to delete blog");
+    }
+  };
 
   if (blogs.length === 0) {
     return (
@@ -52,6 +81,33 @@ export default function Blogs() {
 
   return (
     <div className="flex flex-col gap-5">
+      <AlertDialog open={deleteDialog} onOpenChange={setDeleteDialog}>
+        <AlertDialogContent className="flex flex-col gap-6 rounded-2xl p-6">
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-2xl font-bold">
+              Are you sure?
+            </AlertDialogTitle>
+          </AlertDialogHeader>
+          <AlertDialogDescription className="text-muted-foreground text-base">
+            This action will permanently delete the blog post below. This action
+            cannot be undone.
+          </AlertDialogDescription>
+
+          <div className="bg-muted/50 px-4 py-3 rounded-md border border-muted-foreground/20 text-sm font-medium text-foreground shadow-sm">
+            <span className="line-clamp-2">{deleteBlogTitle}</span>
+          </div>
+
+          <AlertDialogFooter className="flex gap-3">
+            <Button variant="outline" onClick={() => setDeleteDialog(false)}>
+              Cancel
+            </Button>
+            <Button variant="destructive" onClick={handleDelete}>
+              Confirm Delete
+            </Button>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
       {blogs.map((blog) => (
         <div
           key={blog._id}
@@ -79,6 +135,11 @@ export default function Blogs() {
             <Button
               variant="outline"
               className="p-2 hover:bg-red-500 hover:text-white transition-colors"
+              onClick={() => {
+                setDeleteDialog(true);
+                setDeleteBlogId(blog._id);
+                setDeleteBlogTitle(blog.title);
+              }}
             >
               <AiOutlineDelete className="text-xl" />
             </Button>
