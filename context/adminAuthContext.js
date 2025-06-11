@@ -31,10 +31,13 @@ export const AdminAuthProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok) throw new Error("Failed to fetch admin profile");
-
       const data = await response.json();
-      setAdmin(data.admin);
+
+      if (data.success) {
+        setAdmin(data.admin);
+      } else {
+        setAdmin(null);
+      }
     } catch (error) {
       console.error("Error fetching admin profile:", error);
       setAdmin(null);

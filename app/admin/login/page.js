@@ -1,4 +1,5 @@
 "use client";
+
 import {
   Card,
   CardContent,
@@ -9,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
 async function adminLogin(email, password) {
@@ -27,11 +28,37 @@ async function adminLogin(email, password) {
   return { status, data };
 }
 
+async function getAdmin(adminToken) {
+  const response = await fetch("/api/admin/adminprofile", {
+    headers: {
+      "Content-Type": "application/json",
+      adminToken: adminToken,
+    },
+  });
+
+  const data = await response.json();
+
+  return data.success;
+}
+
 export default function Page() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
+
+    const admin = getAdmin(adminToken);
+
+    if (admin) {
+      router.push("/admin/dashboard");
+    }
+  }, [router]);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();

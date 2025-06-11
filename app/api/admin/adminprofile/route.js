@@ -11,7 +11,7 @@ export async function GET(req) {
 
     if (validation.status !== 200) {
       return NextResponse.json(
-        { message: validation.message },
+        { success: false, message: validation.message },
         { status: validation.status }
       );
     }
@@ -19,14 +19,17 @@ export async function GET(req) {
     const admin = await Admin.findById(validation.id);
 
     if (!admin) {
-      return NextResponse.json({ message: "Admin not found" }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "Admin not found" },
+        { status: 404 }
+      );
     }
 
-    return NextResponse.json({ admin }, { status: 200 });
+    return NextResponse.json({ success: true, admin: admin }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Internal Server Error" },
+      { success: false, message: "Internal Server Error" },
       { status: 500 }
     );
   }

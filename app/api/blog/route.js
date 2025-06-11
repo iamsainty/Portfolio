@@ -10,16 +10,19 @@ export async function GET() {
 
     if (!blogs.length) {
       return NextResponse.json(
-        { message: "No blog posts found." },
+        { success: false, message: "No blog posts found." },
         { status: 404 }
       );
     }
 
-    return NextResponse.json(blogs, { status: 200 });
+    return NextResponse.json({ success: true, blogs }, { status: 200 });
   } catch (error) {
     console.error("Error fetching blogs:", error);
     return NextResponse.json(
-      { error: "Internal Server Error. Please try again later." },
+      {
+        success: false,
+        message: "Internal Server Error. Please try again later.",
+      },
       { status: 500 }
     );
   }
