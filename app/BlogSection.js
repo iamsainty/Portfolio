@@ -118,11 +118,17 @@ const BlogSection = () => {
                       />
                     </CardHeader>
                     <CardContent className="space-y-2">
-                      <CardTitle className="text-md lg:text-lg font-bold text-wrap">
-                        {blog.title.slice(0, 50)}...
+                      <CardTitle
+                        className="text-md lg:text-lg font-bold text-wrap line-clamp-2"
+                        aria-label="blog title"
+                      >
+                        {blog.title}
                       </CardTitle>
-                      <CardDescription className="text-sm lg:text-md text-wrap text-muted-foreground">
-                        {blog.summary.slice(0, 120)}...
+                      <CardDescription
+                        className="text-sm lg:text-md text-wrap text-muted-foreground line-clamp-2"
+                        aria-label="blog summary"
+                      >
+                        {blog.summary}
                       </CardDescription>
                     </CardContent>
                     <CardFooter className="flex flex-col items-start gap-3 text-sm text-muted-foreground">

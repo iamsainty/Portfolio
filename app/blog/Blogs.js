@@ -9,17 +9,41 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useBlog } from "@/context/blogContext";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FaRegComments } from "react-icons/fa";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 
+async function getBlogs() {
+  try {
+    const response = await fetch("/api/blog", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+    if (data.success) {
+      return data.blogs;
+    }
+    return [];
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return [];
+  }
+}
+
 const Blogs = () => {
-  const { blogs, getBlogs, loading } = useBlog();
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getBlogs();
+    const fetchBlogs = async () => {
+      const blogs = await getBlogs();
+      setBlogs(blogs);
+      setLoading(false);
+    };
+    fetchBlogs();
     // eslint-disable-next-line
   }, []);
   return (
@@ -63,10 +87,7 @@ const Blogs = () => {
         <>
           {blogs.map((blog) => (
             <Link key={blog._id} href={`/blog/${blog.permalink}`}>
-              <Card
-                href={blog.permalink}
-                className="border-2 dark:border-2 w-[85vw] lg:w-[25vw] shadow-sm"
-              >
+              <Card className="border-2 dark:border-2 w-[85vw] lg:w-[25vw] shadow-sm">
                 <CardHeader>
                   <Image
                     src={blog.coverimage}
@@ -77,16 +98,22 @@ const Blogs = () => {
                   />
                 </CardHeader>
                 <CardContent className="space-y-2">
-                  <CardTitle className="text-md lg:text-lg font-bold text-wrap">
-                    {blog.title.slice(0, 50)}...
+                  <CardTitle
+                    className="text-md lg:text-lg font-bold text-wrap line-clamp-2"
+                    aria-label="blog title"
+                  >
+                    {blog.title}
                   </CardTitle>
-                  <CardDescription className="text-sm lg:text-md text-wrap text-muted-foreground">
-                    {blog.summary.slice(0, 120)}...
+                  <CardDescription
+                    className="text-sm lg:text-md text-wrap text-muted-foreground line-clamp-2"
+                    aria-label="blog summary"
+                  >
+                    {blog.summary}
                   </CardDescription>
                 </CardContent>
                 <CardFooter className="flex flex-col items-start gap-3 text-xs md:text-sm text-muted-foreground">
                   <div className="flex items-center gap-2">
-                    <IoTimeOutline className="text-base " />
+                    <IoTimeOutline className="text-base " aria-label="date" />
                     <span className="font-medium">
                       {new Date(blog.dateCreated).toLocaleDateString("en-US", {
                         year: "numeric",
@@ -96,13 +123,16 @@ const Blogs = () => {
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <IoEyeOutline className="text-base " />
+                    <IoEyeOutline className="text-base " aria-label="views" />
                     <span className="font-medium">
                       {blog.views.toLocaleString()} views
                     </span>
                   </div>
                   <div className="flex items-center gap-2">
-                    <FaRegComments className="text-base " />
+                    <FaRegComments
+                      className="text-base "
+                      aria-label="comments"
+                    />
                     <span className="font-medium">
                       {blog.comments.toLocaleString()} comments
                     </span>

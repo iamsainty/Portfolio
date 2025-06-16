@@ -11,17 +11,15 @@ export async function generateMetadata() {
         headers: {
           "Content-Type": "application/json",
         },
-        next: { revalidate: 3600 },
       }
     );
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch blogs: ${response.status} ${response.statusText}`
-      );
+    const data = await response.json();
+    if (!data.success) {
+      throw new Error("Failed to fetch blogs");
     }
 
-    const blogs = await response.json();
+    const blogs = data.blogs;
     const blogTitles = blogs.map((blog) => blog.title).join(", ");
 
     return {
@@ -36,7 +34,7 @@ export async function generateMetadata() {
         "Development Projects",
         "Tech Insights",
         "Priyanshu Chaurasiya",
-        ...blogTitles.split(", "), // Adding dynamic blog titles as keywords
+        ...blogTitles.split(", "),
       ],
       author: "Priyanshu Chaurasiya",
       canonical: "https://hey-sainty.vercel.app/blog",
