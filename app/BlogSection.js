@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -15,14 +15,39 @@ import {
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
 import { FaRegComments } from "react-icons/fa";
-import { useBlog } from "@/context/blogContext";
 import { Skeleton } from "@/components/ui/skeleton";
 
+async function getBlogs() {
+  try {
+    const response = await fetch("/api/blog", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return data.blogs;
+    } else {
+      throw new Error("Failed to fetch blogs");
+    }
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return [];
+  }
+}
+
 const BlogSection = () => {
-  const { blogs, getBlogs, loading } = useBlog();
+  const [blogs, setBlogs] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    getBlogs();
-    // eslint-disable-next-line
+    getBlogs().then((blogs) => {
+      setBlogs(blogs);
+      setLoading(false);
+    });
   }, []);
   return (
     <section className="sticky top-[5vh] lg:top-[10vh] bg-white dark:bg-black w-[85vw] lg:w-[75vw] flex flex-col lg:flex-row justify-center items-center gap-6 lg:gap-12 py-[5vh] mx-auto min-h-[100vh]">
