@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -8,18 +8,44 @@ import {
   BreadcrumbList,
   BreadcrumbPage,
   BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"; // Assuming this path is correct
+} from "@/components/ui/breadcrumb";
 import Image from "next/image";
 import { Dot } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
-import { useBlog } from "@/context/blogContext";
 import BlogNotFound from "./BlogNotFound";
 import { Skeleton } from "@/components/ui/skeleton";
 
+async function getBlogpost(permalink) {
+  try {
+    const response = await fetch(`/api/blog/${permalink}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+
+    if (data.success) {
+      return data.blog;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching blogpost:", error);
+    return null;
+  }
+}
+
 const BlogpostHeroSection = ({ permalink }) => {
-  const { blogpost, loading, getBlogpost } = useBlog();
+  const [blogpost, setBlogpost] = useState(null);
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
-    getBlogpost(permalink);
+    const fetchBlogpost = async () => {
+      const blogpost = await getBlogpost(permalink);
+      setBlogpost(blogpost);
+      setLoading(false);
+    };
+    fetchBlogpost();
     // eslint-disable-next-line
   }, []);
 

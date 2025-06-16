@@ -16,7 +16,17 @@ export async function generateMetadata({ params }) {
     }
   );
 
-  const blogpost = await response.json();
+  const data = await response.json();
+
+  if (!data.success) {
+    return {
+      title: "Blog Not Found - Hey Sainty",
+      description: "The blog post you're looking for is not available.",
+      keywords: ["Blog Not Found", "Error", "Hey Sainty"],
+    };
+  }
+
+  const blogpost = data.blog;
 
   // Handle blogpost not found
   if (blogpost.message) {
