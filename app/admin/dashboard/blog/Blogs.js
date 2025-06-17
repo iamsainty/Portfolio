@@ -15,27 +15,52 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/ui/alert-dialog";
-import { useBlog } from "@/context/blogContext";
 import { toast } from "sonner";
 
 async function getBlogs() {
-  const response = await fetch("/api/blog", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const response = await fetch("/api/blog", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const data = await response.json();
-  return data.success ? data.blogs : [];
+    const data = await response.json();
+    return data.success ? data.blogs : [];
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return [];
+  }
+}
+
+async function deleteBlog(permalink) {
+  try {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
+
+    const response = await fetch(`/api/blog/deleteblog/${permalink}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        adminToken: adminToken,
+      },
+    });
+
+    const data = await response.json();
+    return data.success;
+  } catch (error) {
+    console.error("Error during blog deletion:", error);
+    return false;
+  }
 }
 export default function Blogs() {
   const [blogs, setBlogs] = useState([]);
   const [deleteDialog, setDeleteDialog] = useState(false);
-  const [deleteBlogId, setDeleteBlogId] = useState(null);
+  const [deleteBlogPermalink, setDeleteBlogPermalink] = useState(null);
   const [deleteBlogTitle, setDeleteBlogTitle] = useState("");
-
-  const { deleteBlog } = useBlog();
 
   useEffect(() => {
     getBlogs().then(setBlogs);
@@ -43,12 +68,16 @@ export default function Blogs() {
 
   const handleDelete = async () => {
     try {
-      const success = await deleteBlog(deleteBlogId);
+      const success = await deleteBlog(deleteBlogPermalink);
       if (success) {
         setDeleteDialog(false);
-        setBlogs(blogs.filter((blog) => blog._id !== deleteBlogId));
+        setBlogs(
+          blogs.filter((blog) => blog.permalink !== deleteBlogPermalink)
+        );
+        toast.success("Blog deleted successfully");
+      } else {
+        toast.error("Failed to delete blog");
       }
-      toast.success("Blog deleted successfully");
     } catch (error) {
       console.error("Error during blog deletion:", error);
       toast.error("Failed to delete blog");
@@ -137,7 +166,7 @@ export default function Blogs() {
               className="p-2 hover:bg-red-500 hover:text-white transition-colors"
               onClick={() => {
                 setDeleteDialog(true);
-                setDeleteBlogId(blog._id);
+                setDeleteBlogPermalink(blog.permalink);
                 setDeleteBlogTitle(blog.title);
               }}
             >
