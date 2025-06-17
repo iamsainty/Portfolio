@@ -1,8 +1,9 @@
-import React from "react";
+import React, { Suspense } from "react";
 import BlogHeroSection from "./BlogHeroSection";
 import Blogs from "./Blogs";
+import Loading from "./loading";
 
-export async function generateMetadata() {
+const fetchBlogs = async () => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
@@ -13,13 +14,20 @@ export async function generateMetadata() {
         },
       }
     );
-
     const data = await response.json();
-    if (!data.success) {
-      throw new Error("Failed to fetch blogs");
+    if (data.success) {
+      return data.blogs;
     }
+    return null;
+  } catch (error) {
+    console.error("Error fetching blogs:", error);
+    return null;
+  }
+};
 
-    const blogs = data.blogs;
+export async function generateMetadata() {
+  try {
+    const blogs = await fetchBlogs();
     const blogTitles = blogs.map((blog) => blog.title).join(", ");
 
     return {
@@ -45,8 +53,14 @@ export async function generateMetadata() {
         description:
           "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
         url: "https://hey-sainty.vercel.app/blog",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
+            width: 1200,
+            height: 630,
+            alt: "Blog – Hey Sainty",
+          },
+        ],
         locale: "en_US",
       },
       twitter: {
@@ -54,8 +68,9 @@ export async function generateMetadata() {
         title: "Blog - Tech, Tutorials, Guides & More",
         description:
           "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
+        ],
         creator: "@iam__sainty",
       },
     };
@@ -101,11 +116,22 @@ export async function generateMetadata() {
   }
 }
 
-export default function Page() {
+export default async function Page() {
+  const blogs = await fetchBlogs();
+
+  if (!blogs || blogs.length === 0) {
+    return (
+      <section>
+        <h1>No blogs found</h1>
+      </section>
+    );
+  }
   return (
     <div className="flex flex-col items-center">
       <BlogHeroSection />
-      <Blogs />
+      <Suspense fallback={<Loading />}>
+        <Blogs blogs={blogs} />
+      </Suspense>
     </div>
   );
 }

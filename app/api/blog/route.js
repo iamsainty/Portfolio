@@ -15,13 +15,13 @@ export async function GET() {
       );
     }
 
-    return NextResponse.json({ success: true, blogs }, { status: 200 });
+    return NextResponse.json({ success: true, blogs: blogs }, { status: 200 });
   } catch (error) {
     console.error("Error fetching blogs:", error);
     return NextResponse.json(
       {
         success: false,
-        message: "Internal Server Error. Please try again later.",
+        error: "Internal Server Error. Please try again later.",
       },
       { status: 500 }
     );

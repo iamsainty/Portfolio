@@ -4,15 +4,14 @@ import { useBlogComment } from "@/context/blogCommentContext";
 import React, { useEffect } from "react";
 import Comment from "./Comment";
 
-const BlogComments = ({ permalink }) => {
+const BlogComments = ({ blogpost }) => {
   const { getBlogComments, comments } = useBlogComment();
 
   useEffect(() => {
-    if (permalink) {
-      getBlogComments(permalink);
+    if (blogpost) {
+      getBlogComments(blogpost.permalink);
     }
-    // eslint-disable-next-line
-  }, [permalink]);
+  }, [blogpost.permalink, blogpost]);
 
   if (comments.length === 0) {
     return (

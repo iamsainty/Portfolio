@@ -1,6 +1,4 @@
-"use client";
-
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   Table,
   TableBody,
@@ -9,171 +7,174 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import Image from "next/image";
 
-async function getBlogpost(permalink) {
-  try {
-    const response = await fetch(`/api/blog/${permalink}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      return data.blog;
-    }
-    return null;
-  } catch (error) {
-    console.error("Error fetching blogpost:", error);
-    return null;
-  }
-}
-
-const BlogPost = ({ permalink }) => {
-  const [blogpost, setBlogpost] = useState(null);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchBlogpost = async () => {
-      const blogpost = await getBlogpost(permalink);
-      setBlogpost(blogpost);
-      setLoading(false);
-    };
-    fetchBlogpost();
-    // eslint-disable-next-line
-  }, []);
-
-  if (loading) return null;
-
-  if (!blogpost) return null;
+const BlogPost = ({ blogpost }) => {
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;
 
-  console.log(blogcontent);
+  // console.log(blogcontent);
+
+  const isValidHTML = (html) =>
+    typeof html === "string" && html.trim().length > 0;
 
   return (
     <section className="md:w-4/5 lg:w-3/5 container px-6 flex flex-col gap-3">
-      {blogcontent.map((block, index) => {
-        return (
-          <section key={index} aria-label="blog content">
-            {block.type === "header" &&
-              React.createElement(`h${block.data.level}`, {
-                className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 text-justify heading-level-${block.data.level}`,
-                dangerouslySetInnerHTML: { __html: block.data.text },
-                ariaLabel: "blog content",
-              })}
+      {blogcontent.map((block, index) => (
+        <section key={index}>
+          {block.type === "header" &&
+            React.createElement(`h${block.data.level}`, {
+              className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 heading-level-${block.data.level}`,
+              dangerouslySetInnerHTML: isValidHTML(block.data.text)
+                ? { __html: block.data.text }
+                : undefined,
+            })}
+          {block.type === "paragraph" && isValidHTML(block.data.text) && (
+            <div
+              className="text-md md:text-lg"
+              dangerouslySetInnerHTML={{ __html: block.data.text }}
+            />
+          )}
 
-            {block.type === "paragraph" && (
-              <div
-                className="text-md md:text-lg text-justify"
-                aria-label="blog content"
-                dangerouslySetInnerHTML={{ __html: block.data.text }}
+          {block.type === "list" &&
+            (block.data.style === "ordered" ? (
+              <ol className="list-decimal pl-6 space-y-2 my-2">
+                {block.data.items.map((item, i) => (
+                  <li
+                    key={i}
+                    className="text-md lg:text-lg"
+                    dangerouslySetInnerHTML={
+                      isValidHTML(item)
+                        ? { __html: item }
+                        : isValidHTML(item.content)
+                        ? { __html: item.content }
+                        : undefined
+                    }
+                  />
+                ))}
+              </ol>
+            ) : (
+              <ul className="list-disc pl-6 space-y-2 my-2">
+                {block.data.items.map((item, i) => (
+                  <li
+                    key={i}
+                    className="text-md lg:text-lg"
+                    dangerouslySetInnerHTML={
+                      isValidHTML(item)
+                        ? { __html: item }
+                        : isValidHTML(item.content)
+                        ? { __html: item.content }
+                        : undefined
+                    }
+                  />
+                ))}
+              </ul>
+            ))}
+
+          {block.type === "code" && (
+            <pre className="p-3 rounded-md overflow-x-auto bg-gray-800 text-white border">
+              <code className="text-sm whitespace-pre-wrap">
+                {block.data.code}
+              </code>
+            </pre>
+          )}
+
+          {block.type === "quote" && (
+            <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500">
+              <p
+                className="mb-2 text-muted-foreground"
+                dangerouslySetInnerHTML={
+                  isValidHTML(block.data.text)
+                    ? { __html: block.data.text }
+                    : undefined
+                }
               />
-            )}
-            {block.type === "list" &&
-              (block.data.style === "ordered" ? (
-                <ol className="list-decimal pl-6 space-y-2 my-2">
-                  {block.data.items.map((item, index) => (
-                    <li
-                      key={index}
-                      className="text-md lg:text-lg text-justify"
-                      aria-label="blog content"
-                      dangerouslySetInnerHTML={{
-                        __html: item.content ? item.content : item,
-                      }}
-                    />
-                  ))}
-                </ol>
-              ) : (
-                <ul className="list-disc pl-6 space-y-2 my-2">
-                  {block.data.items.map((item, index) => (
-                    <li
-                      key={index}
-                      className="text-md lg:text-lg text-justify"
-                      dangerouslySetInnerHTML={{
-                        __html: item.content ? item.content : item,
-                      }}
-                      aria-label="blog content"
-                    />
-                  ))}
-                </ul>
-              ))}
+              {block.data.caption && (
+                <footer className="text-sm text-muted-foreground italic">
+                  — {block.data.caption}
+                </footer>
+              )}
+            </blockquote>
+          )}
 
-            {block.type === "code" && (
-              <pre className="p-3 rounded-md overflow-x-auto bg-gray-800 text-white border">
-                <code className="text-sm text-justify">{block.data.code}</code>
-              </pre>
-            )}
-            {block.type === "quote" && (
-              <blockquote className="border-l-4 pl-4 my-4 text-lg border-muted-foreground">
-                <p
-                  dangerouslySetInnerHTML={{ __html: block.data.text }}
-                  className="mb-2 text-muted-foreground text-justify"
-                  aria-label="blog content"
-                />
-                {block.data.caption && (
-                  <footer className="text-sm text-muted-foreground italic text-justify">
-                    — {block.data.caption}
-                  </footer>
+          {block.type === "table" && Array.isArray(block.data.content) && (
+            <Table
+              className={`${
+                block.data.stretched ? "w-full" : "w-auto"
+              } my-4 border border-muted-foreground rounded-md`}
+            >
+              <TableHeader>
+                {block.data.withHeadings && (
+                  <TableRow className="border border-muted-foreground">
+                    {block.data.content[0].map((heading, i) => (
+                      <TableHead
+                        key={i}
+                        className="px-4 py-2 border border-muted-foreground"
+                      >
+                        {heading}
+                      </TableHead>
+                    ))}
+                  </TableRow>
                 )}
-              </blockquote>
-            )}
-            {block.type === "table" && (
-              <Table
-                className={`${
-                  block.data.stretched ? "w-full" : "w-auto"
-                } my-4 border border-muted-foreground rounded-md`}
-                aria-label="blog content"
-              >
-                <TableHeader>
-                  {block.data.withHeadings && (
-                    <TableRow className="border border-muted-foreground">
-                      {block.data.content[0].map((heading, index) => (
-                        <TableHead
-                          key={index}
+              </TableHeader>
+
+              <TableBody>
+                {block.data.content
+                  .slice(block.data.withHeadings ? 1 : 0)
+                  .map((row, rowIndex) => (
+                    <TableRow
+                      key={rowIndex}
+                      className="border border-muted-foreground"
+                    >
+                      {row.map((cell, cellIndex) => (
+                        <TableCell
+                          key={cellIndex}
                           className="px-4 py-2 border border-muted-foreground"
-                          aria-label="blog content"
                         >
-                          {heading}
-                        </TableHead>
+                          {cell}
+                        </TableCell>
                       ))}
                     </TableRow>
-                  )}
-                </TableHeader>
+                  ))}
+              </TableBody>
+            </Table>
+          )}
 
-                <TableBody>
-                  {block.data.content
-                    .slice(block.data.withHeadings ? 1 : 0)
-                    .map((row, rowIndex) => (
-                      <TableRow
-                        key={rowIndex}
-                        className="border border-muted-foreground"
-                      >
-                        {row.map((cell, cellIndex) => (
-                          <TableCell
-                            key={cellIndex}
-                            className="px-4 py-2 border border-muted-foreground"
-                            aria-label="blog content"
-                          >
-                            {cell}
-                          </TableCell>
-                        ))}
-                      </TableRow>
-                    ))}
-                </TableBody>
-              </Table>
-            )}
-            {block.type === "delimiter" && (
-              <hr className="my-6 border border-muted-foreground" />
-            )}
-            {block.type === "raw" && (
-              <pre className="p-3 rounded-md overflow-x-auto bg-muted-foreground text-white border">
-                <code className="text-sm text-justify">{block.data.html}</code>
-              </pre>
-            )}
-          </section>
-        );
-      })}
+          {block.type === "linkTool" && block.data?.meta && (
+            <a
+              href={block.data.meta.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition"
+            >
+              <Image
+                src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
+                alt="favicon"
+                className="w-8 h-8"
+                width={40}
+                height={40}
+              />
+              <div>
+                <div className="font-semibold text-base line-clamp-1">
+                  {block.data.meta.title}
+                </div>
+                <p className="text-sm text-muted-foreground line-clamp-2">
+                  {block.data.meta.description}
+                </p>
+              </div>
+            </a>
+          )}
+
+          {block.type === "delimiter" && (
+            <hr className="my-6 border border-muted-foreground" />
+          )}
+
+          {block.type === "raw" && (
+            <pre className="p-3 rounded-md overflow-x-auto bg-gray-800 text-white border">
+              <code className="text-sm">{block.data?.html}</code>
+            </pre>
+          )}
+        </section>
+      ))}
     </section>
   );
 };

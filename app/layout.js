@@ -65,6 +65,9 @@ export default function RootLayout({ children }) {
           content="GhtSs3z27IAUGukWh38CcKxeUUO_o_y9OCRaozedRUg"
         />
         <meta name="yandex-verification" content="36ed0d13a996b828" />
+
+        {/* Bing Webmaster */}
+        <meta name="msvalidate.01" content="5BDA7303E56E77ABAC146B77B6B88FA1" />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}

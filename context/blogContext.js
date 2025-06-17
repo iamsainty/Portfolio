@@ -24,14 +24,11 @@ export const BlogProvider = ({ children }) => {
         }
       );
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to fetch blogs.");
-      }
-
       const data = await response.json();
       if (data.success) {
         setBlogs(data.blogs);
+      } else {
+        setError(data.error || "Failed to fetch blogs.");
       }
     } catch (error) {
       console.error(error);

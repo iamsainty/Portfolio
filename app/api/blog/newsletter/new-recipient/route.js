@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { connectToMongo } from "@/lib/mongodb";
 import Recipient from "@/models/emailNewsletterRecipient";
 import User from "@/models/user";
+import sendNewsletterWelcome from "@/service/blogNewsletterWelcome";
 
 export async function POST(req) {
   try {
@@ -25,6 +26,8 @@ export async function POST(req) {
     }
 
     const recipient = await Recipient.create({ name, email });
+
+    await sendNewsletterWelcome(name, email);
 
     const user = await User.findOne({ email });
     if (user) {

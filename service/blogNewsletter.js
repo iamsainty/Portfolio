@@ -139,7 +139,7 @@ function wrapInTemplate(
 >
   <div style="padding: 32px 28px; background-color: #f9fafb;">
     <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">
-      Hi ${name},
+      Hey ${name.split(" ")[0]}!
     </p>
     <p style="font-size: 14px; line-height: 1.7; color: #555555; margin-bottom: 28px;">
       Hope you're doing great! Here's the latest update from 
@@ -246,9 +246,6 @@ function wrapInTemplate(
         >
           Hey Sainty
         </a>
-      </p>
-      <p style="margin-top: 8px;">
-        &copy; 2025 Hey Sainty. All rights reserved.
       </p>
     </div>
   </div>

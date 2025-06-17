@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function Page() {
   return (
-    <div>
+    <div className="p-8">
       <NewBlog />
     </div>
   );
