@@ -21,7 +21,7 @@ const getBlogpost = async (permalink) => {
     );
     const data = await response.json();
     if (data.success) {
-      return data.blogpost;
+      return data.blog;
     }
     return null;
   } catch (error) {
