@@ -149,9 +149,10 @@ const BlogPost = ({ blogpost }) => {
               <Image
                 src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
                 alt="favicon"
-                className="w-8 h-8"
-                width={40}
-                height={40}
+                className="w-12 h-12"
+                width={50}
+                height={50}
+                loading="lazy"
               />
               <div>
                 <div className="font-semibold text-base line-clamp-1">

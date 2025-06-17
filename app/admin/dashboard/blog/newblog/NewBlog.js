@@ -95,7 +95,13 @@ export default function NewBlog() {
           list: { class: List, inlineToolbar: true },
           code: { class: Code, inlineToolbar: true },
           quote: { class: Quote, inlineToolbar: true },
-          linkTool: { class: LinkTool, inlineToolbar: true },
+          linkTool: {
+            class: LinkTool,
+            config: {
+              endpoint: `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/fetch-link-data`,
+              withCredentials: true,
+            },
+          },
           table: { class: Table, inlineToolbar: true },
           delimiter: { class: Delimiter, inlineToolbar: true },
           inlineCode: { class: InlineCode, inlineToolbar: true },

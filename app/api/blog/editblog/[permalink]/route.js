@@ -3,12 +3,13 @@ import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
 import BlogPost from "@/models/blogposts";
 import { blogCoverUpload } from "@/service/uploadToAWS";
+import { NextResponse } from "next/server";
 
 export async function POST(req, { params }) {
   try {
     await connectToMongo();
 
-    const permalink = await params;
+    const permalink = await params.permalink;
 
     const adminValidation = await validateAdmin(req);
 
