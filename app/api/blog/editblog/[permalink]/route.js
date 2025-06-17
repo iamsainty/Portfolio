@@ -60,6 +60,7 @@ export async function POST(req, { params }) {
     blogpost.content = content;
     blogpost.tag = tags.split(",").map((tag) => tag.trim());
     blogpost.coverimage = imageUrl;
+    blogpost.lastUpdated = new Date();
 
     await blogpost.save();
 
