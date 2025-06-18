@@ -12,78 +12,107 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 async function adminLogin(email, password) {
-  const response = await fetch("/api/admin/login", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({ email, password }),
-  });
+  try {
+    const response = await fetch("/api/admin/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, password }),
+    });
 
-  const status = response.status;
-  const data = await response.json();
+    const data = await response.json();
 
-  return { status, data };
+    return data;
+  } catch (error) {
+    console.error("Login error:", error);
+    return { success: false, message: "Something went wrong" };
+  }
 }
 
-async function getAdmin(adminToken) {
-  const response = await fetch("/api/admin/adminprofile", {
-    headers: {
-      "Content-Type": "application/json",
-      adminToken: adminToken,
-    },
-  });
-
-  const data = await response.json();
-
-  return data.success;
-}
-
-export default function Page() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
-  const router = useRouter();
-
-  useEffect(() => {
+async function getAdminProfile() {
+  try {
     const adminToken = document.cookie
       .split("; ")
       .find((row) => row.startsWith("adminToken="))
       ?.split("=")[1];
 
-    const admin = getAdmin(adminToken);
-
-    if (admin) {
-      router.push("/admin/dashboard");
+    if (!adminToken) {
+      return null;
     }
-  }, [router]);
+    const response = await fetch("/api/admin/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        adminToken: adminToken,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      return null;
+    }
+
+    return data.admin;
+  } catch (error) {
+    console.error("Error fetching admin profile:", error);
+    return null;
+  }
+}
+
+export default function Page() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      const admin = await getAdminProfile();
+      if (admin !== null) {
+        router.push("/admin/dashboard");
+      }
+    };
+
+    fetchAdminProfile();
+  }, []);
 
   const handleAdminLogin = async (e) => {
     e.preventDefault();
-    setError(null); // Reset error before validation
 
     if (!email) {
-      setError("Email is required");
+      toast.error("Email is required");
       return;
     }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error("Invalid email address");
+      return;
+    }
+
     if (!password) {
-      setError("Password is required");
+      toast.error("Password is required");
       return;
     }
 
     try {
       const response = await adminLogin(email, password);
-      if (response.status === 200) {
-        localStorage.setItem("adminToken", response.data.token);
+
+      if (response.success) {
+        toast.success("Login successful");
+        document.cookie = `adminToken=${response.token}; path=/; max-age=${
+          7 * 24 * 60 * 60
+        }`;
         router.push("/admin/dashboard");
       } else {
-        setError(response.data.message);
-        setTimeout(() => setError(null), 5000);
+        toast.error(response.message);
       }
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      toast.error("Something went wrong. Please try again.");
       console.error("Login error:", err);
     }
   };
@@ -107,7 +136,6 @@ export default function Page() {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Email"
               className="w-full text-md"
-              aria-describedby={error ? "error-message" : undefined}
             />
             <Input
               id="password"
@@ -117,13 +145,7 @@ export default function Page() {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Password"
               className="w-full text-md"
-              aria-describedby={error ? "error-message" : undefined}
             />
-            {error && (
-              <p id="error-message" className="text-red-500 text-sm">
-                {error}
-              </p>
-            )}
           </CardContent>
           <CardFooter>
             <Button type="submit" className="w-full">

@@ -1,21 +1,59 @@
 "use client";
 
-import React from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
 import Dashboard from "./Dashboard";
-import { useAdminAuth } from "@/context/adminAuthContext";
+
+async function getAdminProfile() {
+  try {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
+
+    if (!adminToken) {
+      toast.error("No admin token found");
+      return null;
+    }
+    const response = await fetch("/api/admin/profile", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        adminToken: adminToken,
+      },
+    });
+
+    const data = await response.json();
+
+    if (!data.success) {
+      toast.error("Error fetching admin profile");
+      return null;
+    }
+
+    return data.admin;
+  } catch (error) {
+    toast.error("Error fetching admin profile");
+    return null;
+  }
+}
 
 export default function Page() {
-  const { admin, loading } = useAdminAuth();
+  const [admin, setAdmin] = useState(null);
   const router = useRouter();
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const fetchAdminProfile = async () => {
+      const admin = await getAdminProfile();
+      if (admin === null) {
+        router.push("/admin/login");
+      } else {
+        setAdmin(admin);
+      }
+    };
 
-  if (!admin) {
-    router.push("/admin/login");
-  }
+    fetchAdminProfile();
+  }, []);
 
   return (
     <div>

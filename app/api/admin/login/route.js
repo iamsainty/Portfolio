@@ -13,33 +13,32 @@ export async function POST(req) {
     const jwtSecretKey = process.env.JWT_SECRET_KEY_ADMIN;
 
     if (!jwtSecretKey) {
-      console.error("JWT secret key is missing");
       return NextResponse.json(
-        { message: "Server configuration error" },
+        { success: false, message: "Server configuration error" },
         { status: 500 }
       );
     }
 
-    const user = await Admin.findOne({ email });
+    const admin = await Admin.findOne({ email });
 
-    if (!user) {
+    if (!admin) {
       return NextResponse.json(
-        { message: "Invalid email or password" },
+        { success: false, message: "Invalid email or password" },
         { status: 401 }
       );
     }
 
-    const validPassword = await bcrypt.compare(password, user.password);
+    const validPassword = await bcrypt.compare(password, admin.password);
 
     if (!validPassword) {
       return NextResponse.json(
-        { message: "Invalid email or password" },
+        { success: false, message: "Invalid email or password" },
         { status: 401 }
       );
     }
 
     const token = jwt.sign(
-      { email: user.email, id: user._id, role: user.role },
+      { email: admin.email, id: admin._id, role: admin.role },
       jwtSecretKey
     );
 
@@ -48,11 +47,14 @@ export async function POST(req) {
       maxAge: 7 * 24 * 60 * 60,
     });
 
-    return NextResponse.json({ token }, { status: 200 });
+    return NextResponse.json(
+      { success: true, token: token, admin: admin },
+      { status: 200 }
+    );
   } catch (error) {
     console.error("Error in login route:", error);
     return NextResponse.json(
-      { message: "Internal server error" },
+      { success: false, message: "Internal server error" },
       { status: 500 }
     );
   }

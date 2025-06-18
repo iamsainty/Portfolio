@@ -21,7 +21,7 @@ export const AdminAuthProvider = ({ children }) => {
       }
 
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/adminprofile`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/admin/profile`,
         {
           method: "GET",
           headers: {
