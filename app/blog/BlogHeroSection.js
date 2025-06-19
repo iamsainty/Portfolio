@@ -25,10 +25,11 @@ const BlogHeroSection = () => {
       </Breadcrumb>
       <div className="text-center mb-10 mx-auto">
         <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold lg:font-extrabold">
-          Explore the Blog: Tech Stories, Guides, and More
+          Tech Stories, Tutorials, Guides and More
         </h1>
         <p className="mt-4 text-lg md:text-xl text-muted-foreground">
-          Discover tech tutorials, lifestyle inspiration, and stories.
+          Discover blogs on coding, development, tech tutorials, and personal
+          projects and everything in between.
         </p>
       </div>
       <EmailNewsletter />

@@ -26,94 +26,58 @@ const fetchBlogs = async () => {
 };
 
 export async function generateMetadata() {
-  try {
-    const blogs = await fetchBlogs();
-    const blogTitles = blogs.map((blog) => blog.title).join(", ");
+  const blogs = await fetchBlogs();
+  const blogTitles = blogs ? blogs.map((blog) => blog.title).join(", ") : "";
 
-    return {
-      title: "Explore the Blog : Tech Stories, Tutorials, Guides and More",
+  return {
+    title: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
+    description:
+      "Read developer blogs on coding, web development, tech tutorials, and personal projects. Follow my journey as a tech enthusiast and stay updated on trends.",
+    keywords: [
+      "Hey Sainty Blog",
+      "Web Development Blog",
+      "JavaScript Tutorials",
+      "Tech Trends",
+      "Coding Tutorials",
+      "Frontend Projects",
+      "Development Projects",
+      "Full Stack Developer",
+      "Next.js Blog",
+      "React Blog",
+      "Tech Insights",
+      "Priyanshu Chaurasiya",
+      ...blogTitles.split(", "),
+    ],
+    author: "Priyanshu Chaurasiya",
+    canonical: "https://hey-sainty.vercel.app/blog",
+    openGraph: {
+      type: "website",
+      site_name: "Hey Sainty",
+      title: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
       description:
-        "Explore the Hey Sainty blog for insightful articles, coding tutorials, tech trends, and personal development projects. Dive into my experiences as a developer and tech enthusiast, and stay updated on the latest trends in technology, programming, and innovation.",
-      keywords: [
-        "Hey Sainty Blog",
-        "Programming Blog",
-        "Tech Trends",
-        "Coding Tutorials",
-        "Development Projects",
-        "Tech Insights",
-        "Priyanshu Chaurasiya",
-        ...blogTitles.split(", "),
+        "Read developer blogs on coding, web development, tech tutorials, and personal projects. Follow my journey as a tech enthusiast and stay updated on trends.",
+      url: "https://hey-sainty.vercel.app/blog",
+      images: [
+        {
+          url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
+          width: 1200,
+          height: 630,
+          alt: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
+        },
       ],
-      author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.vercel.app/blog",
-      openGraph: {
-        type: "website",
-        site_name: "Hey Sainty",
-        title: "Blog - Tech, Tutorials, Guides & More",
-        description:
-          "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
-        url: "https://hey-sainty.vercel.app/blog",
-        images: [
-          {
-            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
-            width: 1200,
-            height: 630,
-            alt: "Blog – Hey Sainty",
-          },
-        ],
-        locale: "en_US",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: "Blog - Tech, Tutorials, Guides & More",
-        description:
-          "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
-        images: [
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog-og-image.png",
-        ],
-        creator: "@iam__sainty",
-      },
-    };
-  } catch (error) {
-    console.error("Error generating metadata:", error);
-
-    return {
-      title: "Explore the Blog : Tech Stories, Tutorials, Guides and More",
+      locale: "en_US",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
       description:
-        "Explore the Hey Sainty blog for insightful articles, coding tutorials, tech trends, and personal development projects. Stay updated with the latest trends in technology, programming, and innovation.",
-      keywords: [
-        "Hey Sainty Blog",
-        "Programming Blog",
-        "Tech Trends",
-        "Coding Tutorials",
-        "Development Projects",
-        "Tech Insights",
-        "Priyanshu Chaurasiya",
+        "Read developer blogs on coding, web development, tech tutorials, and personal projects. Follow my journey as a tech enthusiast and stay updated on trends.",
+      images: [
+        "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
       ],
-      author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.vercel.app/blog",
-      openGraph: {
-        type: "website",
-        site_name: "Hey Sainty",
-        title: "Blog - Tech, Tutorials, Guides & More",
-        description:
-          "Discover articles on coding, programming, tech trends, and personal projects. The Hey Sainty blog is your go-to resource for tech insights and development tutorials.",
-        url: "https://hey-sainty.vercel.app/blog",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-        locale: "en_US",
-      },
-      twitter: {
-        card: "summary_large_image",
-        title: "Blog - Tech, Tutorials, Guides & More",
-        description:
-          "Explore a variety of blogs focused on tech trends, programming tutorials, and personal projects. Stay updated with my journey as a developer and tech enthusiast.",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
-        creator: "@iam__sainty",
-      },
-    };
-  }
+      creator: "@iam__sainty",
+    },
+  };
 }
 
 export default async function Page() {
