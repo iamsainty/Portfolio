@@ -82,7 +82,7 @@ const EmailNewsletter = () => {
             your inbox.
           </CardDescription>
         </CardHeader>
-        <CardContent className="flex flex-col lg:gap-3">
+        <CardContent className="flex flex-col gap-3">
           <Input
             type="text"
             placeholder="Enter your name"

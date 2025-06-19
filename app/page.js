@@ -9,17 +9,23 @@ export const metadata = {
   description:
     "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore my blogs on programming, tech trends, personal projects, and insights. Stay updated with my latest work and discover tips and resources to fuel your own tech passion!",
   keywords: [
-    "Hey Sainty",
-    "Priyanshu Chaurasiya",
-    "Priyanshu Sainty",
-    "Tech Blog",
-    "Programming",
-    "Development",
-    "Software",
-    "Projects",
+    "Hey Sainty portfolio",
+    "Tech tutorials and blogs",
+    "Web developer blog India",
+    "Frontend developer projects",
+    "Next.js personal website",
+    "Full-stack dev insights",
+    "Coding resources and blogs",
+    "Priyanshu Chaurasiya blog",
+    "React and Next.js projects",
+    "Tech creativity and personal growth",
   ],
   author: "Priyanshu Chaurasiya",
   canonical: "https://hey-sainty.vercel.app",
+  robots: {
+    index: true,
+    follow: true,
+  },
   openGraph: {
     type: "website",
     site_name: "Hey Sainty",
@@ -29,7 +35,7 @@ export const metadata = {
     url: "https://hey-sainty.vercel.app",
     images: [
       {
-        url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
         width: 1200,
         height: 630,
         alt: "Hey Sainty Open Graph Image",
@@ -43,7 +49,7 @@ export const metadata = {
     description:
       "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore blogs on programming, tech trends, and personal projects.",
     images: [
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
     ],
     creator: "@iam__sainty",
   },

@@ -8,14 +8,14 @@ export const metadata = {
     "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
   keywords: ["404", "Page Not Found", "Error", "Hey Sainty", "Tech Blog"],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.vercel.app/404", // Ensure to set your 404 page URL
+  canonical: "https://hey-sainty.vercel.app/404",
   openGraph: {
     type: "website",
     title: "Page Not Found - Hey Sainty",
     description:
       "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
     image:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png", // You can use an image for the 404 page
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
     locale: "en_US",
   },
   twitter: {
@@ -24,10 +24,13 @@ export const metadata = {
     description:
       "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
     image:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png", // Twitter image for 404 page
+      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
     creator: "@iam__sainty",
   },
-  robots: "noindex, nofollow", // Don't want search engines to index the 404 page
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const NotFound = () => {
