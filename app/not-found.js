@@ -14,8 +14,14 @@ export const metadata = {
     title: "Page Not Found - Hey Sainty",
     description:
       "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
-    image:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
+    images: [
+      {
+        url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
+        width: 1200,
+        height: 630,
+        alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+      },
+    ],
     locale: "en_US",
   },
   twitter: {
@@ -23,8 +29,14 @@ export const metadata = {
     title: "Page Not Found - Hey Sainty",
     description:
       "Oops! The page you're looking for doesn't exist. It may have been moved or deleted.",
-    image:
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
+    images: [
+      {
+        url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
+        width: 1200,
+        height: 630,
+        alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+      },
+    ],
     creator: "@iam__sainty",
   },
   robots: {
