@@ -49,16 +49,28 @@ export async function generateMetadata({ params }) {
         title: "Blog Not Found - Hey Sainty",
         description: "The blog post you're looking for is not available.",
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/blog/${permalink}`,
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Blog",
+          },
+        ],
         locale: "en_US",
       },
       twitter: {
         card: "summary_large_image",
         title: "Blog Not Found - Hey Sainty",
         description: "The blog post you're looking for is not available.",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Blog",
+          },
+        ],
         creator: "@iam__sainty",
       },
       robots: "noindex, nofollow",
@@ -83,13 +95,23 @@ export async function generateMetadata({ params }) {
       logo: {
         "@type": "ImageObject",
         url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Hey Sainty Logo",
       },
     },
     datePublished: blogpost.dateCreated,
     dateModified: blogpost.lastUpdated,
-    image:
-      blogpost.coverimage ||
-      "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+    image: [
+      {
+        url:
+          blogpost.coverimage ||
+          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
+        width: 1200,
+        height: 630,
+        alt: "Hey Sainty Blog",
+      },
+    ],
     url: blogUrl,
     mainEntityOfPage: blogUrl,
     keywords: [
@@ -126,10 +148,10 @@ export async function generateMetadata({ params }) {
         {
           url:
             blogpost.coverimage ||
-            "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+            "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
           width: 1200,
           height: 630,
-          alt: blogpost.title,
+          alt: "Hey Sainty Blog",
         },
       ],
       locale: "en_US",
@@ -146,8 +168,14 @@ export async function generateMetadata({ params }) {
       title: `${blogpost.title} - Hey Sainty`,
       description: blogpost.summary || "No description available.",
       images: [
-        blogpost.coverimage ||
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        {
+          url:
+            blogpost.coverimage ||
+            "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
+          width: 1200,
+          height: 630,
+          alt: "Hey Sainty Blog",
+        },
       ],
       creator: "@iam__sainty",
     },
