@@ -21,13 +21,10 @@ export async function generateMetadata() {
     const data = await response.json();
     const projects = data.projects || [];
 
-    // Extract project titles
     const projectTitles = projects.map((project) => project.title);
 
-    // Extract and flatten project technologies
     const projectTags = projects.flatMap((project) => project.technologies);
 
-    // Remove duplicates from keywords
     const uniqueKeywords = [
       "Hey Sainty",
       "Priyanshu Chaurasiya",
@@ -41,42 +38,57 @@ export async function generateMetadata() {
       ...projectTags,
     ];
 
-    const keywords = [...new Set(uniqueKeywords)]; // Remove duplicates
+    const keywords = [...new Set(uniqueKeywords)];
 
     return {
-      title: "Discover Projects : Innovations, Challenges, and Solutions",
+      title: "Hey Sainty Projects - Web apps, Tech Stack and more",
       description:
         "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
-      keywords,
+      keywords: keywords || [],
       author: "Priyanshu Chaurasiya",
       canonical: "https://hey-sainty.vercel.app/project",
+      robots: {
+        index: true,
+        follow: true,
+      },
       openGraph: {
         type: "website",
         site_name: "Hey Sainty",
-        title: "Projects : Hey Sainty",
+        title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
         url: "https://hey-sainty.vercel.app/project",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        image: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+          },
+        ],
         locale: "en_US",
       },
       twitter: {
         card: "summary_large_image",
-        title: "Projects : Hey Sainty",
+        title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+          },
+        ],
         creator: "@iam__sainty",
       },
     };
   } catch (error) {
     console.error("Metadata generation error:", error);
 
-    // Return a fallback metadata object in case of an error
     return {
-      title: "Discover Projects : Innovations, Challenges, and Solutions",
+      title: "Hey Sainty Projects - Web apps, Tech Stack and more",
       description:
         "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
       keywords: [
@@ -94,21 +106,33 @@ export async function generateMetadata() {
       openGraph: {
         type: "website",
         site_name: "Hey Sainty",
-        title: "Projects : Hey Sainty",
+        title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
         url: "https://hey-sainty.vercel.app/project",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        image: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+          },
+        ],
         locale: "en_US",
       },
       twitter: {
         card: "summary_large_image",
-        title: "Projects : Hey Sainty",
+        title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
-        image:
-          "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/Hey-Sainty-og-share-image.png",
+        images: [
+          {
+            url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
+            width: 1200,
+            height: 630,
+            alt: "Hey Sainty Projects - Web apps, Tech Stack and more",
+          },
+        ],
         creator: "@iam__sainty",
       },
     };
