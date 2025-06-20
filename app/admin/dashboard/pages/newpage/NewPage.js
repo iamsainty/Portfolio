@@ -10,10 +10,17 @@ import { useRouter } from "next/navigation";
 
 async function newPage(formData) {
   try {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/pages/newpage`,
       {
         method: "POST",
+        headers: {
+          adminToken: adminToken,
+        },
         body: formData,
       }
     );
