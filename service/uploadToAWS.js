@@ -49,3 +49,22 @@ export async function uploadUserProfilePicture(file, name, email) {
     return null;
   }
 }
+
+export async function pageCoverUpload(file, permalink) {
+  try {
+    const fileName = `page-cover/${permalink}.png`;
+    const arrayBuffer = await file.arrayBuffer();
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: arrayBuffer,
+      ContentType: file.type,
+    };
+    await s3.send(new PutObjectCommand(params));
+    const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
+    return imageUrl;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
