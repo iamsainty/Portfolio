@@ -3,6 +3,11 @@ import Link from "next/link";
 import { IoAdd } from "react-icons/io5";
 import Pages from "./Pages";
 
+export const metadata = {
+  title: "Pages - Hey Sainty",
+  description: "Manage your pages on Hey Sainty",
+};
+
 export default function Page() {
   return (
     <div className="container mx-auto flex flex-col gap-10 p-8">

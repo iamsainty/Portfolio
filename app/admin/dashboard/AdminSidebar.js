@@ -27,8 +27,8 @@ const navLinks = [
     icon: <IoCodeSlashOutline size={20} />,
   },
   {
-    title: "Pages",
-    link: "/admin/dashboard/pages",
+    title: "Page",
+    link: "/admin/dashboard/page",
     icon: <RiPageSeparator size={20} />,
   },
 ];
