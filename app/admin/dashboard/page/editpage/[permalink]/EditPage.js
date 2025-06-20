@@ -257,7 +257,7 @@ export default function EditPage({ permalink }) {
       const success = await updatePage(formData, pagePermalink);
       if (success) {
         toast.success("Page updated successfully");
-        router.push(`/admin/dashboard/page`);
+        router.push(`/admin/dashboard/page/pages`);
       } else {
         toast.error("Failed to update page");
       }

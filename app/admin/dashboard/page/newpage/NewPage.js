@@ -197,7 +197,7 @@ export default function NewPage() {
       const success = await newPage(formData);
       if (success) {
         toast.success("Page published successfully");
-        router.push("/admin/dashboard/page");
+        router.push("/admin/dashboard/page/pages");
       } else {
         toast.error("Failed to publish the page. Please try again.");
       }

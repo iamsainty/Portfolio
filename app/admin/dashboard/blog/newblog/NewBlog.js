@@ -236,7 +236,7 @@ export default function NewBlog() {
       const success = await newBlog(formData);
       if (success) {
         toast.success("Blog published successfully");
-        router.push("/admin/dashboard/blog");
+        router.push("/admin/dashboard/blog/blogs");
       } else {
         toast.error("Failed to publish the blog. Please try again.");
       }

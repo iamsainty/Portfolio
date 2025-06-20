@@ -254,7 +254,7 @@ export default function EditBlog({ permalink }) {
       const success = await updateBlog(formData, blogPermalink);
       if (success) {
         toast.success("Blog updated successfully");
-        router.push(`/admin/dashboard/blog`);
+        router.push(`/admin/dashboard/blog/blogs`);
       } else {
         toast.error("Failed to update blog");
       }
