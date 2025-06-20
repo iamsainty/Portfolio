@@ -15,7 +15,7 @@ async function newPage(formData) {
       .find((row) => row.startsWith("adminToken="))
       ?.split("=")[1];
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pages/newpage`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/page/newpage`,
       {
         method: "POST",
         headers: {
@@ -197,7 +197,7 @@ export default function NewPage() {
       const success = await newPage(formData);
       if (success) {
         toast.success("Page published successfully");
-        router.push("/admin/dashboard/pages");
+        router.push("/admin/dashboard/page");
       } else {
         toast.error("Failed to publish the page. Please try again.");
       }

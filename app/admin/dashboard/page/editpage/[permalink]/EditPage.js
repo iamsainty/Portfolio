@@ -11,7 +11,7 @@ import { toast } from "sonner";
 async function getPage(permalink) {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pages/${permalink}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/page/${permalink}`,
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -42,7 +42,7 @@ async function updatePage(formData, permalink) {
     }
 
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/pages/editpage/${permalink}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/page/editpage/${permalink}`,
       {
         method: "POST",
         headers: {
@@ -257,7 +257,7 @@ export default function EditPage({ permalink }) {
       const success = await updatePage(formData, pagePermalink);
       if (success) {
         toast.success("Page updated successfully");
-        router.push(`/admin/dashboard/pages`);
+        router.push(`/admin/dashboard/page`);
       } else {
         toast.error("Failed to update page");
       }

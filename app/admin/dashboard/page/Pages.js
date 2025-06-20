@@ -18,7 +18,7 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { toast } from "sonner";
 async function getPages() {
   try {
-    const response = await fetch("/api/pages", {
+    const response = await fetch("/api/page", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -44,7 +44,7 @@ async function deletePage(permalink) {
       .split("; ")
       .find((row) => row.startsWith("adminToken="))
       ?.split("=")[1];
-    const response = await fetch(`/api/pages/deletepage/${permalink}`, {
+    const response = await fetch(`/api/page/deletepage/${permalink}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -173,7 +173,7 @@ export default function Pages() {
             </p>
           </div>
           <div className="flex gap-2 justify-evenly items-center w-[10%]">
-            <Link href={`/admin/dashboard/pages/editpage/${page.permalink}`}>
+            <Link href={`/admin/dashboard/page/editpage/${page.permalink}`}>
               <Button variant="outline" className="p-2 hover:bg-muted/50">
                 <CiEdit className="text-xl" />
               </Button>

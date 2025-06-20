@@ -23,7 +23,7 @@ export default function Page() {
           Create a new page to add to your website to improve your SEO and user
           experience.
         </p>
-        <Link href="/admin/dashboard/pages/newpage">
+        <Link href="/admin/dashboard/page/newpage">
           <Button className="gap-2 px-4 py-2">
             <IoAdd className="text-xl" />
             Create Page
