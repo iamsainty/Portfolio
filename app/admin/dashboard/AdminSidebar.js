@@ -8,6 +8,7 @@ import { PiArticleLight } from "react-icons/pi";
 import { IoCodeSlashOutline } from "react-icons/io5";
 import { useState, useEffect } from "react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { RiPageSeparator } from "react-icons/ri";
 
 const navLinks = [
   {
@@ -24,6 +25,11 @@ const navLinks = [
     title: "Project",
     link: "/admin/dashboard/project",
     icon: <IoCodeSlashOutline size={20} />,
+  },
+  {
+    title: "Pages",
+    link: "/admin/dashboard/pages",
+    icon: <RiPageSeparator size={20} />,
   },
 ];
 
