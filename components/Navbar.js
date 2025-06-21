@@ -28,7 +28,11 @@ const NavbarLinks = [
 const Navbar = () => {
   return (
     <header className="flex justify-center w-full h-[15vh] items-center">
-      <nav className="fixed top-8 w-4/5 sm:w-3/5 container bg-white dark:bg-black border border-black dark:border-white px-5 sm:pl-10 sm:pr-2 py-1 sm:py-2 rounded-full flex justify-between items-center z-10">
+      <nav
+        role="navigation"
+        aria-label="Primary Navigation"
+        className="fixed top-8 w-4/5 sm:w-3/5 container bg-background/80 border border-muted-foreground/80 px-5 sm:pl-10 sm:pr-2 py-1 sm:py-2 rounded-full flex justify-between items-center z-10"
+      >
         {/* Logo / Brand */}
         <Link href="/" aria-label="Homepage" title="Hey Sainty - Home">
           <span className="text-md sm:text-lg font-semibold">Hey Sainty</span>
@@ -39,54 +43,59 @@ const Navbar = () => {
           <NavigationMenuList className="flex items-center justify-between gap-7">
             {NavbarLinks.map((link) => (
               <NavigationMenuItem key={link.href}>
-                <Link href={link.href}>
-                  {/* <NavigationMenuLink className="text-md rounded-md cursor-pointer"> */}
-                  {link.label}
-                  {/* </NavigationMenuLink> */}
+                <Link href={link.href} passHref legacyBehavior>
+                  <NavigationMenuLink
+                    title={link.label}
+                    className="text-md rounded-md cursor-pointer"
+                    aria-label={link.label}
+                  >
+                    {link.label}
+                  </NavigationMenuLink>
                 </Link>
               </NavigationMenuItem>
             ))}
-
-            {/* Account Dropdown */}
-            {/* <NavigationMenuItem>
-              <Button className="text-md rounded-full px-5 py-2">
-                Get In <RxEnter />
-              </Button>
-            </NavigationMenuItem> */}
           </NavigationMenuList>
         </NavigationMenu>
 
+        {/* Right side buttons */}
         <div className="flex items-center justify-between gap-1">
           <UserAccount />
           <ModeToggle />
 
+          {/* Mobile menu */}
           <Sheet>
-            <SheetTrigger asChild className="lg:hidden">
-              <RxHamburgerMenu />
+            <SheetTrigger asChild className="lg:hidden" aria-label="Open menu">
+              <button
+                type="button"
+                aria-label="Toggle mobile menu"
+                title="Menu"
+              >
+                <RxHamburgerMenu />
+              </button>
             </SheetTrigger>
             <SheetContent
-              side={"right"}
+              side="right"
               className="flex flex-col w-4/5 justify-start items-center gap-10 pt-24"
             >
-              <SheetTitle className="text-2xl">Hey Sainty</SheetTitle>
+              <SheetTitle className="text-2xl" aria-label="Hey Sainty">
+                Hey Sainty
+              </SheetTitle>
               <SheetDescription>
                 <NavigationMenu>
                   <NavigationMenuList className="flex flex-col items-center justify-evenly gap-3">
                     {NavbarLinks.map((link) => (
                       <NavigationMenuItem key={link.href}>
-                        <Link href={link.href} legacyBehavior passHref>
-                          <NavigationMenuLink className="text-lg rounded-md cursor-pointer">
+                        <Link href={link.href} passHref legacyBehavior>
+                          <NavigationMenuLink
+                            title={link.label}
+                            className="text-lg rounded-md cursor-pointer"
+                            aria-label={link.label}
+                          >
                             {link.label}
                           </NavigationMenuLink>
                         </Link>
                       </NavigationMenuItem>
                     ))}
-
-                    {/* <NavigationMenuItem>
-                      <Button className="text-md rounded-full px-5 py-2">
-                        Get In <RxEnter />
-                      </Button>
-                    </NavigationMenuItem> */}
                   </NavigationMenuList>
                 </NavigationMenu>
               </SheetDescription>
@@ -99,31 +108,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-{
-  /* Pages Dropdown */
-}
-{
-  /* <NavigationMenuItem>
-              <NavigationMenuTrigger className="text-[16px]">
-                Pages
-              </NavigationMenuTrigger>
-              <NavigationMenuContent>
-                <ul className="grid grid-cols-2 gap-4 p-8 lg:w-[600px] h-auto">
-                  {Pages.map((page) => (
-                    <li key={page.href}>
-                      <Link href={page.href} title={page.label}>
-                        <Button
-                          variant="secondary"
-                          className="flex flex-col items-start p-3 rounded-lg h-auto w-[250px]"
-                        >
-                          <p className="font-semibold text-lg">{page.label}</p>
-                          <p className="text-sm">{page.description}</p>
-                        </Button>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </NavigationMenuContent>
-            </NavigationMenuItem> */
-}
