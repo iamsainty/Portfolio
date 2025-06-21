@@ -2,7 +2,7 @@ export const metadata = {
   title: "Sitemap - Hey Sainty",
 };
 
-const fetchBlogs = async () => {
+async function fetchBlogs() {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
@@ -11,7 +11,6 @@ const fetchBlogs = async () => {
         headers: {
           "Content-Type": "application/json",
         },
-        next: { revalidate: 3600 },
       }
     );
     const data = await response.json();
@@ -23,17 +22,48 @@ const fetchBlogs = async () => {
     console.error("Error fetching blogs:", error);
     return null;
   }
-};
+}
+
+async function fetchPages() {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/page`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+    if (data.success) {
+      return data.pages;
+    }
+    return null;
+  } catch (error) {
+    console.error("Error fetching pages:", error);
+    return null;
+  }
+}
 
 export default async function sitemap() {
-  const blogs = await fetchBlogs();
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const blogs = await fetchBlogs();
+  const pages = await fetchPages();
 
   const blogsSitemap = blogs.map((blog) => ({
     url: `${baseUrl}/blog/${blog.permalink}`,
     lastModified: blog.lastUpdated || new Date().toISOString(),
     changeFrequency: "monthly",
-    priority: 0.8,
+    priority: 0.9,
+  }));
+
+  const pagesSitemap = pages.map((page) => ({
+    url: `${baseUrl}/page/${page.permalink}`,
+    lastModified: page.lastUpdated || new Date().toISOString(),
+    changeFrequency: "yearly",
+    priority: 0.3,
   }));
 
   return [
@@ -52,26 +82,7 @@ export default async function sitemap() {
       changeFrequency: "monthly",
       priority: 0.7,
     },
-    {
-      url: `${baseUrl}/page/about`,
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${baseUrl}/page/contact`,
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${baseUrl}/page/disclaimer`,
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
-    {
-      url: `${baseUrl}/page/privacy-policy`,
-      changeFrequency: "yearly",
-      priority: 0.2,
-    },
     ...blogsSitemap,
+    ...pagesSitemap,
   ];
 }
