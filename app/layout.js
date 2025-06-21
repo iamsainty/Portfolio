@@ -1,4 +1,4 @@
-import { Funnel_Sans, Geist, Geist_Mono } from "next/font/google";
+import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -12,20 +12,11 @@ import { BlogCommentProvider } from "@/context/blogCommentContext";
 import { UserEditProfileProvider } from "@/context/user/profileEditContext";
 import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const openSans = Open_Sans({
+  weight: "400",
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const funnelSans = Funnel_Sans({
-  variable: "--font-funnel-sans", // Add this
-  subsets: ["latin"],
-  weight: ["400", "700"],
+  variable: "--font-open-sans",
+  display: "swap",
 });
 
 export default function RootLayout({ children }) {
@@ -69,9 +60,7 @@ export default function RootLayout({ children }) {
         {/* Bing Webmaster */}
         <meta name="msvalidate.01" content="5BDA7303E56E77ABAC146B77B6B88FA1" />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${funnelSans.variable} antialiased`}
-      >
+      <body className={`${openSans.className} antialiased`}>
         <noscript>
           <iframe
             src="https://www.googletagmanager.com/ns.html?id=GTM-NCWHKRWQ"

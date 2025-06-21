@@ -3,7 +3,10 @@
 @tailwind utilities;
 
 body {
-  font-family: var(--font-funnel), sans-serif;
+  font-family: var(--font-open-sans), sans-serif;
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+  word-spacing: 0.06em;
 }
 
 @layer base {
