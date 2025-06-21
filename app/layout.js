@@ -13,7 +13,7 @@ import { UserEditProfileProvider } from "@/context/user/profileEditContext";
 import { Toaster } from "@/components/ui/sonner";
 
 const openSans = Open_Sans({
-  weight: "400",
+  weight: ["300", "400", "700"],
   subsets: ["latin"],
   variable: "--font-open-sans",
   display: "swap",

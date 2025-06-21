@@ -21,25 +21,25 @@ const BlogPost = ({ blogpost }) => {
         <section key={index}>
           {block.type === "header" &&
             React.createElement(`h${block.data.level}`, {
-              className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 heading-level-${block.data.level}`,
+              className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 text-justify heading-level-${block.data.level}`,
               dangerouslySetInnerHTML: isValidHTML(block.data.text)
                 ? { __html: block.data.text }
                 : undefined,
             })}
           {block.type === "paragraph" && isValidHTML(block.data.text) && (
             <div
-              className="text-md md:text-lg"
+              className="text-md md:text-lg text-justify"
               dangerouslySetInnerHTML={{ __html: block.data.text }}
             />
           )}
 
           {block.type === "list" &&
             (block.data.style === "ordered" ? (
-              <ol className="list-decimal pl-6 space-y-2 my-2">
+              <ol className="list-decimal pl-6 space-y-2 my-2 text-justify">
                 {block.data.items.map((item, i) => (
                   <li
                     key={i}
-                    className="text-md lg:text-lg"
+                    className="text-md lg:text-lg text-justify"
                     dangerouslySetInnerHTML={
                       isValidHTML(item)
                         ? { __html: item }
@@ -51,11 +51,11 @@ const BlogPost = ({ blogpost }) => {
                 ))}
               </ol>
             ) : (
-              <ul className="list-disc pl-6 space-y-2 my-2">
+              <ul className="list-disc pl-6 space-y-2 my-2 text-justify">
                 {block.data.items.map((item, i) => (
                   <li
                     key={i}
-                    className="text-md lg:text-lg"
+                    className="text-md lg:text-lg text-justify"
                     dangerouslySetInnerHTML={
                       isValidHTML(item)
                         ? { __html: item }
@@ -77,7 +77,7 @@ const BlogPost = ({ blogpost }) => {
           )}
 
           {block.type === "quote" && (
-            <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500">
+            <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500 text-justify">
               <p
                 className="mb-2 text-muted-foreground"
                 dangerouslySetInnerHTML={
@@ -98,7 +98,7 @@ const BlogPost = ({ blogpost }) => {
             <Table
               className={`${
                 block.data.stretched ? "w-full" : "w-auto"
-              } my-4 border border-muted-foreground rounded-md`}
+              } my-4 border border-muted-foreground rounded-md text-justify`}
             >
               <TableHeader>
                 {block.data.withHeadings && (
@@ -106,7 +106,7 @@ const BlogPost = ({ blogpost }) => {
                     {block.data.content[0].map((heading, i) => (
                       <TableHead
                         key={i}
-                        className="px-4 py-2 border border-muted-foreground"
+                        className="px-4 py-2 border border-muted-foreground text-justify"
                       >
                         {heading}
                       </TableHead>
@@ -121,12 +121,12 @@ const BlogPost = ({ blogpost }) => {
                   .map((row, rowIndex) => (
                     <TableRow
                       key={rowIndex}
-                      className="border border-muted-foreground"
+                      className="border border-muted-foreground text-justify"
                     >
                       {row.map((cell, cellIndex) => (
                         <TableCell
                           key={cellIndex}
-                          className="px-4 py-2 border border-muted-foreground"
+                          className="px-4 py-2 border border-muted-foreground text-justify"
                         >
                           {cell}
                         </TableCell>
@@ -137,31 +137,33 @@ const BlogPost = ({ blogpost }) => {
             </Table>
           )}
 
-          {block.type === "linkTool" && block.data?.meta && (
-            <a
-              href={block.data.meta.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition"
-            >
-              <Image
-                src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
-                alt="favicon"
-                className="w-12 h-12"
-                width={50}
-                height={50}
-                loading="lazy"
-              />
-              <div>
-                <div className="font-semibold text-base line-clamp-1">
-                  {block.data.meta.title}
+          {block.type === "linkTool" &&
+            block.data?.meta &&
+            block.data.meta?.title && (
+              <a
+                href={block.data.meta.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition text-justify"
+              >
+                <Image
+                  src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
+                  alt="favicon"
+                  className="w-12 h-12"
+                  width={50}
+                  height={50}
+                  loading="lazy"
+                />
+                <div>
+                  <div className="font-semibold text-base line-clamp-1 text-justify">
+                    {block.data.meta.title}
+                  </div>
+                  <p className="text-sm text-muted-foreground line-clamp-2 text-justify">
+                    {block.data.meta.description}
+                  </p>
                 </div>
-                <p className="text-sm text-muted-foreground line-clamp-2">
-                  {block.data.meta.description}
-                </p>
-              </div>
-            </a>
-          )}
+              </a>
+            )}
 
           {block.type === "delimiter" && (
             <hr className="my-6 border border-muted-foreground" />

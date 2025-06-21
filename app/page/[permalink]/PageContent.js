@@ -33,7 +33,7 @@ export default function PageContent({ page }) {
                 React.createElement(
                   `h${data.level >= 1 && data.level <= 6 ? data.level : 3}`,
                   {
-                    className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 heading-level-${data.level}`,
+                    className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 text-justify heading-level-${data.level}`,
                     dangerouslySetInnerHTML: isValidHTML(data.text)
                       ? { __html: data.text }
                       : undefined,
@@ -42,7 +42,7 @@ export default function PageContent({ page }) {
 
               {type === "paragraph" && isValidHTML(data.text) && (
                 <div
-                  className="text-md md:text-lg leading-relaxed"
+                  className="text-md md:text-lg leading-relaxed text-justify"
                   dangerouslySetInnerHTML={{ __html: data.text }}
                 />
               )}
@@ -50,11 +50,11 @@ export default function PageContent({ page }) {
               {type === "list" &&
                 Array.isArray(data.items) &&
                 (data.style === "ordered" ? (
-                  <ol className="list-decimal pl-6 space-y-2 my-2">
+                  <ol className="list-decimal pl-6 space-y-2 my-2 text-justify">
                     {data.items.map((item, i) => (
                       <li
                         key={i}
-                        className="text-md lg:text-lg"
+                        className="text-md lg:text-lg text-justify"
                         dangerouslySetInnerHTML={
                           isValidHTML(item)
                             ? { __html: item }
@@ -66,11 +66,11 @@ export default function PageContent({ page }) {
                     ))}
                   </ol>
                 ) : (
-                  <ul className="list-disc pl-6 space-y-2 my-2">
+                  <ul className="list-disc pl-6 space-y-2 my-2 text-justify">
                     {data.items.map((item, i) => (
                       <li
                         key={i}
-                        className="text-md lg:text-lg"
+                        className="text-md lg:text-lg text-justify"
                         dangerouslySetInnerHTML={
                           isValidHTML(item)
                             ? { __html: item }
@@ -92,9 +92,9 @@ export default function PageContent({ page }) {
               )}
 
               {type === "quote" && (
-                <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500">
+                <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500 text-justify">
                   <p
-                    className="mb-2 text-muted-foreground"
+                    className="mb-2 text-muted-foreground text-justify"
                     dangerouslySetInnerHTML={
                       isValidHTML(data.text) ? { __html: data.text } : undefined
                     }
@@ -111,15 +111,15 @@ export default function PageContent({ page }) {
                 <Table
                   className={`${
                     data.stretched ? "w-full" : "w-auto"
-                  } my-4 border border-muted-foreground rounded-md`}
+                  } my-4 border border-muted-foreground rounded-md text-justify`}
                 >
                   <TableHeader>
                     {data.withHeadings && (
-                      <TableRow className="border border-muted-foreground">
+                      <TableRow className="border border-muted-foreground text-justify">
                         {data.content[0].map((heading, i) => (
                           <TableHead
                             key={i}
-                            className="px-4 py-2 border border-muted-foreground"
+                            className="px-4 py-2 border border-muted-foreground text-justify"
                           >
                             {heading}
                           </TableHead>
@@ -134,12 +134,12 @@ export default function PageContent({ page }) {
                       .map((row, rowIndex) => (
                         <TableRow
                           key={rowIndex}
-                          className="border border-muted-foreground"
+                          className="border border-muted-foreground text-justify"
                         >
                           {row.map((cell, cellIndex) => (
                             <TableCell
                               key={cellIndex}
-                              className="px-4 py-2 border border-muted-foreground"
+                              className="px-4 py-2 border border-muted-foreground text-justify"
                             >
                               {cell}
                             </TableCell>
@@ -150,12 +150,12 @@ export default function PageContent({ page }) {
                 </Table>
               )}
 
-              {type === "linkTool" && data?.meta && (
+              {type === "linkTool" && data?.meta && data.meta?.title && (
                 <a
                   href={data.meta.url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition"
+                  className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition text-justify"
                 >
                   <Image
                     src={`https://www.google.com/s2/favicons?sz=64&domain_url=${data.meta.url}`}
