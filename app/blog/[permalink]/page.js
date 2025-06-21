@@ -2,9 +2,8 @@ import React, { Suspense } from "react";
 import BlogPost from "./BlogPost";
 import BlogpostHeroSection from "./BlogpostHeroSection";
 import CommentSection from "./CommentSection";
-import BlogNotFound from "./BlogNotFound";
 import Loading from "./loading";
-
+import { notFound } from "next/navigation";
 const getBlogpost = async (permalink) => {
   try {
     const response = await fetch(
@@ -29,6 +28,8 @@ const getBlogpost = async (permalink) => {
     return null;
   }
 };
+
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }) {
   const { permalink } = await params;
@@ -189,7 +190,7 @@ export default async function Page({ params }) {
   const blogpost = await getBlogpost(permalink);
 
   if (!blogpost) {
-    return <BlogNotFound />;
+    notFound();
   }
 
   return (
