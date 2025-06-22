@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RxDashboard, RxExit } from "react-icons/rx";
 import { PiArticleLight } from "react-icons/pi";
-import { IoCodeSlashOutline } from "react-icons/io5";
+import { IoCodeSlashOutline, IoPeopleOutline } from "react-icons/io5";
 import { RiPageSeparator } from "react-icons/ri";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -25,6 +25,11 @@ const navLinks = [
       { title: "Blogs", link: "/admin/dashboard/blog/blogs" },
       { title: "Newsletter", link: "/admin/dashboard/blog/newsletter" },
     ],
+  },
+  {
+    title: "Users",
+    link: "/admin/dashboard/user",
+    icon: <IoPeopleOutline size={20} />,
   },
   {
     title: "Project",
@@ -108,7 +113,7 @@ export function AdminSidebar() {
   };
 
   return (
-    <aside className="sticky top-24 w-1/5 min-h-[75vh] pl-14 py-10">
+    <aside className="sticky top-24 w-1/5 h-screen pl-14 py-10">
       <nav className="space-y-6 w-full flex flex-col">
         <div className="mb-4 space-y-2">
           <p className="text-lg text-muted-foreground">Welcome</p>
