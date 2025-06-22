@@ -29,7 +29,10 @@ export async function GET(req) {
       );
     }
 
-    const users = await User.find().sort({ createdAt: -1 });
+    // do not select sensitive data like password, googleId, etc
+    const users = await User.find()
+      .select("-password -googleId")
+      .sort({ createdAt: -1 });
 
     if (!users) {
       return NextResponse.json(

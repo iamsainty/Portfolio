@@ -113,7 +113,7 @@ export default function Users() {
     return new Date(user.createdAt) >= last30Days;
   });
 
-  const googleUsers = users.filter((user) => user.googleId);
+  const googleUsers = users.filter((user) => user.password === undefined);
 
   return (
     <div className="flex flex-col gap-10">
