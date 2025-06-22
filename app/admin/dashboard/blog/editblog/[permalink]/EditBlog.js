@@ -239,6 +239,18 @@ export default function EditBlog({ permalink }) {
         return;
       }
 
+      if (summary.length < 130) {
+        toast.error("Summary should be at least 130 characters");
+        setIsSaving(false);
+        return;
+      }
+
+      if (summary.length > 150) {
+        toast.error("Summary should be less than 150 characters");
+        setIsSaving(false);
+        return;
+      }
+
       const tagsArray = tags.split(",").map((tag) => tag.trim());
 
       const formData = new FormData();

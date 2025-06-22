@@ -43,7 +43,7 @@ export async function generateMetadata() {
     return {
       title: "Hey Sainty Projects - Web apps, Tech Stack and more",
       description:
-        "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
+        "Explore the projects I've worked on, from personal to collaborations. Learn about the technologies, tools, and processes that powered these projects.",
       keywords: keywords || [],
       author: "Priyanshu Chaurasiya",
       canonical: "https://hey-sainty.vercel.app/project",

@@ -212,8 +212,21 @@ export default function NewBlog() {
         setIsSaving(false);
         return;
       }
+
       if (!title || !post || !image || !permalink) {
         toast.error("All fields are required");
+        return;
+      }
+
+      if (summary.length < 130) {
+        toast.error("Summary should be at least 130 characters");
+        setIsSaving(false);
+        return;
+      }
+
+      if (summary.length > 150) {
+        toast.error("Summary should be less than 150 characters");
+        setIsSaving(false);
         return;
       }
 

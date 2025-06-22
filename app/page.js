@@ -7,7 +7,7 @@ import ProjectSection from "./ProjectSection";
 export const metadata = {
   title: "Hey Sainty - Explore Tech, Creativity, and Innovation",
   description:
-    "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore my blogs on programming, tech trends, personal projects, and insights. Stay updated with my latest work and discover tips and resources to fuel your own tech passion!",
+    "Discover my journey as a developer. Read blogs on coding, tech, projects, and tips to boost your skills and stay updated with what's new in the tech world.",
   keywords: [
     "Hey Sainty portfolio",
     "Tech tutorials and blogs",

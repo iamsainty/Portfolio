@@ -187,6 +187,18 @@ export default function NewPage() {
         return;
       }
 
+      if (description.length < 130) {
+        toast.error("Description should be at least 130 characters");
+        setIsSaving(false);
+        return;
+      }
+
+      if (description.length > 150) {
+        toast.error("Description should be less than 150 characters");
+        setIsSaving(false);
+        return;
+      }
+
       const formData = new FormData();
       formData.append("title", title);
       formData.append("description", description);
