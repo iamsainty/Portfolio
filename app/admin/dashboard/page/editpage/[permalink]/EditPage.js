@@ -73,23 +73,19 @@ export default function EditPage({ permalink }) {
   const [image, setImage] = useState(null);
   const editorRef = useRef(null);
   const router = useRouter();
-  useEffect(() => {
-    const fetchPage = async () => {
-      const page = await getPage(permalink);
-      setPage(page);
-    };
-    fetchPage();
-  }, []);
 
   useEffect(() => {
-    if (page) {
-      setTitle(page.title);
-      setDescription(page.description);
-      setContent(JSON.parse(page.content) || []);
-      setPagePermalink(page.permalink);
-      setImage(page.coverimage);
-    }
-  }, [page]);
+    getPage(permalink).then((data) => {
+      if (!data) return;
+
+      setPage(data);
+      setTitle(data.title || "");
+      setDescription(data.description || "");
+      setContent(JSON.parse(data.content) || []);
+      setPagePermalink(data.permalink || "");
+      setImage(data.coverimage || "");
+    });
+  }, [permalink]);
 
   useEffect(() => {
     if (!page || editorRef.current || typeof window === "undefined") return;
@@ -128,7 +124,7 @@ export default function EditPage({ permalink }) {
           raw: { class: Raw, inlineToolbar: true },
         },
         data: { blocks: content.blocks || [] },
-        placeholder: "Start writing your post...",
+        placeholder: "Start writing your page...",
       });
 
       editorRef.current = editor;

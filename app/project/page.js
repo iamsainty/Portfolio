@@ -58,7 +58,7 @@ export async function generateMetadata() {
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
         url: "https://hey-sainty.vercel.app/project",
-        image: [
+        images: [
           {
             url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
             width: 1200,
@@ -110,7 +110,7 @@ export async function generateMetadata() {
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
         url: "https://hey-sainty.vercel.app/project",
-        image: [
+        images: [
           {
             url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
             width: 1200,
