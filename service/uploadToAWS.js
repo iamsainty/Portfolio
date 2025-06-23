@@ -18,6 +18,7 @@ export async function blogCoverUpload(file, permalink) {
       Key: fileName,
       Body: arrayBuffer,
       ContentType: file.type,
+      ACL: "public-read",
     };
 
     await s3.send(new PutObjectCommand(params));
@@ -40,6 +41,7 @@ export async function uploadUserProfilePicture(file, name, email) {
       Key: fileName,
       Body: arrayBuffer,
       ContentType: file.type,
+      ACL: "public-read",
     };
     await s3.send(new PutObjectCommand(params));
     const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
@@ -59,10 +61,34 @@ export async function pageCoverUpload(file, permalink) {
       Key: fileName,
       Body: arrayBuffer,
       ContentType: file.type,
+      ACL: "public-read",
     };
     await s3.send(new PutObjectCommand(params));
     const imageUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
     return imageUrl;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
+export async function uploadBlogTTS(audioBuffer, permalink) {
+  try {
+    const fileName = `blog-tts/${permalink}.mp3`;
+
+    const params = {
+      Bucket: process.env.NEXT_PUBLIC_AWS_BUCKET_NAME,
+      Key: fileName,
+      Body: audioBuffer,
+      ContentType: "audio/mpeg",
+      ACL: "public-read",
+    };
+
+    await s3.send(new PutObjectCommand(params));
+
+    const audioUrl = `https://${process.env.NEXT_PUBLIC_AWS_BUCKET_NAME}.s3.${process.env.NEXT_PUBLIC_AWS_REGION}.amazonaws.com/${fileName}`;
+
+    return audioUrl;
   } catch (error) {
     console.error(error);
     return null;
