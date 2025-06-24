@@ -2,6 +2,7 @@ import { connectToMongo } from "@/lib/mongodb";
 import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
 import BlogPost from "@/models/blogposts";
+import { generateBlogTTS } from "@/service/blog-tts";
 import { blogCoverUpload } from "@/service/uploadToAWS";
 import { NextResponse } from "next/server";
 
@@ -9,7 +10,7 @@ export async function POST(req, { params }) {
   try {
     await connectToMongo();
 
-    const permalink = await params.permalink;
+    const { permalink } = await params;
 
     const adminValidation = await validateAdmin(req);
 
@@ -55,13 +56,22 @@ export async function POST(req, { params }) {
       );
     }
 
+    const ttsUrl = await generateBlogTTS(title, content, permalink);
+
+    if (!ttsUrl) {
+      return NextResponse.json(
+        { success: false, error: "Failed to generate TTS." },
+        { status: 400 }
+      );
+    }
+
     blogpost.title = title;
     blogpost.summary = summary;
     blogpost.content = content;
     blogpost.tag = tags.split(",").map((tag) => tag.trim());
     blogpost.coverimage = imageUrl;
     blogpost.lastUpdated = new Date();
-
+    blogpost.ttsUrl = ttsUrl;
     await blogpost.save();
 
     return NextResponse.json(

@@ -2,6 +2,7 @@ import { connectToMongo } from "@/lib/mongodb";
 import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
 import BlogPost from "@/models/blogposts";
+import { generateBlogTTS } from "@/service/blog-tts";
 import { blogCoverUpload } from "@/service/uploadToAWS";
 import { NextResponse } from "next/server";
 
@@ -48,6 +49,15 @@ export async function POST(req) {
       );
     }
 
+    const ttsUrl = await generateBlogTTS(title, content, permalink);
+
+    if (!ttsUrl) {
+      return NextResponse.json(
+        { success: false, error: "Failed to generate TTS." },
+        { status: 400 }
+      );
+    }
+
     const blogpost = new BlogPost({
       author: admin.name,
       title,
@@ -56,6 +66,7 @@ export async function POST(req) {
       tag: tags.split(",").map((tag) => tag.trim()),
       permalink,
       coverimage: imageUrl,
+      ttsUrl,
     });
 
     await blogpost.save();

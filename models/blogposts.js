@@ -16,7 +16,7 @@ const blogPostSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
-  lastViewed : {
+  lastViewed: {
     type: Date,
     default: Date.now,
   },
@@ -48,6 +48,10 @@ const blogPostSchema = new mongoose.Schema({
   comments: {
     type: Number,
     default: 0,
+  },
+  ttsUrl: {
+    type: String,
+    default: null,
   },
 });
 
