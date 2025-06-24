@@ -13,7 +13,7 @@ async function sendNewsletter(title, content, link) {
       .find((row) => row.startsWith("adminToken="))
       ?.split("=")[1];
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/newsletter/update-feature`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/newsletter/update`,
       {
         method: "POST",
         headers: {
@@ -33,7 +33,7 @@ async function sendNewsletter(title, content, link) {
   }
 }
 
-export default function FeatureUpdate() {
+export default function UpdateNewsletter() {
   const [title, setTitle] = useState("");
   const [link, setLink] = useState("");
   const [loading, setLoading] = useState(false);
