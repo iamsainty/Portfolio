@@ -4,6 +4,7 @@ import BlogpostHeroSection from "./BlogpostHeroSection";
 import CommentSection from "./CommentSection";
 import Loading from "./loading";
 import { notFound } from "next/navigation";
+import ListenBlog from "./ListenBlog";
 const getBlogpost = async (permalink) => {
   try {
     const response = await fetch(
@@ -194,11 +195,12 @@ export default async function Page({ params }) {
   }
 
   return (
-    <div className="flex flex-col items-center w-full mb-20">
+    <div className="relative flex flex-col items-center w-full mb-20">
       <Suspense fallback={<Loading />}>
         <BlogpostHeroSection blogpost={blogpost} />
         <BlogPost blogpost={blogpost} />
         <CommentSection blogpost={blogpost} />
+        <ListenBlog permalink={permalink} />
       </Suspense>
     </div>
   );
