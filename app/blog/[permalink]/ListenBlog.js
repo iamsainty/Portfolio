@@ -61,8 +61,8 @@ export default function ListenBlog({ permalink }) {
   };
 
   return (
-    <div className="sticky bottom-20 w-full flex justify-center z-5 px-4">
-      <div className="bg-muted/20 backdrop-blur-md border border-muted-foreground/50 rounded-full shadow-md px-8 py-3 flex items-center gap-4 max-w-md w-full sm:w-fit">
+    <div className="sticky bottom-10 md:bottom-20 w-full flex justify-center z-5 px-4">
+      <div className="bg-muted/20 backdrop-blur-md border border-muted-foreground/90 rounded-full shadow-md px-8 py-3 flex justify-center items-center gap-4 w-[85vw] md:w-fit">
         {!isStarted ? (
           <button
             onClick={handleToggle}
