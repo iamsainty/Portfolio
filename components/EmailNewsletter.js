@@ -11,15 +11,31 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { toast } from "sonner";
-import { useBlog } from "@/context/blogContext";
 import { RiLoader4Line } from "react-icons/ri";
+
+async function newNewsletterRecipient(name, email) {
+  try {
+    const response = await fetch("/api/newsletter/blog/newRecipient", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email }),
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 const EmailNewsletter = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const { newNewsletterRecipient } = useBlog();
 
   const validateEmail = (email) => {
     return /\S+@\S+\.\S+/.test(email);
@@ -49,15 +65,15 @@ const EmailNewsletter = () => {
 
       const response = await newNewsletterRecipient(name, email);
 
-      if (response === "Subscribed successfully") {
+      if (response.success) {
         toast.success("Subscription Successful", {
-          description: "You have been subscribed to the newsletter.",
+          description: response.message,
         });
         setName("");
         setEmail("");
       } else {
         toast.error("Subscription Failed", {
-          description: response || "Something went wrong. Please try again.",
+          description: response.message,
         });
       }
     } catch (error) {
