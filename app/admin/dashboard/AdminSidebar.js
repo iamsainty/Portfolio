@@ -5,7 +5,11 @@ import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RxDashboard, RxExit } from "react-icons/rx";
 import { PiArticleLight } from "react-icons/pi";
-import { IoCodeSlashOutline, IoPeopleOutline } from "react-icons/io5";
+import {
+  IoCodeSlashOutline,
+  IoMailOutline,
+  IoPeopleOutline,
+} from "react-icons/io5";
 import { RiPageSeparator } from "react-icons/ri";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
@@ -23,7 +27,15 @@ const navLinks = [
     children: [
       { title: "New Blog", link: "/admin/dashboard/blog/newblog" },
       { title: "Blogs", link: "/admin/dashboard/blog/blogs" },
-      { title: "Newsletter", link: "/admin/dashboard/blog/newsletter" },
+    ],
+  },
+  {
+    title: "Newsletter",
+    link: "/admin/dashboard/newsletter",
+    icon: <IoMailOutline size={20} />,
+    children: [
+      { title: "New Blog", link: "/admin/dashboard/newsletter/blog" },
+      { title: "New Update", link: "/admin/dashboard/newsletter/update" },
     ],
   },
   {
@@ -147,12 +159,12 @@ export function AdminSidebar() {
                   <span>{title}</span>
                 </button>
                 {isOpen && children && (
-                  <ul className="pl-5 pt-1 space-y-2">
+                  <ul className="pl-5 pt-1 space-y-1">
                     {children.map((child) => (
                       <li key={child.link}>
                         <Link
                           href={child.link}
-                          className="block px-4 py-2 my-1 w-full text-left rounded-lg transition hover:bg-muted"
+                          className="block px-4 py-2 my-1 w-full text-left text-sm rounded-lg transition hover:bg-muted"
                         >
                           {child.title}
                         </Link>
