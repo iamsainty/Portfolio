@@ -1,17 +1,40 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { useBlog } from "@/context/blogContext";
 import React, { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 import { RiLoader4Line } from "react-icons/ri";
+import { useRouter } from "next/navigation";
+async function sendNewsletter(title, content, permalink) {
+  try {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
+
+    const response = await fetch("/api/newsletter/blog/newLetter", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        adminToken: adminToken,
+      },
+      body: JSON.stringify({ title, content, permalink }),
+    });
+
+    const data = await response.json();
+
+    return data;
+  } catch (error) {
+    console.error("Newsletter send error:", error);
+    return null;
+  }
+}
 
 export default function Page() {
   const [title, setTitle] = useState("");
   const [blogPermalink, setBlogPermalink] = useState("");
   const [loading, setLoading] = useState(false);
-
-  const { sendNewsletter } = useBlog();
+  const router = useRouter();
   const editorRef = useRef(null);
 
   useEffect(() => {
@@ -73,17 +96,19 @@ export default function Page() {
       const content = await editorRef.current.save();
       const response = await sendNewsletter(title, content, blogPermalink);
 
-      if (response === "Newsletter sent successfully") {
+      if (response.success) {
         toast.success("Success!", {
-          description: "Your newsletter was sent successfully.",
+          description: response.message,
         });
+
+        router.push("/admin/dashboard/");
 
         setTitle("");
         setBlogPermalink("");
         await editorRef.current.render({ blocks: [] });
       } else {
         toast.error("Failed to send", {
-          description: response || "Something went wrong.",
+          description: response.message || "Something went wrong.",
         });
       }
     } catch (error) {
