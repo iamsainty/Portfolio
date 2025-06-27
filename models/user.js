@@ -81,6 +81,23 @@ const userSchema = new mongoose.Schema(
         },
       },
     ],
+    emailPreferences: {
+      accountSecurityEmail: {
+        subscribed: { type: Boolean, default: true },
+        reason: { type: String, default: "" },
+        unsubscribedAt: { type: Date, default: null },
+      },
+      newBlogsEmail: {
+        subscribed: { type: Boolean, default: true },
+        reason: { type: String, default: "" },
+        unsubscribedAt: { type: Date, default: null },
+      },
+      newFeaturesEmail: {
+        subscribed: { type: Boolean, default: true },
+        reason: { type: String, default: "" },
+        unsubscribedAt: { type: Date, default: null },
+      },
+    },
     notificationPreferences: {
       accountUpdateEmail: {
         type: Boolean,
