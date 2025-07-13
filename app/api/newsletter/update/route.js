@@ -36,7 +36,9 @@ export async function POST(req) {
       );
     }
 
-    const users = await User.find();
+    const users = await User.find({
+      "emailPreferences.newFeaturesEmail.subscribed": true,
+    });
 
     await Promise.all(
       users.map((user) => {
