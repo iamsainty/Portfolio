@@ -21,7 +21,7 @@ const openSans = Open_Sans({
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=G-0RVS5CP3S2`}
