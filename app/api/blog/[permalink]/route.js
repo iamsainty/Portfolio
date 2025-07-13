@@ -19,14 +19,10 @@ export async function GET(request, { params }) {
       );
     }
 
+    const incViews = request.headers.get("incViews");
     const currentTime = new Date();
-    const lastViewedTime = blogPost.lastViewed
-      ? new Date(blogPost.lastViewed)
-      : new Date(0);
 
-    const timeDifference = currentTime - lastViewedTime;
-
-    if (timeDifference > 10000) {
+    if (incViews) {
       blogPost.views += 1;
       blogPost.lastViewed = currentTime;
       await blogPost.save();

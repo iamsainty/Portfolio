@@ -5,7 +5,7 @@ import CommentSection from "./CommentSection";
 import Loading from "./loading";
 import { notFound } from "next/navigation";
 import ListenBlog from "./ListenBlog";
-const getBlogpost = async (permalink) => {
+const getBlogpost = async (permalink, options = {}) => {
   try {
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/${permalink}`,
@@ -13,6 +13,7 @@ const getBlogpost = async (permalink) => {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
+          incViews: options.incViews || false,
         },
         next: {
           revalidate: 60,
@@ -35,7 +36,7 @@ export const dynamic = "force-dynamic";
 export async function generateMetadata({ params }) {
   const { permalink } = await params;
 
-  const blogpost = await getBlogpost(permalink);
+  const blogpost = await getBlogpost(permalink, { incViews: false });
 
   if (!blogpost) {
     return {
@@ -188,7 +189,7 @@ export async function generateMetadata({ params }) {
 
 export default async function Page({ params }) {
   const { permalink } = await params;
-  const blogpost = await getBlogpost(permalink);
+  const blogpost = await getBlogpost(permalink, { incViews: true });
 
   if (!blogpost) {
     notFound();
