@@ -41,6 +41,13 @@ export async function POST(req) {
 
     const imageUrl = await uploadProjectImage(image, permalink);
 
+    if (!imageUrl) {
+      return NextResponse.json(
+        { success: false, error: "Failed to upload image." },
+        { status: 400 }
+      );
+    }
+
     const newProject = new Projects({
       title,
       description,

@@ -61,12 +61,7 @@ export default function NewProject() {
 
   const router = useRouter();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(e.target.files[0]));
-    }
-  };
+  const handleImageChange = (e) => setImage(e.target.files[0]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -91,7 +86,7 @@ export default function NewProject() {
 
       if (result.success) {
         toast.success("Project added successfully!");
-        router.push("/admin/dashboard/projects");
+        router.push("/admin/dashboard/project/projects");
       } else {
         toast.error(result.message);
       }
@@ -117,7 +112,7 @@ export default function NewProject() {
           >
             {image ? (
               <Image
-                src={image}
+                src={URL.createObjectURL(image)}
                 alt="Project"
                 className="object-cover w-full h-full rounded-md"
                 width={64}
