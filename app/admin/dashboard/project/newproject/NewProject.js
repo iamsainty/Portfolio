@@ -134,6 +134,7 @@ export default function NewProject() {
             type="file"
             className="hidden"
             accept="image/*"
+            onChange={handleImageChange}
           />
         </div>
 
