@@ -28,7 +28,7 @@ const BlogPost = ({ blogpost }) => {
             })}
           {block.type === "paragraph" && isValidHTML(block.data.text) && (
             <div
-              className="text-md md:text-lg text-justify"
+              className="text-md md:text-lg text-justify [&_a]:underline"
               dangerouslySetInnerHTML={{ __html: block.data.text }}
             />
           )}
