@@ -16,10 +16,12 @@ const blogCommentSchema = new mongoose.Schema({
   },
   replies: [
     {
-      userId: {
-        type: mongoose.Schema.Types.ObjectId,
+      actionBy: {
+        type: String,
+        enum: ["admin", "user"],
+        required: true,
       },
-      reply: { type: String },
+      comment: { type: String },
       createdAt: {
         type: Date,
         default: Date.now(),
