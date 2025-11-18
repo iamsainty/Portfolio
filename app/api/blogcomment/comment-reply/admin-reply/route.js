@@ -45,6 +45,22 @@ export async function POST(req) {
 
     await comment.save();
 
+    const blog = await BlogPost.findOne({ permalink: comment.blogPermalink });
+    if (!blog) {
+      return NextResponse.json({ message: "Blog not found." }, { status: 404 });
+    }
+    const user = await User.findById(comment.userId);
+    if (!user) {
+      return NextResponse.json({ message: "User not found." }, { status: 404 });
+    }
+
+    await AdminCommentReplyEmail(
+      user.name,
+      user.email,
+      blog.title,
+      blog.permalink
+    );
+
     return NextResponse.json(
       { message: "Comment replied successfully." },
       { status: 200 }
