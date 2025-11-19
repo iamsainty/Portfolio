@@ -4,15 +4,19 @@ import { Button } from "@/components/ui/button";
 import { useUserAuth } from "@/context/user/authContext";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
-import { RiSendPlaneLine } from "react-icons/ri";
+import { RiLoader4Line, RiSendPlaneLine } from "react-icons/ri";
 import React, { useEffect, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { useBlogComment } from "@/context/blogCommentContext";
+import { toast } from "sonner";
 
 const Comment = ({ comment }) => {
   const { getUserInfo } = useUserAuth();
   const [userInfo, setUserInfo] = useState(null);
   const { user } = useUserAuth();
   const [reply, setReply] = useState("");
+  const { userCommentReply } = useBlogComment();
+  const [replying, setReplying] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -31,6 +35,37 @@ const Comment = ({ comment }) => {
   const timeAgo = formatDistanceToNow(new Date(comment.createdAt), {
     addSuffix: true,
   });
+
+  const handleUserCommentReply = async () => {
+    if (!reply || reply.trim() === "") {
+      toast.error("Reply is empty", {
+        description: "Please write something before replying",
+      });
+      return;
+    }
+    try {
+      setReplying(true);
+      const response = await userCommentReply(comment._id, reply);
+      if (response === "Comment replied successfully.") {
+        toast.success("Comment replied successfully.", {
+          description: "Thanks for sharing your thoughts!",
+        });
+        setReply("");
+      } else {
+        toast.error("Post failed", {
+          description: response,
+        });
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Error", {
+        description:
+          error.message || "Something went wrong. Please try again later.",
+      });
+    } finally {
+      setReplying(false);
+    }
+  };
 
   return (
     <div className="flex flex-col gap-3 px-4 py-6 mb-5 border border-muted shadow-md rounded-xl">
@@ -62,8 +97,16 @@ const Comment = ({ comment }) => {
             value={reply}
             onChange={(e) => setReply(e.target.value)}
           />
-          <Button className="font-semibold rounded-lg px-4 py-2 w-fit">
-            <RiSendPlaneLine className="w-4 h-4" />
+          <Button
+            className="font-semibold rounded-lg px-4 py-2 w-full md:w-fit"
+            onClick={handleUserCommentReply}
+            disabled={replying}
+          >
+            {replying ? (
+              <RiLoader4Line className="animate-spin" />
+            ) : (
+              <RiSendPlaneLine className="w-4 h-4" />
+            )}
             Reply
           </Button>
         </div>

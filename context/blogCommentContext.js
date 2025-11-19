@@ -20,7 +20,7 @@ export const BlogCommentProvider = ({ children }) => {
       if (!userToken) {
         setLoading(false);
         return;
-      }      
+      }
 
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/newcomment`,
@@ -38,7 +38,7 @@ export const BlogCommentProvider = ({ children }) => {
 
       if (data.comment) {
         setComments([...comments, data.comment]);
-      } 
+      }
 
       return data.message;
     } catch (error) {
@@ -73,9 +73,58 @@ export const BlogCommentProvider = ({ children }) => {
     }
   };
 
+  const userCommentReply = async (commentId, reply) => {
+    try {
+      setLoading(true);
+      const userToken = document.cookie
+        .split("; ")
+        .find((row) => row.startsWith("userToken="))
+        ?.split("=")[1];
+
+      if (!userToken) {
+        setLoading(false);
+        return;
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/comment-reply/user-reply`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            userToken: userToken,
+          },
+          body: JSON.stringify({ commentId, reply }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (data.message) {
+        return data.message;
+      }
+
+      setError(data.message || "Something went wrong. Please try again later.");
+    } catch (error) {
+      console.error(error);
+      setError(
+        error.message || "Something went wrong. Please try again later."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <blogCommentContext.Provider
-      value={{ comments, newComment, loading, error, getBlogComments }}
+      value={{
+        comments,
+        newComment,
+        loading,
+        error,
+        getBlogComments,
+        userCommentReply,
+      }}
     >
       {children}
     </blogCommentContext.Provider>
