@@ -10,7 +10,7 @@ import {
   IoMailOutline,
   IoPeopleOutline,
 } from "react-icons/io5";
-import { RiPageSeparator } from "react-icons/ri";
+import { RiMessage2Line, RiPageSeparator } from "react-icons/ri";
 import { Skeleton } from "@/components/ui/skeleton";
 import { toast } from "sonner";
 
@@ -27,6 +27,14 @@ const navLinks = [
     children: [
       { title: "New Blog", link: "/admin/dashboard/blog/newblog" },
       { title: "Blogs", link: "/admin/dashboard/blog/blogs" },
+    ],
+  },
+  {
+    title: "Comments",
+    link: "/admin/dashboard/comments",
+    icon: <RiMessage2Line size={20} />,
+    children: [
+      { title: "All Comments", link: "/admin/dashboard/comments/allcomments" },
     ],
   },
   {
