@@ -15,9 +15,9 @@ export default async function AdminCommentReplyEmail(
   blogPermalink
 ) {
   const mailOptions = {
-    from: `"New Reply - Hey Sainty" <${process.env.APP_EMAIL}>`,
+    from: `"Notification - Hey Sainty" <${process.env.APP_EMAIL}>`,
     to: email,
-    subject: "New Reply on Your Comment",
+    subject: "New Reply on Your Comment on Hey Sainty",
     html: `
         <div
   style="
@@ -35,7 +35,7 @@ export default async function AdminCommentReplyEmail(
 >
   <div style="padding: 32px 28px; background-color: #f9fafb;">
     <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">
-      Hey ${name},
+      Hey ${name.split(" ")[0]},
     </p>
 
     <p style="font-size: 14px; line-height: 1.7; color: #555555; margin-bottom: 18px;">
@@ -82,7 +82,7 @@ export default async function AdminCommentReplyEmail(
       Tech Insights, Coding Tips & Life Stories
     </p>
 
-    <div style="font-size: 12px; opacity: 0.75; margin: 10px;">
+    <div style="font-size: 8px; opacity: 0.75; margin: 10px;">
       <a
         href="https://hey-sainty.vercel.app/blog"
         style="color: #dddddd; text-decoration: none; margin: 0 8px;"
