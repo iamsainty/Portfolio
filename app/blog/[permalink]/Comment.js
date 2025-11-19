@@ -46,18 +46,18 @@ const Comment = ({ comment }) => {
     try {
       setReplying(true);
       const response = await userCommentReply(comment._id, reply);
-      if (response === "Comment replied successfully.") {
-        toast.success("Comment replied successfully.", {
-          description: "Thanks for sharing your thoughts!",
+      if (response.success) {
+        comment.replies.push(response.reply);
+        toast.success("Reply posted", {
+          description: "Your reply has been posted.",
         });
         setReply("");
       } else {
-        toast.error("Post failed", {
-          description: response,
+        toast.error("Reply failed", {
+          description: response.message,
         });
       }
     } catch (error) {
-      console.error(error);
       toast.error("Error", {
         description:
           error.message || "Something went wrong. Please try again later.",
@@ -86,8 +86,53 @@ const Comment = ({ comment }) => {
           </div>
           <p className="text-sm leading-relaxed">{comment.comment}</p>
         </div>
-        {/* continue conversation */}
+        {/* replies */}
       </div>
+      {comment.replies.length > 0 && (
+        <div className="mt-4 flex flex-col gap-4 pl-12">
+          {comment.replies.map((reply) => (
+            <div key={reply.createdAt} className="flex items-start gap-3">
+              {/* Avatar */}
+              <div className="w-7 h-7 rounded-full overflow-hidden flex-shrink-0">
+                <Image
+                  src={
+                    reply.actionBy === "admin"
+                      ? "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/priyanshu.png"
+                      : userInfo.profilePicture || "/default-avatar.png"
+                  }
+                  alt="profile pic"
+                  width={28}
+                  height={28}
+                  className="object-cover"
+                />
+              </div>
+
+              {/* Name + date + reply text */}
+              <div className="flex flex-col">
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
+                  <h5 className="text-sm font-semibold">
+                    {reply.actionBy === "admin"
+                      ? "Admin • Hey Sainty"
+                      : userInfo.name}
+                  </h5>
+
+                  <span className="text-xs text-muted-foreground">
+                    {formatDistanceToNow(new Date(reply.createdAt), {
+                      addSuffix: true,
+                    })}
+                  </span>
+                </div>
+
+                {/* Reply content */}
+                <p className="text-sm leading-relaxed mt-1 text-foreground">
+                  {reply.comment}
+                </p>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      {/* continue conversation */}
       {user && user._id === comment.userId && (
         <div className="flex flex-col gap-3">
           <Textarea

@@ -73,7 +73,7 @@ export const BlogCommentProvider = ({ children }) => {
     }
   };
 
-  const userCommentReply = async (commentId, reply) => {
+  const userCommentReply = async (commentId, commentReply) => {
     try {
       setLoading(true);
       const userToken = document.cookie
@@ -94,22 +94,23 @@ export const BlogCommentProvider = ({ children }) => {
             "Content-Type": "application/json",
             userToken: userToken,
           },
-          body: JSON.stringify({ commentId, reply }),
+          body: JSON.stringify({ commentId, commentReply }),
         }
       );
 
       const data = await response.json();
 
-      if (data.message) {
-        return data.message;
+      if (data.success) {
+        return { success: true, reply: data.reply };
+      } else {
+        return { success: false, message: data.message };
       }
-
-      setError(data.message || "Something went wrong. Please try again later.");
     } catch (error) {
-      console.error(error);
-      setError(
-        error.message || "Something went wrong. Please try again later."
-      );
+      return {
+        success: false,
+        message:
+          error.message || "Something went wrong. Please try again later.",
+      };
     } finally {
       setLoading(false);
     }

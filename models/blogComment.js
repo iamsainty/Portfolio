@@ -19,7 +19,6 @@ const blogCommentSchema = new mongoose.Schema({
       actionBy: {
         type: String,
         enum: ["admin", "user"],
-        required: true,
       },
       comment: { type: String },
       createdAt: {

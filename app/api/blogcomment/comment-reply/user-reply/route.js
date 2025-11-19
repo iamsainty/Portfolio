@@ -10,11 +10,13 @@ export async function POST(req) {
 
     const { commentId, commentReply } = await req.json();
 
+    console.log(commentId, commentReply);
+
     const response = await validateUsertoken(req);
 
     if (response.status !== 200) {
       return NextResponse.json(
-        { message: "Unauthorized. Please login again." },
+        { success: false, message: "Unauthorized. Please login again." },
         { status: 401 }
       );
     }
@@ -22,34 +24,46 @@ export async function POST(req) {
     const user = await User.findById(response.id);
 
     if (!user) {
-      return NextResponse.json({ message: "User not found." }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "User not found." },
+        { status: 404 }
+      );
     }
 
     const comment = await blogComment.findById(commentId);
 
     if (!comment) {
       return NextResponse.json(
-        { message: "Comment not found." },
+        { success: false, message: "Comment not found." },
         { status: 404 }
       );
     }
 
-    comment.replies.push({
+    const newReply = {
       actionBy: "user",
       comment: commentReply,
       createdAt: new Date(),
-    });
+    };
+
+    comment.replies.push(newReply);
 
     await comment.save();
 
     return NextResponse.json(
-      { message: "Comment replied successfully." },
-      { status: 200 }
+      {
+        success: true,
+        message: "Comment replied successfully.",
+        reply: newReply,
+      },
+      { status: 201 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Something went wrong. Please try again later." },
+      {
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      },
       { status: 500 }
     );
   }

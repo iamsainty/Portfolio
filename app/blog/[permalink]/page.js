@@ -198,10 +198,10 @@ export default async function Page({ params }) {
   return (
     <div className="relative flex flex-col items-center w-full mb-20">
       <Suspense fallback={<Loading />}>
-        {/* <BlogpostHeroSection blogpost={blogpost} /> */}
-        {/* <BlogPost blogpost={blogpost} /> */}
+        <BlogpostHeroSection blogpost={blogpost} />
+        <BlogPost blogpost={blogpost} />
         <CommentSection blogpost={blogpost} />
-        {/* <ListenBlog permalink={permalink} /> */}
+        <ListenBlog permalink={permalink} />
       </Suspense>
     </div>
   );
