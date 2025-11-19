@@ -4,6 +4,7 @@ import { formatDistanceToNow } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import { RiLoader4Line, RiSendPlaneLine } from "react-icons/ri";
 
 async function getUserInfo(userId) {
   try {
@@ -24,23 +25,36 @@ async function getUserInfo(userId) {
   }
 }
 
-async function adminReply(commentId, commentReply) {
+async function adminReply(commentId, reply) {
   try {
+    const adminToken = document.cookie
+      .split("; ")
+      .find((row) => row.startsWith("adminToken="))
+      ?.split("=")[1];
+
+    if (!adminToken) {
+      return { success: false, message: "Unauthorized. Please login again." };
+    }
+
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/blogcomment/comment-reply/admin-reply`,
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          adminToken,
         },
-        body: JSON.stringify({ commentId, commentReply }),
+        body: JSON.stringify({ commentId, reply }),
       }
     );
     const data = await response.json();
-    return data.success ? data : null;
+    return data;
   } catch (error) {
     console.error(error);
-    return null;
+    return {
+      success: false,
+      message: "Something went wrong. Please try again later.",
+    };
   }
 }
 
@@ -62,27 +76,21 @@ export default function Comment({ comment }) {
     try {
       setReplying(true);
       const response = await adminReply(comment._id, reply);
-      if (response === null) {
+      if (!response.success) {
         toast.error("Error", {
-          description: "Something went wrong. Please try again later.",
+          description: response.message,
         });
         return;
       }
-      if (response.success) {
-        comment.replies.push(response.reply);
-        toast.success("Reply posted", {
-          description: "Your reply has been posted.",
-        });
-        setReply("");
-      } else {
-        toast.error("Reply failed", {
-          description: response.message,
-        });
-      }
+      comment.replies.push(response.reply);
+      toast.success("Reply posted", {
+        description: "Your reply has been posted.",
+      });
+      setReply("");
     } catch (error) {
       console.error(error);
       toast.error("Error", {
-        description: "Something went wrong. Please try again later.",
+        description: response.message,
       });
     } finally {
       setReplying(false);
@@ -161,7 +169,16 @@ export default function Comment({ comment }) {
           value={reply}
           onChange={(e) => setReply(e.target.value)}
         />
-        <Button className="font-semibold rounded-lg px-4 py-2 w-full md:w-fit">
+        <Button
+          className="font-semibold rounded-lg px-4 py-2 w-full md:w-fit"
+          onClick={handleReply}
+          disabled={replying}
+        >
+          {replying ? (
+            <RiLoader4Line className="animate-spin" />
+          ) : (
+            <RiSendPlaneLine className="w-4 h-4" />
+          )}
           Reply
         </Button>
       </div>

@@ -1,3 +1,4 @@
+import AdminCommentReplyEmail from "@/emailTemplate/commentAdminReply";
 import { connectToMongo } from "@/lib/mongodb";
 import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
@@ -10,7 +11,7 @@ export async function POST(req) {
   try {
     await connectToMongo();
 
-    const { commentId, commentReply } = await req.json();
+    const { commentId, reply } = await req.json();
 
     const response = await validateAdmin(req);
 
@@ -41,7 +42,7 @@ export async function POST(req) {
 
     const newReply = {
       actionBy: "admin",
-      comment: commentReply,
+      comment: reply,
       createdAt: new Date(),
     };
 
