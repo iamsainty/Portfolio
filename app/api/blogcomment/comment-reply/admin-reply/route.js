@@ -2,6 +2,8 @@ import { connectToMongo } from "@/lib/mongodb";
 import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
 import blogComment from "@/models/blogComment";
+import BlogPost from "@/models/blogposts";
+import User from "@/models/user";
 import { NextResponse } from "next/server";
 
 export async function POST(req) {
@@ -14,7 +16,7 @@ export async function POST(req) {
 
     if (response.status !== 200) {
       return NextResponse.json(
-        { message: "Unauthorized. Please login again." },
+        { success: false, message: "Unauthorized. Please login again." },
         { status: 401 }
       );
     }
@@ -23,7 +25,7 @@ export async function POST(req) {
 
     if (!admin) {
       return NextResponse.json(
-        { message: "Admin not found." },
+        { success: false, message: "Admin not found." },
         { status: 404 }
       );
     }
@@ -32,26 +34,34 @@ export async function POST(req) {
 
     if (!comment) {
       return NextResponse.json(
-        { message: "Comment not found." },
+        { success: false, message: "Comment not found." },
         { status: 404 }
       );
     }
 
-    comment.replies.push({
+    const newReply = {
       actionBy: "admin",
       comment: commentReply,
       createdAt: new Date(),
-    });
+    };
+
+    comment.replies.push(newReply);
 
     await comment.save();
 
     const blog = await BlogPost.findOne({ permalink: comment.blogPermalink });
     if (!blog) {
-      return NextResponse.json({ message: "Blog not found." }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "Blog not found." },
+        { status: 404 }
+      );
     }
     const user = await User.findById(comment.userId);
     if (!user) {
-      return NextResponse.json({ message: "User not found." }, { status: 404 });
+      return NextResponse.json(
+        { success: false, message: "User not found." },
+        { status: 404 }
+      );
     }
 
     await AdminCommentReplyEmail(
@@ -62,13 +72,20 @@ export async function POST(req) {
     );
 
     return NextResponse.json(
-      { message: "Comment replied successfully." },
+      {
+        success: true,
+        reply: newReply,
+        message: "Comment replied successfully.",
+      },
       { status: 200 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { message: "Something went wrong. Please try again later." },
+      {
+        success: false,
+        message: "Something went wrong. Please try again later.",
+      },
       { status: 500 }
     );
   }

@@ -10,11 +10,11 @@ export async function GET(request, { params }) {
 
     const user = await User.findById(userId);
 
-    return NextResponse.json({ user }, { status: 200 });
+    return NextResponse.json({ success: true, user }, { status: 200 });
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: "Failed to fetch user" },
+      { success: false, error: "Failed to fetch user" },
       { status: 500 }
     );
   }
