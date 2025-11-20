@@ -131,8 +131,8 @@ function wrapInTemplate(name, email, title, bodyContent, link) {
         Hey ${name.split(" ")[0]}!
       </p>
       <p style="font-size: 14px; line-height: 1.7; color: #555555; margin-bottom: 28px;">
-        Hope you're doing great! Here's the latest update from 
-        <strong>Hey Sainty</strong> that we thought you'd love:
+        Hope you’re doing well and enjoying your experience on <strong>Hey Sainty</strong>, I’m always working to make the platform better, smoother, and more helpful for you. Here’s a quick update on what’s new, something I think you’ll find really useful:
+
       </p>
   
       <h2 style="color: #111111; font-size: 18px; font-weight: 700; margin-bottom: 18px;">
@@ -161,26 +161,56 @@ function wrapInTemplate(name, email, title, bodyContent, link) {
         </a>
       </div>
     </div>
-  
-    <div
+  <div
+    style="
+      background-color: rgba(0, 0, 0, 0.9);
+      color: #dddddd;
+      padding: 40px 24px;
+      text-align: center;
+    "
+  >
+<h1 style="font-size: 20px; margin: 0; font-weight: 800;">Hey Sainty</h1>
+
+    <p
       style="
-        background-color: rgba(0, 0, 0, 0.85);
-        color: #dddddd;
-        padding: 45px 24px;
-        text-align: center;
+        margin: 10px 0 30px;
+        font-size: 12px;
+        font-weight: 500;
+        opacity: 0.9;
       "
     >
-      <h1 style="font-size: 22px; margin: 0; font-weight: 800;">Hey Sainty</h1>
-      <p
-        style="
-          margin: 14px 0 26px;
-          font-size: 13px;
-          font-weight: 500;
-          opacity: 0.9;
-        "
+      Tech Insights, Coding Tips & Life Stories
+    </p>
+      
+      <div style="font-size: 8px; opacity: 0.75; margin: 10px;">
+      <a
+        href="https://hey-sainty.vercel.app/blog"
+        style="color: #dddddd; text-decoration: none; margin: 0 8px;"
       >
-        Tech Tutorials, Lifestyle Inspiration & Stories
-      </p>
+        Blog
+      </a>
+      |
+      <a
+        href="https://hey-sainty.vercel.app/page/about"
+        style="color: #dddddd; text-decoration: none; margin: 0 8px;"
+      >
+        About
+      </a>
+      |
+      <a
+        href="https://hey-sainty.vercel.app/page/contact"
+        style="color: #dddddd; text-decoration: none; margin: 0 8px;"
+      >
+        Contact
+      </a>
+      |
+      <a
+        href="https://hey-sainty.vercel.app/page/privacy-policy"
+        style="color: #dddddd; text-decoration: none; margin: 0 8px;"
+      >
+        Privacy Policy
+      </a>
+    </div>
   
       <div
         style="

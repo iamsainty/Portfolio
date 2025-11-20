@@ -112,19 +112,44 @@ export default async function AdminCommentReplyEmail(
       </a>
     </div>
 
-    <div style="padding-top: 10px; font-size: 12px; opacity: 0.7;">
-      <p style="margin: 0;">
-        Sent with &hearts; by <strong>Priyanshu</strong> |
-        <a
-          href="https://hey-sainty.vercel.app"
-          style="color: #dddddd; text-decoration: none; font-weight: bold;"
-        >
-          Hey Sainty
-        </a>
-      </p>
+    <div
+        style="
+          border-top: 1px solid rgba(255, 255, 255, 0.15);
+          margin-top: 24px;
+          padding-top: 22px;
+          font-size: 10px;
+          opacity: 0.8;
+        "
+      >
+        <p style="margin: 12px 0 0; opacity : 0.7;">
+          This email was intended for <strong style="color: #dddddd;">${email}</strong>.
+          If you believe you received it by mistake, contact us.
+        </p>
+      </div>
+  
+      <div
+        style="
+          padding-top: 18px;
+          font-size: 12px;
+          opacity: 0.7;
+        "
+      >
+        <p style="margin: 0;">
+          Sent with &hearts; by <strong>Priyanshu</strong> |
+          <a
+            href="https://hey-sainty.vercel.app"
+            style="
+              color: #dddddd;
+              text-decoration: none;
+              font-weight: bold;
+            "
+          >
+            Hey Sainty
+          </a>
+        </p>
+      </div>
     </div>
   </div>
-</div>
         `,
   };
   try {
