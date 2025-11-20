@@ -23,9 +23,9 @@ export default async function sendUpdateEmail(
     link
   );
   const mailOptions = {
-    from: `"Update - Hey Sainty" <${process.env.APP_EMAIL}>`,
+    from: `"Notification - Hey Sainty" <${process.env.APP_EMAIL}>`,
     to: email,
-    subject: `${title} - Hey Sainty`,
+    subject: "New Update on Hey Sainty",
     html: mailContent,
   };
 
