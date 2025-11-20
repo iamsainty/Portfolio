@@ -1,7 +1,6 @@
 import { connectToMongo } from "@/lib/mongodb";
 import { validateAdmin } from "@/middleware/validateAdmin";
 import Admin from "@/models/admin";
-import Recipient from "@/models/emailNewsletterRecipient";
 import User from "@/models/user";
 import sendUpdateEmail from "@/service/newsletter/updateEmail";
 import { NextResponse } from "next/server";
@@ -36,9 +35,7 @@ export async function POST(req) {
       );
     }
 
-    const users = await User.find({
-      "emailPreferences.newFeaturesEmail.subscribed": true,
-    });
+    const users = await User.find();
 
     await Promise.all(
       users.map((user) => {
