@@ -4,7 +4,12 @@ import { formatDistanceToNow } from "date-fns";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { RiLoader4Line, RiSendPlaneLine } from "react-icons/ri";
+import {
+  RiArrowLeftLine,
+  RiLoader4Line,
+  RiSendPlaneLine,
+} from "react-icons/ri";
+import Link from "next/link";
 
 async function getUserInfo(userId) {
   try {
@@ -58,19 +63,39 @@ async function adminReply(commentId, reply) {
   }
 }
 
+async function getBlogTitle(permalink) {
+  try {
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/${permalink}`,
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      }
+    );
+    const data = await response.json();
+    return data.success ? data.blog.title : null;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
+
 export default function Comment({ comment }) {
   const [user, setUser] = useState(null);
+  const [blogTitle, setBlogTitle] = useState(null);
   const [reply, setReply] = useState("");
   const [replying, setReplying] = useState(false);
 
   useEffect(() => {
     const fetchUserInfo = async () => {
       const user = await getUserInfo(comment.userId);
+      const blogTitle = await getBlogTitle(comment.blogPermalink);
       setUser(user);
+      setBlogTitle(blogTitle);
     };
     fetchUserInfo();
     // eslint-disable-next-line
-  }, [comment.userId]);
+  }, [comment.userId, comment.blogPermalink]);
 
   const handleReply = async () => {
     try {
@@ -104,7 +129,15 @@ export default function Comment({ comment }) {
   });
 
   return (
-    <div className="flex flex-col gap-3 px-4 py-6 mb-5 border border-muted shadow-md rounded-xl">
+    <div className="flex flex-col gap-4 px-4 py-6 mb-5 border border-muted shadow-md rounded-xl">
+      <div className="flex items-center gap-2 bg-muted px-4 py-1 rounded-full w-fit">
+        <Link
+          href={"/blog/" + comment.blogPermalink}
+          className="text-muted-foreground hover:underline"
+        >
+          <p className="text-xs font-semibold">{blogTitle}</p>
+        </Link>
+      </div>
       <div className="flex items-start gap-3">
         <div className="w-10 h-10 rounded-full overflow-hidden">
           <Image
