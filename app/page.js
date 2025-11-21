@@ -21,7 +21,7 @@ export const metadata = {
     "Tech creativity and personal growth",
   ],
   author: "Priyanshu Chaurasiya",
-  canonical: "https://hey-sainty.vercel.app",
+  canonical: "https://www.heysainty.com",
   robots: {
     index: true,
     follow: true,
@@ -32,7 +32,7 @@ export const metadata = {
     title: "Hey Sainty - Explore Tech, Creativity, and Innovation",
     description:
       "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore blogs on programming, tech trends, and personal projects.",
-    url: "https://hey-sainty.vercel.app",
+    url: "https://www.heysainty.com",
     images: [
       {
         url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty.png",
@@ -66,13 +66,13 @@ export default function Page() {
             "@context": "https://schema.org",
             "@type": "Website",
             name: "Hey Sainty",
-            url: "https://hey-sainty.vercel.app",
+            url: "https://www.heysainty.com",
             description:
               "A dynamic platform where I share my journey as a tech enthusiast and developer. Explore my blogs on programming, tech trends, and personal projects.",
             author: {
               "@type": "Person",
               name: "Priyanshu Chaurasiya",
-              url: "https://hey-sainty.vercel.app",
+              url: "https://www.heysainty.com",
             },
             sameAs: [
               "https://github.com/iamsainty",

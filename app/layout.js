@@ -41,6 +41,11 @@ export default function RootLayout({ children }) {
           data-key="nUb5b+mJnjM5CCCEkPXVlA"
           async
         />
+        <Script
+          src="https://analytics.ahrefs.com/analytics.js"
+          data-key="sR2M+QUDtGhB6IYu0GS6Aw"
+          async
+        />
         <Script id="gtm-script" strategy="afterInteractive">
           {`
     (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':

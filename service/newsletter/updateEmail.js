@@ -184,28 +184,28 @@ function wrapInTemplate(name, email, title, bodyContent, link) {
       
       <div style="font-size: 8px; opacity: 0.75; margin: 10px;">
       <a
-        href="https://hey-sainty.vercel.app/blog"
+        href="https://www.heysainty.com/blog"
         style="color: #dddddd; text-decoration: none; margin: 0 8px;"
       >
         Blog
       </a>
       |
       <a
-        href="https://hey-sainty.vercel.app/page/about"
+        href="https://www.heysainty.com/page/about"
         style="color: #dddddd; text-decoration: none; margin: 0 8px;"
       >
         About
       </a>
       |
       <a
-        href="https://hey-sainty.vercel.app/page/contact"
+        href="https://www.heysainty.com/page/contact"
         style="color: #dddddd; text-decoration: none; margin: 0 8px;"
       >
         Contact
       </a>
       |
       <a
-        href="https://hey-sainty.vercel.app/page/privacy-policy"
+        href="https://www.heysainty.com/page/privacy-policy"
         style="color: #dddddd; text-decoration: none; margin: 0 8px;"
       >
         Privacy Policy
@@ -237,7 +237,7 @@ function wrapInTemplate(name, email, title, bodyContent, link) {
         <p style="margin: 0;">
           Sent with &hearts; by <strong>Priyanshu</strong> |
           <a
-            href="https://hey-sainty.vercel.app"
+            href="https://www.heysainty.com"
             style="
               color: #dddddd;
               text-decoration: none;

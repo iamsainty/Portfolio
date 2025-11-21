@@ -46,7 +46,7 @@ export async function generateMetadata() {
         "Explore the projects I've worked on, from personal to collaborations. Learn about the technologies, tools, and processes that powered these projects.",
       keywords: keywords || [],
       author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.vercel.app/project",
+      canonical: "https://www.heysainty.com/project",
       robots: {
         index: true,
         follow: true,
@@ -57,7 +57,7 @@ export async function generateMetadata() {
         title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
-        url: "https://hey-sainty.vercel.app/project",
+        url: "https://www.heysainty.com/project",
         images: [
           {
             url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",
@@ -102,14 +102,14 @@ export async function generateMetadata() {
         "Full Stack Development",
       ],
       author: "Priyanshu Chaurasiya",
-      canonical: "https://hey-sainty.vercel.app/project",
+      canonical: "https://www.heysainty.com/project",
       openGraph: {
         type: "website",
         site_name: "Hey Sainty",
         title: "Hey Sainty Projects - Web apps, Tech Stack and more",
         description:
           "Explore the projects I've worked on, from personal endeavors to collaborations. Learn about the technologies, tools, and creative processes that powered these projects.",
-        url: "https://hey-sainty.vercel.app/project",
+        url: "https://www.heysainty.com/project",
         images: [
           {
             url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-project.png",

@@ -162,7 +162,7 @@ function wrapInTemplate(
 
     <div style="text-align: center; margin: 40px 0 10px;">
       <a
-        href="https://hey-sainty.vercel.app/blog/${permalink}"
+        href="https://www.heysainty.com/blog/${permalink}"
         style="
           background-color: rgba(0, 0, 0, 0.85);
           color: #ffffff;
@@ -211,7 +211,7 @@ function wrapInTemplate(
       <p style="margin: 0 0 12px;">
         Prefer not to hear from us? 
         <a
-          href="https://hey-sainty.vercel.app/blog-newsletter/unsubscribe?recipientId=${recipientId}"
+          href="https://www.heysainty.com/blog-newsletter/unsubscribe?recipientId=${recipientId}"
           style="
             color: #dddddd;
             font-weight: bold;
@@ -237,7 +237,7 @@ function wrapInTemplate(
       <p style="margin: 0;">
         Sent with &hearts; by <strong>Priyanshu</strong> |
         <a
-          href="https://hey-sainty.vercel.app"
+          href="https://www.heysainty.com"
           style="
             color: #dddddd;
             text-decoration: none;

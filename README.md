@@ -30,7 +30,7 @@ Right now, users can only comment on blogs, but I have more features planned—m
 
 ## Want to Connect?  
 If you're interested in tech, coding, or just wanna say hi, feel free to connect with me! You can find me on:  
-- **Website**: [hey-sainty.vercel.app](https://hey-sainty.vercel.app/)  
+- **Website**: [www.heysainty.com](https://www.heysainty.com/)  
 - **GitHub**: [iamsainty](https://github.com/iamsainty)  
 - **Twitter/X**: [iam__sainty](https://twitter.com/iam__sainty)  
 - **LinkedIn**: [iamsainty](https://linkedin.com/in/iamsainty)  

@@ -53,7 +53,7 @@ const Activity = ({ notification }) => {
           </div>
           <div className="flex-1 flex flex-col gap-1">
             <p className="text-sm sm:text-base text-foreground leading-snug">
-              Welcome to the community! We're thrilled to have you with us.
+              Welcome to the community! We&apos;re thrilled to have you with us.
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground">
               {formatDistanceToNow(new Date(notification.createdAt), {
@@ -71,7 +71,7 @@ const Activity = ({ notification }) => {
           </div>
           <div className="flex-1 flex flex-col gap-1">
             <p className="text-sm sm:text-base text-foreground leading-snug">
-              Your password was successfully changed. If you didn’t make this
+              Your password was successfully changed. If you didn&apos;t make this
               change, please secure your account immediately.
             </p>
             <p className="text-xs sm:text-sm text-muted-foreground">

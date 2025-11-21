@@ -17,7 +17,7 @@ export default async function sendSignUpOtp(name, email, otp) {
       <div style="font-family: Arial, sans-serif; max-width: 520px; margin: auto; padding: 20px; border: 1px solid #ddd; border-radius: 8px; color: #333;">
   <h2 style="text-align: center; color: #000;">Hey Sainty</h2>
   <p>Hi <strong>${name}</strong>,</p>
-  <p>Thanks for signing up on <a href="https://hey-sainty.vercel.app" style="color: #007bff; text-decoration: none;">Hey Sainty</a>!</p>
+  <p>Thanks for signing up on <a href="https://www.heysainty.com" style="color: #007bff; text-decoration: none;">Hey Sainty</a>!</p>
   <p>Your One-Time Password (OTP) is:</p>
   <p style="font-size: 24px; font-weight: bold; letter-spacing: 2px; text-align: center; margin: 20px 0; color: #000;">
     ${otp}

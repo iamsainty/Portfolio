@@ -5,7 +5,7 @@ const nextConfig = {
       "hey-sainty.s3.ap-south-1.amazonaws.com",
       "res.cloudinary.com",
       "lh3.googleusercontent.com",
-      "hey-sainty.vercel.app",
+      "www.heysainty.com",
       "www.google.com",
     ],
   },

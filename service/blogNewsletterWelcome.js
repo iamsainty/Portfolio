@@ -47,7 +47,7 @@ export default async function sendNewsletterWelcome(name, email) {
 
     <div style="text-align: center; margin: 30px 0;">
       <a
-        href="https://hey-sainty.vercel.app/blog"
+        href="https://www.heysainty.com/blog"
         style="
           background-color: rgba(0, 0, 0, 0.85);
           color: #ffffff;
@@ -88,7 +88,7 @@ export default async function sendNewsletterWelcome(name, email) {
       <p style="margin: 0;">
         Sent with &hearts; by <strong>Priyanshu</strong> |
         <a
-          href="https://hey-sainty.vercel.app"
+          href="https://www.heysainty.com"
           style="
             color: #dddddd;
             text-decoration: none;

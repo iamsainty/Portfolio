@@ -49,14 +49,14 @@ export async function generateMetadata() {
       ...blogTitles.split(", "),
     ],
     author: "Priyanshu Chaurasiya",
-    canonical: "https://hey-sainty.vercel.app/blog",
+    canonical: "https://www.heysainty.com/blog",
     openGraph: {
       type: "website",
       site_name: "Hey Sainty",
       title: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
       description:
         "Read developer blogs on coding, web development, tech tutorials, and personal projects. Follow my journey as a tech enthusiast and stay updated on trends.",
-      url: "https://hey-sainty.vercel.app/blog",
+      url: "https://www.heysainty.com/blog",
       images: [
         {
           url: "https://hey-sainty.s3.ap-south-1.amazonaws.com/seo-media/hey-sainty-blog.png",
