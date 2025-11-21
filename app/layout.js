@@ -36,11 +36,11 @@ export default function RootLayout({ children }) {
   gtag('config', 'G-0RVS5CP3S2');
   `}
         </Script>
-        <Script
+        {/* <Script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="nUb5b+mJnjM5CCCEkPXVlA"
           async
-        />
+        /> */}
         <Script
           src="https://analytics.ahrefs.com/analytics.js"
           data-key="sR2M+QUDtGhB6IYu0GS6Aw"
