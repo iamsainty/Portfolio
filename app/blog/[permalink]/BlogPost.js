@@ -12,6 +12,8 @@ import Image from "next/image";
 const BlogPost = ({ blogpost }) => {
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;
 
+  console.log("blogcontent", blogcontent);
+
   const isValidHTML = (html) =>
     typeof html === "string" && html.trim().length > 0;
 

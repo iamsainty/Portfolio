@@ -44,7 +44,7 @@ async function getBlogpost(permalink) {
   try {
     console.log("checking permalink", permalink);
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/blogpost/${permalink}`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog/${permalink}`,
       {
         method: "GET",
         headers: {
@@ -207,6 +207,7 @@ export default function NewBlog() {
       let post;
       try {
         post = await editorRef.current.save();
+        console.log("post", post);
       } catch (err) {
         toast.error("Failed to get editor content");
         setIsSaving(false);
