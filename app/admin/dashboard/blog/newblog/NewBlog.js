@@ -225,8 +225,8 @@ export default function NewBlog() {
         return;
       }
 
-      if (title.length > 50) {
-        toast.error("Title should be less than 50 characters");
+      if (title.length > 60) {
+        toast.error("Title should be less than 60 characters");
         setIsSaving(false);
         return;
       }

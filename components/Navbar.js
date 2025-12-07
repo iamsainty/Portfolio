@@ -43,15 +43,14 @@ const Navbar = () => {
           <NavigationMenuList className="flex items-center justify-between gap-7">
             {NavbarLinks.map((link) => (
               <NavigationMenuItem key={link.href}>
-                <Link href={link.href} passHref>
-                  <NavigationMenuLink
-                    title={link.label}
-                    className="text-md rounded-md cursor-pointer"
-                    aria-label={link.label}
-                  >
-                    {link.label}
-                  </NavigationMenuLink>
-                </Link>
+                <NavigationMenuLink
+                  asChild
+                  className="text-md rounded-md cursor-pointer"
+                  title={link.label}
+                  aria-label={link.label}
+                >
+                  <Link href={link.href}>{link.label}</Link>
+                </NavigationMenuLink>
               </NavigationMenuItem>
             ))}
           </NavigationMenuList>
@@ -85,15 +84,14 @@ const Navbar = () => {
                   <NavigationMenuList className="flex flex-col items-center justify-evenly gap-3">
                     {NavbarLinks.map((link) => (
                       <NavigationMenuItem key={link.href}>
-                        <Link href={link.href} passHref>
-                          <NavigationMenuLink
-                            title={link.label}
-                            className="text-lg rounded-md cursor-pointer"
-                            aria-label={link.label}
-                          >
-                            {link.label}
-                          </NavigationMenuLink>
-                        </Link>
+                        <NavigationMenuLink
+                          asChild
+                          title={link.label}
+                          className="text-lg rounded-md cursor-pointer"
+                          aria-label={link.label}
+                        >
+                          <Link href={link.href}>{link.label}</Link>
+                        </NavigationMenuLink>
                       </NavigationMenuItem>
                     ))}
                   </NavigationMenuList>

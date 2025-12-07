@@ -5,7 +5,7 @@ import CommentSection from "./CommentSection";
 import Loading from "./loading";
 import { notFound } from "next/navigation";
 import ListenBlog from "./ListenBlog";
-import { headers } from "next/headers";
+import { headers as getHeaders } from "next/headers";
 const getBlogpost = async (permalink, options = {}) => {
   try {
     const response = await fetch(
@@ -191,14 +191,15 @@ export async function generateMetadata({ params }) {
 export default async function Page({ params }) {
   const { permalink } = await params;
   let incViews = false;
-  const host = headers().get("host");
+  const hostname = (await getHeaders()).get("host");
   if (
-    host === "hey-sainty.vercel.app" ||
-    host === "heysainty.com" ||
-    host === "www.heysainty.com"
+    hostname === "hey-sainty.vercel.app" ||
+    hostname === "heysainty.com" ||
+    hostname === "www.heysainty.com"
   ) {
     incViews = true;
   }
+
   const blogpost = await getBlogpost(permalink, { incViews: incViews });
 
   if (!blogpost) {

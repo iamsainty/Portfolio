@@ -56,52 +56,59 @@ export async function generateBlogTTS(title, content, permalink) {
 }
 
 async function mergeAudioBuffers(buffersArray, permalink) {
-  const tempDir = path.join(os.tmpdir(), `audio-chunks-${permalink}`);
-  const inputFiles = [];
-
   try {
-    // Ensure dir exists
-    await fs.mkdir(tempDir, { recursive: true });
-
-    // Write each chunk to a file
-    for (let i = 0; i < buffersArray.length; i++) {
-      const filePath = path.join(tempDir, `chunk-${i}.mp3`);
-      await fs.writeFile(filePath, buffersArray[i]);
-      inputFiles.push(filePath);
-    }
-
-    // Write ffmpeg concat file
-    const concatListPath = path.join(tempDir, "concat-list.txt");
-    const concatListContent = inputFiles
-      .map((file) => `file '${file}'`)
-      .join("\n");
-    await fs.writeFile(concatListPath, concatListContent);
-
-    const outputFilePath = path.join(tempDir, `merged-${permalink}.mp3`);
-
-    // Merge using ffmpeg
-    await new Promise((resolve, reject) => {
-      ffmpeg()
-        .input(concatListPath)
-        .inputOptions(["-f", "concat", "-safe", "0"])
-        .outputOptions(["-c", "copy"])
-        .on("start", (cmd) => console.log("ffmpeg cmd:", cmd))
-        .on("error", (err) => reject(err))
-        .on("end", () => resolve())
-        .save(outputFilePath);
-    });
-
-    const mergedBuffer = await fs.readFile(outputFilePath);
-
-    // Cleanup
-    await fs.rm(tempDir, { recursive: true, force: true });
-
-    return mergedBuffer;
+    return Buffer.concat(buffersArray || []);
   } catch (error) {
     console.error("Error merging audio buffers:", error);
     return null;
   }
 }
+// async function mergeAudioBuffers(buffersArray, permalink) {
+//   const tempDir = path.join(os.tmpdir(), `audio-chunks-${permalink}`);
+//   const inputFiles = [];
+
+//   try {
+//     // Ensure dir exists
+//     await fs.mkdir(tempDir, { recursive: true });
+
+//     // Write each chunk to a file
+//     for (let i = 0; i < buffersArray.length; i++) {
+//       const filePath = path.join(tempDir, `chunk-${i}.mp3`);
+//       await fs.writeFile(filePath, buffersArray[i]);
+//       inputFiles.push(filePath);
+//     }
+
+//     // Write ffmpeg concat file
+//     const concatListPath = path.join(tempDir, "concat-list.txt");
+//     const concatListContent =
+//       (inputFiles || []).map((file) => `file '${file}'`) || [].join("\n");
+//     await fs.writeFile(concatListPath, concatListContent);
+
+//     const outputFilePath = path.join(tempDir, `merged-${permalink}.mp3`);
+
+//     // Merge using ffmpeg
+//     await new Promise((resolve, reject) => {
+//       ffmpeg()
+//         .input(concatListPath)
+//         .inputOptions(["-f", "concat", "-safe", "0"])
+//         .outputOptions(["-c", "copy"])
+//         .on("start", (cmd) => console.log("ffmpeg cmd:", cmd))
+//         .on("error", (err) => reject(err))
+//         .on("end", () => resolve())
+//         .save(outputFilePath);
+//     });
+
+//     const mergedBuffer = await fs.readFile(outputFilePath);
+
+//     // Cleanup
+//     await fs.rm(tempDir, { recursive: true, force: true });
+
+//     return mergedBuffer;
+//   } catch (error) {
+//     console.error("Error merging audio buffers:", error);
+//     return null;
+//   }
+// }
 
 function splitTextIntoChunks(text, maxChunkLength = 2500) {
   const sentences = text.match(/[^.!?\n]+[.!?\n]+|.+$/g);
