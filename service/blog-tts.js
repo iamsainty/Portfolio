@@ -178,17 +178,15 @@ function parseContent(content) {
                 data.style === "ordered" ? `Step ${idx + 1}:` : `•`
               } ${stripHTML(text)}`;
             });
-            return `\nHere’s a ${
-              data.style === "ordered" ? "step-by-step" : "bullet"
-            } list:\n${items.join("\n")}\n`;
+            return `\nList:\n${items.join("\n")}\n`;
 
           case "quote":
-            return `\nHere’s a quote: "${stripHTML(data.text)}"${
-              data.caption ? ` — said by ${stripHTML(data.caption)}` : ""
+            return `\nQuote: "${stripHTML(data.text)}"${
+              data.caption ? ` — by ${stripHTML(data.caption)}` : ""
             }\n`;
 
           case "code":
-            return `\nLet me read a code snippet for you:\n${data.code}\n`;
+            return `\nCode snippet:\n${data.code}\n`;
 
           case "table":
             const rows = data.content.map((row, i) => {
@@ -197,12 +195,10 @@ function parseContent(content) {
               }
               return `${row.join(", ")}`;
             });
-            return `\nNow, here's a table for you:\n${rows.join("\n")}\n`;
+            return `\nTable data:\n${rows.join("\n")}\n`;
 
           case "linkTool":
-            return `\nHere’s a useful link: "${
-              data.meta.title || "Untitled"
-            }".\n`;
+            return `\nLink: "${data.meta.title || "Untitled"}"\n`;
 
           default:
             return "";
@@ -214,9 +210,27 @@ function parseContent(content) {
     return "";
   }
 }
+function decodeHtmlEntities(str) {
+  if (!str) return "";
+
+  const map = {
+    "&nbsp;": " ",
+    "&#160;": " ",
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&quot;": '"',
+    "&#39;": "'",
+  };
+
+  return str.replace(/&[a-zA-Z0-9#]+;/g, (entity) => map[entity] || " ");
+}
+
 function stripHTML(html) {
-  return html
-    ?.replace(/<[^>]+>/g, "")
-    .replace(/\s+/g, " ")
-    .trim();
+  if (!html) return "";
+
+  const decoded = decodeHtmlEntities(html);
+  const withoutTags = decoded.replace(/<[^>]+>/g, " ");
+
+  return withoutTags.replace(/\s+/g, " ").trim();
 }
