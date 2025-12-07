@@ -52,14 +52,14 @@ export default async function sitemap() {
   const blogs = await fetchBlogs();
   const pages = await fetchPages();
 
-  const blogsSitemap = blogs.map((blog) => ({
+  const blogsSitemap = (blogs || []).map((blog) => ({
     url: `${baseUrl}/blog/${blog.permalink}`,
     lastModified: blog.lastUpdated || new Date().toISOString(),
     changeFrequency: "monthly",
     priority: 0.9,
   }));
 
-  const pagesSitemap = pages.map((page) => ({
+  const pagesSitemap = (pages || []).map((page) => ({
     url: `${baseUrl}/page/${page.permalink}`,
     lastModified: page.lastUpdated || new Date().toISOString(),
     changeFrequency: "yearly",
