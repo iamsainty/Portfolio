@@ -3,7 +3,7 @@ import { validateAdmin } from "@/middleware/validateAdmin";
 import BlogPost from "@/models/blogposts";
 import { NextResponse } from "next/server";
 
-export async function DELETE(req, { params }) {
+export async function DELETE(req, context) {
   try {
     await connectToMongo();
 
@@ -16,7 +16,7 @@ export async function DELETE(req, { params }) {
       );
     }
 
-    const permalink = await params.permalink;
+    const { permalink } = await context.params;
 
     const blog = await BlogPost.findOne({ permalink });
 
