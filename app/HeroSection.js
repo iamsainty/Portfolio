@@ -11,7 +11,11 @@ const HeroSection = () => {
         Welcome, I&apos;m glad you&apos;re here.
       </h2>
 
-      <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-t dark:from-neutral-500 dark:via-neutral-200 dark:to-white dark:text-transparent dark:bg-clip-text">
+      {/* <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-t dark:from-neutral-500 dark:via-neutral-200 dark:to-white dark:text-transparent dark:bg-clip-text">
+        &lt;Hey Sainty/&gt;
+      </h1> */}
+
+      <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-r dark:from-orange-400 dark:via-white dark:to-green-500 dark:text-transparent dark:bg-clip-text">
         &lt;Hey Sainty/&gt;
       </h1>
 
