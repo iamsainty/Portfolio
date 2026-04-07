@@ -34,6 +34,27 @@ export default async function AdminCommentReplyEmail(
   "
 >
   <div style="padding: 32px 28px; background-color: #f9fafb;">
+    <div style="text-align:center; margin-bottom: 28px;">
+    <svg width="240" height="150" viewBox="0 0 240 150" fill="none">
+
+      <!-- Main comment -->
+      <rect x="20" y="20" width="150" height="40" rx="10" fill="#f3f4f6"/>
+      <rect x="30" y="30" width="100" height="6" rx="3" fill="#d1d5db"/>
+      <rect x="30" y="42" width="70" height="6" rx="3" fill="#e5e7eb"/>
+
+      <!-- Connector line -->
+      <path d="M50 60 V85" stroke="#d1d5db" stroke-width="2"/>
+
+      <!-- Reply -->
+      <rect x="50" y="85" width="160" height="45" rx="10" fill="#111111"/>
+      <rect x="65" y="98" width="100" height="6" rx="3" fill="#ffffff" opacity="0.9"/>
+      <rect x="65" y="110" width="70" height="6" rx="3" fill="#ffffff" opacity="0.7"/>
+
+      <!-- Small arrow -->
+      <path d="M40 75 L50 85 L60 75" stroke="#111111" stroke-width="2" fill="none"/>
+
+    </svg>
+  </div>
     <p style="font-size: 20px; font-weight: 700; margin-bottom: 16px;">
       Hey ${name.split(" ")[0]},
     </p>
@@ -46,14 +67,15 @@ export default async function AdminCommentReplyEmail(
       <a
         href="https://www.heysainty.com/blog/${blogPermalink}"
         style="
-          background-color: rgba(0, 0, 0, 0.85);
+          background-color: #111111;
           color: #ffffff;
-          padding: 12px 26px;
+          padding: 12px 28px;
           border-radius: 10px;
           text-decoration: none;
           font-size: 14px;
           font-weight: 600;
           display: inline-block;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         "
       >
         View Reply
