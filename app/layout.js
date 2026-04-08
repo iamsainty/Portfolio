@@ -56,9 +56,15 @@ export default function RootLayout({ children }) {
   `}
         </Script>
 
-        <meta
+        {/* <meta
           name="google-site-verification"
           content="GhtSs3z27IAUGukWh38CcKxeUUO_o_y9OCRaozedRUg"
+        /> */}
+
+        {/* Google Search Console - Updated on 08/04/2026 */}
+        <meta
+          name="google-site-verification"
+          content="E1YnYoplczZQc1iDosn03RCYucSAjvq_p011IPl50_s"
         />
         <meta name="yandex-verification" content="36ed0d13a996b828" />
 
