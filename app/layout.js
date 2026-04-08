@@ -68,6 +68,14 @@ export default function RootLayout({ children }) {
         />
         <meta name="yandex-verification" content="36ed0d13a996b828" />
 
+        {/* Google AdSense */}
+
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9717507903729433"
+          crossorigin="anonymous"
+        ></script>
+
         {/* Bing Webmaster */}
         <meta name="msvalidate.01" content="5BDA7303E56E77ABAC146B77B6B88FA1" />
       </head>
