@@ -6,7 +6,9 @@ export async function GET(req, { params }) {
   try {
     await connectToMongo();
 
-    const { permalink } = params;
+    const { permalink } = await params;
+
+    console.log("permalink", permalink);
 
     const page = await Page.findOne({ permalink });
 

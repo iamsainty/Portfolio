@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 
 async function getPage(permalink) {
   try {
+    console.log("permalink", permalink);
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/page/${permalink}`,
       {
@@ -28,7 +29,8 @@ async function getPage(permalink) {
 }
 
 export async function generateMetadata({ params }) {
-  const page = await getPage(params.permalink);
+  const { permalink } = await params;
+  const page = await getPage(permalink);
 
   if (!page) {
     return notFound();
@@ -101,7 +103,8 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const page = await getPage(params.permalink);
+  const { permalink } = await params;
+  const page = await getPage(permalink);
 
   if (!page) {
     return notFound();
