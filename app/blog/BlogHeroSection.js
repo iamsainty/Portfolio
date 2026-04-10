@@ -7,56 +7,43 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { FiCode, FiLayers, FiTrendingUp } from "react-icons/fi";
 import BlogHeroVisualization from "./BlogHeroVisualization";
 
 const BlogHeroSection = () => {
   return (
-    <section className="px-6 py-10 md:py-10 lg:py-12 flex flex-col items-center justify-evenly min-h-[85vh]">
-      <div className="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-        {/* LEFT CONTENT */}
+    <section className="container mx-auto px-6 py-12 md:py-16 flex items-center min-h-[80vh]">
+      <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        {/* LEFT */}
         <div className="text-center lg:text-left">
-          <Breadcrumb className="border px-4 py-2 rounded-full mb-6 inline-block">
+          {/* Breadcrumb */}
+          <Breadcrumb className="border border-border/60 px-4 py-2 rounded-full mb-6 inline-block">
             <BreadcrumbList className="text-xs md:text-sm">
               <BreadcrumbItem>
                 <BreadcrumbLink href="/">Home</BreadcrumbLink>
               </BreadcrumbItem>
               <BreadcrumbSeparator />
               <BreadcrumbItem>
-                <BreadcrumbPage className="font-semibold">Blog</BreadcrumbPage>
+                <BreadcrumbPage className="font-medium">Blog</BreadcrumbPage>
               </BreadcrumbItem>
             </BreadcrumbList>
           </Breadcrumb>
 
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight tracking-tight">
-            Engineering Insights & Developer Thinking
-          </h1>
+          {/* Heading */}
+          <div className="flex flex-col justify-center gap-10">
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font tracking-tight leading-tight">
+              Blogs on Projects, Code & Learnings
+            </h1>
 
-          <p className="mt-5 text-base md:text-lg text-muted-foreground max-w-xl mx-auto lg:mx-0">
-            Deep dives into real-world systems, scalable architecture, and
-            practical coding experiences — built from actual projects, not
-            theory.
-          </p>
-
-          {/* subtle feature points */}
-          <div className="mt-8 flex flex-wrap gap-4 justify-center lg:justify-start text-sm text-muted-foreground">
-            <div className="flex items-center gap-2">
-              <FiCode className="text-base" />
-              <span>Production Code</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FiLayers className="text-base" />
-              <span>System Design</span>
-            </div>
-            <div className="flex items-center gap-2">
-              <FiTrendingUp className="text-base" />
-              <span>Growth & Learnings</span>
-            </div>
+            {/* Description */}
+            <p className="text-sm md:text-base text-muted-foreground max-w-lg mx-auto lg:mx-0 leading-relaxed">
+              Read about the projects, coding, development, competetive
+              programming, mistakes, learnings and insights.
+            </p>
           </div>
         </div>
 
-        {/* RIGHT VISUAL - DENSE INTERACTIVE */}
-        <div className="lg:col-span-1">
+        {/* RIGHT */}
+        <div>
           <BlogHeroVisualization />
         </div>
       </div>
