@@ -1,88 +1,136 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-// import React, { useEffect, useState } from "react";
 import React from "react";
-import { IoIosCode } from "react-icons/io";
-import { RxReader } from "react-icons/rx";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import { FaLinkedin, FaInstagram, FaGithub } from "react-icons/fa";
+import { SiLeetcode } from "react-icons/si";
+import { FaXTwitter } from "react-icons/fa6";
+import Link from "next/link";
+
+const profileLinks = [
+  {
+    idx: 1,
+    platform: "Linkedin",
+    link: "https://www.linkedin.com/in/iamsainty/",
+    icon: <FaLinkedin />,
+  },
+  {
+    idx: 2,
+    platform: "Twitter (X)",
+    link: "https://twitter.com/iam__sainty",
+    icon: <FaXTwitter />,
+  },
+  {
+    idx: 3,
+    platform: "Instagram",
+    link: "https://www.instagram.com/iam__sainty/",
+    icon: <FaInstagram />,
+  },
+  {
+    idx: 4,
+    platform: "Github",
+    link: "https://github.com/iamsainty",
+    icon: <FaGithub />,
+  },
+  {
+    idx: 5,
+    platform: "LeetCode",
+    link: "https://leetcode.com/iamsainty/",
+    icon: <SiLeetcode />,
+  },
+];
 
 const HeroSection = () => {
-  // const [event, setEvent] = useState(null);
-
-  // useEffect(() => {
-  //   const today = new Date();
-  //   const day = today.getDate();
-  //   const month = today.getMonth();
-
-  //   const events = [
-  //     { day: 1, month: 0, name: "Happy New Year" },
-  //     { day: 14, month: 1, name: "Valentine's Day" },
-  //     { day: 26, month: 0, name: "Republic Day of India" },
-  //     { day: 8, month: 2, name: "Women's Day" },
-  //     { day: 22, month: 3, name: "Earth Day" },
-  //     { day: 15, month: 7, name: "Independence Day of India" },
-  //     { day: 2, month: 9, name: "Gandhi Jayanti" },
-  //     { day: 25, month: 11, name: "Merry Christmas" },
-  //   ];
-
-  //   const todayEvent = events.find(
-  //     (event) => event.day === day && event.month === month
-  //   );
-
-  //   setEvent(todayEvent ? todayEvent.name : null);
-  // }, []);
-
   return (
-    <header className="sticky top-[15vh] min-h-[75vh] mx-5 flex flex-col justify-center items-center gap-10 px-4 text-center">
-      <h2 className="text-base lg:text-3xl font-medium">
-        Welcome, I&apos;m glad you&apos;re here.
-      </h2>
+    <section
+      className="container mx-auto px-6 min-h-[86vh] w-full flex items-center overflow-hidden"
+      id="herosection"
+    >
+      <div className="grid md:grid-cols-2 gap-4 lg:gap-10 w-full items-center justify-center">
+        {/* LEFT SIDE */}
+        <div className="flex flex-col gap-4 lg:gap-7 text-center lg:text-left max-w-xl">
+          <p className="text-sm tracking-widest uppercase text-muted-foreground">
+            Welcome to
+          </p>
 
-      {/* {event && event === "Republic Day of India" && (
-        <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-r dark:from-orange-400 dark:via-white dark:to-green-500 dark:text-transparent dark:bg-clip-text">
-          &lt;Hey Sainty/&gt;
-        </h1>
-      )}
+          <h1 className="font-thin text-5xl lg:text-7xl tracking-wider text-foreground">
+            HEY SAINTY
+          </h1>
 
-      {event && event === "Independence Day of India" && (
-        <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-r dark:from-orange-400 dark:via-white dark:to-green-500 dark:text-transparent dark:bg-clip-text">
-          &lt;Hey Sainty/&gt;
-        </h1>
-      )} */}
+          <p className="text-sm font-medium md:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
+            I build real-world projects, solve problems, and share about my
+            learnings and technical insights through blogs
+          </p>
 
-      {/* {event === null && ( */}
-      <h1 className="font-extrabold font-sans text-4xl md:text-6xl lg:text-8xl dark:bg-gradient-to-t dark:from-neutral-500 dark:via-neutral-200 dark:to-white dark:text-transparent dark:bg-clip-text">
-        &lt;Hey Sainty/&gt;
-      </h1>
-      {/* )} */}
+          {/* profile links, Linkedin, Twitter, Instagram, Github, leetcode */}
+          <div className="hidden lg:flex flex-row gap-3 pt-2">
+            {profileLinks.map((link) => (
+              <Link
+                key={link.idx}
+                href={link.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={link.platform}
+                className="group"
+              >
+                <Button
+                  variant="outline"
+                  className="flex items-center justify-center px-3 rounded-full overflow-hidden transition-all duration-300 ease-out hover:bg-muted border border-muted-foreground/50"
+                >
+                  {/* Icon */}
+                  <span className="text-xl flex-shrink-0 transform transition-all duration-300 group-hover:-translate-x-1 pl-1 group-hover:pl-0 group-hover:rotate-12">
+                    {link.icon}
+                  </span>
 
-      <p className="text-lg sm:text-xl lg:text-2xl max-w-2xl">
-        Sometimes I learn to code, other times I write to share what I learned.
-      </p>
+                  {/* Text */}
+                  <span className="max-w-0 opacity-0 group-hover:max-w-[120px] group-hover:opacity-100 transition-all duration-300 ease-out whitespace-nowrap overflow-hidden">
+                    {link.platform}
+                  </span>
+                </Button>
+              </Link>
+            ))}
+          </div>
+        </div>
 
-      <nav aria-label="Primary">
-        <ul className="flex w-full flex-col sm:flex-row gap-4">
-          <li>
-            <Link href={"/project"}>
-              <Button className="flex w-full items-center gap-2 px-5 py-3 text-md lg:text-lg">
-                <IoIosCode className="text-xl" />
-                View Projects
-              </Button>
-            </Link>
-          </li>
-          <li>
-            <Link href={"/blog"}>
+        <div className="flex lg:hidden justify-center gap-3 pt-4">
+          {profileLinks.map((link) => (
+            <Link
+              key={link.idx}
+              href={link.link}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label={link.platform}
+              className="group"
+            >
               <Button
                 variant="outline"
-                className="flex items-center w-full gap-2 px-5 py-3 text-md lg:text-lg border border-black dark:border-white"
+                size="icon"
+                className="rounded-full border border-muted-foreground/40"
               >
-                <RxReader className="text-xl" />
-                Read Blogs
+                {link.icon}
               </Button>
             </Link>
-          </li>
-        </ul>
-      </nav>
-    </header>
+          ))}
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="relative w-full h-full flex items-center justify-center overflow-hidden">
+          {/* Background Glow */}
+          <div className="absolute w-[60%] h-[60%] bg-gradient-to-r from-indigo-500/30 via-purple-500/20 to-sky-400/20 blur-3xl rounded-full" />
+          <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/30 via-purple-400/20 to-cyan-400/20 blur-2xl rounded-full" />
+
+          {/* Avatar */}
+          <div className="relative">
+            <Image
+              src="https://hey-sainty.s3.ap-south-1.amazonaws.com/hey-sainty-assets/priyanshu-avatar.png"
+              alt="Priyanshu Chaurasiya"
+              width={420}
+              height={420}
+              className="object-cover w-[250px] lg:w-[420px] drop-shadow-2xl"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
   );
 };
 
