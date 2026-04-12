@@ -109,8 +109,8 @@ export default function BlogHeroVisualization() {
         /* 💻 DESKTOP FLOATING LAYOUT */
         <div className="relative w-full h-[560px] flex items-center justify-center overflow-hidden">
           {/* Glow */}
-          <div className="absolute w-[75%] h-[75%] bg-gradient-to-r from-indigo-500/20 via-purple-500/10 to-sky-400/20 blur-3xl rounded-full" />
-          <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/20 via-purple-400/10 to-cyan-400/20 blur-2xl rounded-full" />
+          <div className="absolute w-[60%] h-[60%] bg-gradient-to-r from-indigo-500/30 via-purple-500/20 to-sky-400/20 blur-3xl rounded-full" />
+          <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/30 via-purple-400/20 to-cyan-400/20 blur-2xl rounded-full" />
 
           {cards.map((card, i) => {
             const Icon = card.icon;
