@@ -83,7 +83,7 @@ const AboutSection = () => {
           </p>
 
           {/* Heading */}
-          <h2 className="font-thin text-3xl lg:text-4xl tracking-wider text-foreground">
+          <h2 className="font-thin text-2xl lg:text-4xl tracking-wider text-foreground">
             <span className="text-muted-foreground">I&apos;m a </span>
             <span className="text-primary">
               <TypeAnimation
@@ -104,7 +104,7 @@ const AboutSection = () => {
           </h2>
 
           {/* Description */}
-          <p className="text-sm font-medium md:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
+          <p className="text-xs font-medium md:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
             I&apos;m focused on building scalable applications, solving
             real-world problems, and sharing my learnings through blogs and
             projects with you all.
