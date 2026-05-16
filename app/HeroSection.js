@@ -42,21 +42,21 @@ const profileLinks = [
 const HeroSection = () => {
   return (
     <section
-      className="container mx-auto px-6 min-h-[86vh] w-full flex items-center overflow-hidden"
+      className="container mx-auto lg:max-w-6xl px-6 min-h-[86vh] w-full flex items-center overflow-hidden"
       id="herosection"
     >
-      <div className="grid md:grid-cols-2 gap-4 lg:gap-10 w-full items-center justify-center">
+      <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 w-full items-center justify-center">
         {/* LEFT SIDE */}
         <div className="flex flex-col gap-4 lg:gap-7 text-center lg:text-left max-w-xl">
           <p className="text-sm tracking-widest uppercase text-muted-foreground">
             Welcome to
           </p>
 
-          <h1 className="font-thin text-5xl lg:text-7xl tracking-wider text-foreground">
+          <h1 className="font-thin text-4xl lg:text-6xl tracking-wider text-foreground">
             HEY SAINTY
           </h1>
 
-          <p className="text-sm font-medium md:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
+          <p className="text-sm font-medium lg:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
             I build real-world projects, solve problems, and share about my
             learnings and technical insights through blogs
           </p>
@@ -125,7 +125,7 @@ const HeroSection = () => {
               alt="Priyanshu Chaurasiya"
               width={420}
               height={420}
-              className="object-cover w-[250px] lg:w-[420px] drop-shadow-2xl"
+              className="object-cover w-[250px] lg:w-[350px] drop-shadow-2xl"
             />
           </div>
         </div>

@@ -74,7 +74,7 @@ const AboutSection = () => {
       className="container mx-auto px-6 min-h-screen w-full flex items-center overflow-hidden"
       id="aboutsection"
     >
-      <div className="grid md:grid-cols-2 gap-6 lg:gap-12 w-full items-center">
+      <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 w-full items-center">
         {/* LEFT SIDE */}
         <div className="flex flex-col gap-5 lg:gap-7 text-center lg:text-left max-w-xl">
           {/* Label */}
@@ -104,7 +104,7 @@ const AboutSection = () => {
           </h2>
 
           {/* Description */}
-          <p className="text-xs font-medium md:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
+          <p className="text-xs font-medium lg:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">
             I&apos;m focused on building scalable applications, solving
             real-world problems, and sharing my learnings through blogs and
             projects with you all.
