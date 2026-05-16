@@ -11,6 +11,7 @@ import { UserAuthProvider } from "@/context/user/authContext";
 import { BlogCommentProvider } from "@/context/blogCommentContext";
 import { UserEditProfileProvider } from "@/context/user/profileEditContext";
 import { Toaster } from "@/components/ui/sonner";
+import GoogleOneTap from "@/components/GoogleOneTap";
 
 const openSans = Open_Sans({
   weight: ["300", "400", "700"],
@@ -101,7 +102,13 @@ export default function RootLayout({ children }) {
                       disableTransitionOnChange
                     >
                       <Navbar />
+                      <GoogleOneTap />
                       {children}
+                      <Script
+                        src="https://accounts.google.com/gsi/client"
+                        async
+                        defer
+                      />
                       <Footer />
                       <Toaster />
                     </ThemeProvider>
