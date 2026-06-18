@@ -53,6 +53,15 @@ const blogPostSchema = new mongoose.Schema({
     type: String,
     default: null,
   },
+  status: {
+    type: String,
+    enum: ["draft", "published", "archived"],
+    default: "draft",
+  },
+  publishedAt: {
+    type: Date,
+    default: null,
+  },
 });
 
 const BlogPost =
