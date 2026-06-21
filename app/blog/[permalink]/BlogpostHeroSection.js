@@ -18,7 +18,7 @@ const BlogpostHeroSection = ({ blogpost }) => {
 
   return (
     <section className="px-6 py-10 md:py-14 lg:py-16 flex flex-col justify-evenly items-center gap-10 lg:w-3/5 mx-auto">
-      <Breadcrumb className="border px-4 py-2 rounded-full mb-8 bg-gray-50 dark:bg-gray-800 dark:text-white">
+      <Breadcrumb className="font-normal border px-4 py-2 rounded-full mb-8 bg-gray-50 dark:bg-gray-800 dark:text-white">
         <BreadcrumbList className="text-xs md:text-sm">
           <BreadcrumbItem>
             <BreadcrumbLink href="/">Home</BreadcrumbLink>
@@ -29,10 +29,10 @@ const BlogpostHeroSection = ({ blogpost }) => {
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
-            <BreadcrumbPage className=" md:hidden font-semibold">
+            <BreadcrumbPage className=" md:hidden">
               {blogpost.title.slice(0, 15)}...
             </BreadcrumbPage>
-            <BreadcrumbPage className="hidden md:flex font-semibold">
+            <BreadcrumbPage className="hidden md:flex">
               {blogpost.title}
             </BreadcrumbPage>
           </BreadcrumbItem>
@@ -40,16 +40,18 @@ const BlogpostHeroSection = ({ blogpost }) => {
       </Breadcrumb>
 
       <article className="text-center w-full mx-auto flex flex-col items-center gap-4 md:gap-6 lg:gap-8">
-        <header>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight">
+        <header className="flex flex-col gap-4">
+          <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium">
             {blogpost.title}
           </h1>
-          <div className="flex flex-row items-center justify-center text-sm md:text-base text-muted-foreground mt-2">
-            <p className="font-medium">{blogpost.author}</p>
+          <div className="flex flex-row items-center justify-center text-sm md:text-base text-muted-foreground">
+            <p className="font-light">{blogpost.author}</p>
             <span className="text-muted-foreground mx-1">
               <Dot />
             </span>
-            <p>{timeAgo}</p>
+            <p className="font-light">
+              {timeAgo.charAt(0).toUpperCase() + timeAgo.slice(1)}
+            </p>
           </div>
         </header>
       </article>
