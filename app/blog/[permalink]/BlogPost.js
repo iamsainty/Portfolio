@@ -12,8 +12,6 @@ import Image from "next/image";
 const BlogPost = ({ blogpost }) => {
   const blogcontent = JSON.parse(blogpost.content[0]).blocks;
 
-  console.log("blogcontent", blogcontent);
-
   const isValidHTML = (html) =>
     typeof html === "string" && html.trim().length > 0;
 
@@ -23,14 +21,27 @@ const BlogPost = ({ blogpost }) => {
         <section key={index}>
           {block.type === "header" &&
             React.createElement(`h${block.data.level}`, {
-              className: `font-bold text-lg md:text-xl lg:text-2xl pt-4 text-justify heading-level-${block.data.level}`,
+              className: `
+      text-slate-900 dark:text-slate-100
+      ${
+        {
+          1: "font-medium text-3xl md:text-4xl mt-5 mb-3 leading-tight",
+          2: "font-medium text-2xl md:text-3xl mt-4 mb-2 leading-tight",
+          3: "text-xl md:text-2xl mt-2 mb-1 leading-snug",
+          4: "text-lg md:text-xl mt-2 mb-1 leading-snug",
+          5: "text-base md:text-lg mt-2 mb-1 leading-normal",
+          6: "text-sm md:text-base mt-2 mb-1 leading-normal",
+        }[block.data.level]
+      }
+      heading-level-${block.data.level}
+    `,
               dangerouslySetInnerHTML: isValidHTML(block.data.text)
                 ? { __html: block.data.text }
                 : undefined,
             })}
           {block.type === "paragraph" && isValidHTML(block.data.text) && (
             <div
-              className="text-md md:text-lg text-justify [&_a]:underline"
+              className="text-md font-light md:text-lg text-justify [&_a]:underline"
               dangerouslySetInnerHTML={{ __html: block.data.text }}
             />
           )}
@@ -41,7 +52,7 @@ const BlogPost = ({ blogpost }) => {
                 {block.data.items.map((item, i) => (
                   <li
                     key={i}
-                    className="text-md lg:text-lg text-justify"
+                    className="text-md font-light lg:text-lg text-justify"
                     dangerouslySetInnerHTML={
                       isValidHTML(item)
                         ? { __html: item }
@@ -57,7 +68,7 @@ const BlogPost = ({ blogpost }) => {
                 {block.data.items.map((item, i) => (
                   <li
                     key={i}
-                    className="text-md lg:text-lg text-justify"
+                    className="text-md font-light lg:text-lg text-justify"
                     dangerouslySetInnerHTML={
                       isValidHTML(item)
                         ? { __html: item }
@@ -81,7 +92,7 @@ const BlogPost = ({ blogpost }) => {
           {block.type === "quote" && (
             <blockquote className="border-l-4 pl-4 my-4 text-lg border-gray-500 text-justify">
               <p
-                className="mb-2 text-muted-foreground"
+                className="mb-2 font-light text-muted-foreground"
                 dangerouslySetInnerHTML={
                   isValidHTML(block.data.text)
                     ? { __html: block.data.text }
@@ -89,7 +100,7 @@ const BlogPost = ({ blogpost }) => {
                 }
               />
               {block.data.caption && (
-                <footer className="text-sm text-muted-foreground italic">
+                <footer className="text-sm font-light text-muted-foreground italic">
                   — {block.data.caption}
                 </footer>
               )}
@@ -100,15 +111,15 @@ const BlogPost = ({ blogpost }) => {
             <Table
               className={`${
                 block.data.stretched ? "w-full" : "w-auto"
-              } my-4 border border-muted-foreground rounded-md text-justify`}
+              } my-4 border border-muted-foreground rounded-md font-light text-justify`}
             >
               <TableHeader>
                 {block.data.withHeadings && (
-                  <TableRow className="border border-muted-foreground">
+                  <TableRow className="border border-muted-foreground font-light">
                     {block.data.content[0].map((heading, i) => (
                       <TableHead
                         key={i}
-                        className="px-4 py-2 border border-muted-foreground text-justify"
+                        className="px-4 py-2 border border-muted-foreground font-light text-justify"
                       >
                         {heading}
                       </TableHead>
@@ -123,12 +134,12 @@ const BlogPost = ({ blogpost }) => {
                   .map((row, rowIndex) => (
                     <TableRow
                       key={rowIndex}
-                      className="border border-muted-foreground text-justify"
+                      className="border border-muted-foreground font-light text-justify"
                     >
                       {row.map((cell, cellIndex) => (
                         <TableCell
                           key={cellIndex}
-                          className="px-4 py-2 border border-muted-foreground text-justify"
+                          className="px-4 py-2 border border-muted-foreground font-light text-justify"
                         >
                           {cell}
                         </TableCell>
@@ -146,7 +157,7 @@ const BlogPost = ({ blogpost }) => {
                 href={block.data.meta.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition text-justify"
+                className="flex items-center gap-4 p-4 border rounded-lg hover:bg-muted transition font-light text-justify"
               >
                 <Image
                   src={`https://www.google.com/s2/favicons?sz=64&domain_url=${block.data.meta.url}`}
@@ -157,10 +168,10 @@ const BlogPost = ({ blogpost }) => {
                   loading="lazy"
                 />
                 <div>
-                  <div className="font-semibold text-base line-clamp-1 text-justify">
+                  <div className="font-light text-base text-justify line-clamp-1">
                     {block.data.meta.title}
                   </div>
-                  <p className="text-sm text-muted-foreground line-clamp-2 text-justify">
+                  <p className="text-sm font-light text-justify text-muted-foreground line-clamp-2">
                     {block.data.meta.description}
                   </p>
                 </div>
@@ -172,7 +183,7 @@ const BlogPost = ({ blogpost }) => {
           )}
 
           {block.type === "raw" && (
-            <pre className="p-3 rounded-md overflow-x-auto bg-gray-800 text-white border">
+            <pre className="p-3 rounded-md overflow-x-auto bg-gray-800 font-light text-white border">
               <code className="text-sm">{block.data?.html}</code>
             </pre>
           )}
