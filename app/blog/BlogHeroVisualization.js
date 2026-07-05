@@ -92,9 +92,7 @@ export default function BlogHeroVisualization() {
 
                   <div className="flex items-center gap-3 mb-1">
                     <Icon className={`text-sm ${card.color}`} />
-                    <h3 className="text-sm font-semibold tracking-tight">
-                      {card.title}
-                    </h3>
+                    <h3 className="text-sm tracking-tight">{card.title}</h3>
                   </div>
 
                   <p className="text-xs text-muted-foreground leading-relaxed">
@@ -107,7 +105,7 @@ export default function BlogHeroVisualization() {
         </div>
       ) : (
         /* 💻 DESKTOP FLOATING LAYOUT */
-        <div className="relative w-full h-[560px] flex items-center justify-center overflow-hidden">
+        <div className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden">
           {/* Glow */}
           <div className="absolute w-[60%] h-[60%] bg-gradient-to-r from-indigo-500/30 via-purple-500/20 to-sky-400/20 blur-3xl rounded-full" />
           <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/30 via-purple-400/20 to-cyan-400/20 blur-2xl rounded-full" />
@@ -137,21 +135,19 @@ export default function BlogHeroVisualization() {
                   y: pos.y - 12,
                   scale: pos.scale + 0.1,
                 }}
-                className="group absolute w-[210px] px-4 py-4 rounded-2xl bg-background/85 backdrop-blur-xl border border-muted-foreground/30 shadow-[0_8px_28px_rgba(0,0,0,0.12)] cursor-pointer"
+                className="group absolute w-auto max-w-[180px] p-3 rounded-2xl bg-background/85 backdrop-blur-xl border border-muted-foreground/30 shadow-[0_4px_16px_rgba(0,0,0,0.12)] cursor-pointer"
               >
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/5 to-transparent pointer-events-none" />
 
-                <div className="flex items-center gap-2 mb-2">
+                <div className="flex items-center gap-2 mb-1">
                   <Icon
-                    className={`text-sm ${card.color} transition group-hover:scale-110`}
+                    className={`text-xs ${card.color} transition group-hover:scale-110`}
                   />
-                  <h3 className="text-sm font-semibold tracking-tight">
-                    {card.title}
-                  </h3>
+                  <h3 className="text-xs tracking-wider">{card.title}</h3>
                 </div>
 
-                <div className="h-px bg-border/40 mb-2" />
-                <p className="text-[12px] text-muted-foreground leading-relaxed">
+                <div className="h-px bg-border/40 mb-1" />
+                <p className="text-xs text-muted-foreground leading-relaxed">
                   {card.desc}
                 </p>
               </motion.div>
