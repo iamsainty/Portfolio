@@ -42,7 +42,7 @@ const profileLinks = [
 const HeroSection = () => {
   return (
     <section
-      className="container mx-auto lg:max-w-6xl px-6 min-h-[100vh] w-full flex items-center overflow-hidden"
+      className="container mx-auto lg:max-w-6xl px-6 min-h-[80vh] w-full flex items-center overflow-hidden"
       id="herosection"
     >
       <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 w-full items-center justify-center">
