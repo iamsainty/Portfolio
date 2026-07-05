@@ -60,7 +60,7 @@ const BlogSection = () => {
   return (
     <section
       className="container mx-auto lg:max-w-6xl px-6 min-h-[100vh] w-full flex items-center overflow-hidden"
-      id="projectsection"
+      id="blogsection"
     >
       {/* Left Side - Sticky Content */}
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 w-full items-center justify-center">
@@ -70,7 +70,7 @@ const BlogSection = () => {
             SHARING WHAT I LEARN
           </p>
 
-          <h2 className="font-thin text-2xl lg:text-4xl tracking-wider text-foreground">
+          <h2 className="text-2xl lg:text-4xl tracking-wider text-foreground">
             Blogs
           </h2>
 
@@ -152,7 +152,7 @@ const BlogSection = () => {
                         </CardHeader>
 
                         <CardContent className="flex flex-col gap-4 p-5">
-                          <CardTitle className="text-xl font-light tracking-wide text-wrap line-clamp-1">
+                          <CardTitle className="text-xl font-normal tracking-wide text-wrap line-clamp-1">
                             {blog.title}
                           </CardTitle>
 

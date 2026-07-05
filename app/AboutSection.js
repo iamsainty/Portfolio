@@ -70,7 +70,7 @@ const AboutSection = () => {
 
   return (
     <section
-      className="container mx-auto lg:max-w-6xl px-6 min-h-[86vh] w-full flex items-center overflow-hidden"
+      className="container mx-auto lg:max-w-6xl px-6 min-h-[100vh] w-full flex items-center overflow-hidden"
       id="aboutsection"
     >
       <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 h w-full items-center justify-center">
@@ -82,8 +82,8 @@ const AboutSection = () => {
           </p>
 
           {/* Heading */}
-          <h2 className="font-thin text-2xl lg:text-4xl tracking-wider text-foreground">
-            <span className="text-muted-foreground">I&apos;m a </span>
+          <h2 className="text-2xl lg:text-4xl tracking-wider text-foreground">
+            <span className="font-thin text-muted-foreground">I&apos;m a </span>
             <span className="text-primary">
               <TypeAnimation
                 sequence={[
@@ -133,9 +133,7 @@ const AboutSection = () => {
 
                     <div className="flex items-center gap-3 mb-1">
                       <Icon className={`text-sm ${card.color}`} />
-                      <h3 className="text-sm font-semibold tracking-tight">
-                        {card.title}
-                      </h3>
+                      <h3 className="text-sm tracking-tight">{card.title}</h3>
                     </div>
 
                     <p className="text-xs text-muted-foreground leading-relaxed">
@@ -186,9 +184,7 @@ const AboutSection = () => {
                     <Icon
                       className={`text-xs ${card.color} transition group-hover:scale-110`}
                     />
-                    <h3 className="text-xs font-semibold tracking-wider">
-                      {card.title}
-                    </h3>
+                    <h3 className="text-xs tracking-wider">{card.title}</h3>
                   </div>
 
                   <div className="h-px bg-border/40 mb-1" />

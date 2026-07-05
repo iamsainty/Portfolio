@@ -39,7 +39,7 @@ const ProjectSection = () => {
 
   return (
     <section
-      className="container mx-auto lg:max-w-6xl px-6 h-[100vh] w-full flex items-center overflow-hidden"
+      className="container mx-auto lg:max-w-6xl px-6 min-h-[100vh] w-full flex items-center overflow-hidden"
       id="projectsection"
     >
       {/* Left Side - Sticky Content */}
@@ -50,7 +50,7 @@ const ProjectSection = () => {
             CRAFTED WITH CODE
           </p>
 
-          <h2 className="font-thin text-2xl lg:text-4xl tracking-wider text-foreground">
+          <h2 className="text-2xl lg:text-4xl tracking-wider text-foreground">
             PROJECTS
           </h2>
 
@@ -136,7 +136,7 @@ const ProjectSection = () => {
 
                       <CardContent className="flex flex-col gap-4 p-5">
                         <div className="flex flex-col gap-2">
-                          <CardTitle className="text-xl font-light tracking-wide line-clamp-1">
+                          <CardTitle className="text-xl font-normal tracking-wide line-clamp-1">
                             {project.title}
                           </CardTitle>
 
