@@ -11,62 +11,85 @@ import Link from "next/link";
 import React from "react";
 import { FaRegComments } from "react-icons/fa";
 import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
+import {
+  FiCalendar,
+  FiEye,
+  FiMessageCircle,
+  FiBookOpen,
+  FiClock,
+  FiArrowUpRight,
+} from "react-icons/fi";
 
 export default function Blogs({ blogs }) {
   return (
-    <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-5 my-20">
+    <section className="container mx-auto lg:max-w-6xl flex flex-col md:flex-row flex-wrap items-center justify-center overflow-hidden gap-8 lg:gap-5 my-20">
       {blogs.map((blog) => (
-        <article key={blog._id}>
-          <Link
-            href={`/blog/${blog.permalink}`}
-            aria-label={`Read more about ${blog.title}`}
+        <Link key={blog._id} href={`/blog/${blog.permalink}`}>
+          <Card
+            key={blog._id}
+            className="w-[80vw] md:w-[35vw] lg:w-[25vw] overflow-hidden rounded-2xl border border-muted-foreground/20 shadow-md transition-all duration-300 hover:border-primary/30"
           >
-            <Card className="border-2 dark:border-2 w-[85vw] lg:w-[25vw] shadow-sm">
-              <CardHeader>
+            <CardHeader>
+              <div className="overflow-hidden">
                 <Image
                   src={blog.coverimage}
                   alt={blog.title}
-                  className="w-full h-auto object-cover rounded-lg shadow-md"
-                  height={200}
-                  width={300}
-                  loading="lazy"
+                  width={500}
+                  height={300}
+                  className="h-auto w-full rounded-lg object-cover transition-transform duration-500"
                 />
-              </CardHeader>
-              <CardContent className="space-y-2">
-                <CardTitle className="text-md lg:text-lg font-bold text-wrap line-clamp-2">
-                  {blog.title}
-                </CardTitle>
-                <CardDescription className="text-sm lg:text-md text-wrap text-muted-foreground line-clamp-2">
-                  {blog.summary}
-                </CardDescription>
-              </CardContent>
-              <CardFooter className="flex flex-col items-start gap-3 text-xs md:text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <IoTimeOutline className="text-base " aria-label="Date" />
-                  <span className="font-medium">
-                    {new Date(blog.dateCreated).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
+              </div>
+            </CardHeader>
+
+            <CardContent className="flex flex-col gap-4 p-5">
+              <CardTitle className="text-lg font-normal tracking-wide text-wrap line-clamp-1">
+                {blog.title}
+              </CardTitle>
+
+              <CardDescription className="text-xs md:text-sm text-wrap leading-relaxed text-muted-foreground line-clamp-2">
+                {blog.summary}
+              </CardDescription>
+
+              <div className="flex flex-wrap gap-2">
+                {blog.tag.slice(0, 2).map((tag, index) => (
+                  <span
+                    key={index}
+                    className="rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-light text-primary"
+                  >
+                    {tag}
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <IoEyeOutline className="text-base " aria-label="Views" />
-                  <span className="font-medium">
-                    {blog.views.toLocaleString()} views
+                ))}
+
+                {blog.tag.length > 2 && (
+                  <span className="px-2 py-1 text-xs text-muted-foreground">
+                    +{blog.tag.length - 2} more
                   </span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <FaRegComments className="text-base " aria-label="Comments" />
-                  <span className="font-medium">
-                    {blog.comments.toLocaleString()} comments
-                  </span>
-                </div>
-              </CardFooter>
-            </Card>
-          </Link>
-        </article>
+                )}
+              </div>
+            </CardContent>
+
+            <CardFooter className="flex flex-col items-start gap-3 text-sm text-muted-foreground">
+              <div className="flex items-center gap-2">
+                <FiClock className="text-base" />
+                <span>
+                  {new Date(blog.dateCreated).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FiEye className="text-base " />
+                <span>{blog.views.toLocaleString()} views</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FiMessageCircle className="text-base " />
+                <span>{blog.comments.toLocaleString()} comments</span>
+              </div>
+            </CardFooter>
+          </Card>
+        </Link>
       ))}
     </section>
   );
