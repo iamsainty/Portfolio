@@ -45,31 +45,31 @@ const cardPos = [
     color: "text-indigo-500",
     desktop: { x: -140, y: -120, scale: 1.02, z: 4 },
     tablet: { x: -120, y: -110, scale: 1.05, z: 4 },
-    mobile: { x: -90, y: -150, scale: 0.88, z: 5 },
+    mobile: { x: -90, y: -90, scale: 0.88, z: 5 },
   },
   {
     color: "text-rose-500",
     desktop: { x: 160, y: -80, scale: 1.05, z: 3 },
     tablet: { x: 125, y: -70, scale: 1, z: 3 },
-    mobile: { x: 85, y: -115, scale: 0.86, z: 4 },
+    mobile: { x: 85, y: -55, scale: 0.86, z: 4 },
   },
   {
     color: "text-amber-500",
     desktop: { x: -120, y: 40, scale: 0.97, z: 2 },
     tablet: { x: -95, y: 30, scale: 0.92, z: 2 },
-    mobile: { x: -95, y: -30, scale: 0.86, z: 3 },
+    mobile: { x: -95, y: 30, scale: 0.86, z: 3 },
   },
   {
     color: "text-emerald-500",
     desktop: { x: 170, y: 50, scale: 0.92, z: 2 },
     tablet: { x: 135, y: 50, scale: 0.92, z: 2 },
-    mobile: { x: 100, y: -10, scale: 0.86, z: 2 },
+    mobile: { x: 100, y: 50, scale: 0.86, z: 2 },
   },
   {
     color: "text-sky-500",
     desktop: { x: 0, y: 160, scale: 0.96, z: 1 },
     tablet: { x: 0, y: 160, scale: 0.88, z: 1 },
-    mobile: { x: 0, y: 90, scale: 0.84, z: 1 },
+    mobile: { x: 0, y: 150, scale: 0.84, z: 1 },
   },
 ];
 
@@ -142,7 +142,7 @@ const HeroSection = ({ data }) => {
             </p>
           </div>
         </div>
-        <div className="relative w-full min-h-[80vh] flex items-center justify-center overflow-hidden">
+        <div className="relative w-full min-h-[50vh] md:min-h-[65vh] lg:min-h-[80vh] flex items-center justify-center overflow-hidden">
           <div className="absolute w-[60%] h-[60%] bg-gradient-to-r from-indigo-500/30 via-purple-500/20 to-sky-400/20 blur-3xl rounded-full" />
           <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/30 via-purple-400/20 to-cyan-400/20 blur-2xl rounded-full" />
 
