@@ -16,6 +16,13 @@ import {
   FiZap,
   FiLayers,
   FiFeather,
+  FiCode,
+  FiCpu,
+  FiBookOpen,
+  FiEdit3,
+  FiDatabase,
+  FiLayout,
+  FiCloud,
 } from "react-icons/fi";
 
 const icons = {
@@ -24,12 +31,19 @@ const icons = {
   FiZap,
   FiLayers,
   FiFeather,
+  FiCode,
+  FiCpu,
+  FiBookOpen,
+  FiEdit3,
+  FiDatabase,
+  FiLayout,
+  FiCloud,
 };
 
 const cardPos = [
   {
     color: "text-indigo-500",
-    desktop: { x: -140, y: -120, scale: 1.1, z: 4 },
+    desktop: { x: -140, y: -120, scale: 1.02, z: 4 },
     tablet: { x: -120, y: -110, scale: 1.05, z: 4 },
     mobile: { x: -90, y: -150, scale: 0.88, z: 5 },
   },
@@ -41,19 +55,19 @@ const cardPos = [
   },
   {
     color: "text-amber-500",
-    desktop: { x: -120, y: 40, scale: 0.95, z: 2 },
+    desktop: { x: -120, y: 40, scale: 0.97, z: 2 },
     tablet: { x: -95, y: 30, scale: 0.92, z: 2 },
     mobile: { x: -95, y: -30, scale: 0.86, z: 3 },
   },
   {
     color: "text-emerald-500",
-    desktop: { x: 170, y: 50, scale: 0.95, z: 2 },
+    desktop: { x: 170, y: 50, scale: 0.92, z: 2 },
     tablet: { x: 135, y: 50, scale: 0.92, z: 2 },
     mobile: { x: 100, y: -10, scale: 0.86, z: 2 },
   },
   {
     color: "text-sky-500",
-    desktop: { x: 0, y: 160, scale: 0.9, z: 1 },
+    desktop: { x: 0, y: 160, scale: 0.96, z: 1 },
     tablet: { x: 0, y: 160, scale: 0.88, z: 1 },
     mobile: { x: 0, y: 90, scale: 0.84, z: 1 },
   },
