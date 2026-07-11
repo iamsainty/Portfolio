@@ -1,5 +1,6 @@
-import ProjectHeroSection from "./ProjectHeroSection";
+import HeroSection from "@/components/common/HeroSection";
 import Projects from "./Projects";
+import projectHeroConfig from "@/config/hero/projectHero";
 
 export async function generateMetadata() {
   try {
@@ -142,7 +143,7 @@ export async function generateMetadata() {
 export default async function Page() {
   return (
     <div>
-      <ProjectHeroSection />
+      <HeroSection data={projectHeroConfig} />
       <Projects />
     </div>
   );

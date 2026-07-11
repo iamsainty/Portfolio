@@ -1,7 +1,8 @@
 import React, { Suspense } from "react";
-import BlogHeroSection from "./BlogHeroSection";
 import Blogs from "./Blogs";
 import Loading from "./loading";
+import HeroSection from "@/components/common/HeroSection";
+import blogHeroConfig from "@/config/hero/blogHero";
 
 const fetchBlogs = async () => {
   try {
@@ -92,7 +93,7 @@ export default async function Page() {
   }
   return (
     <div className="flex flex-col items-center">
-      <BlogHeroSection />
+      <HeroSection data={blogHeroConfig} />
       <Suspense fallback={<Loading />}>
         <Blogs blogs={blogs} />
       </Suspense>
