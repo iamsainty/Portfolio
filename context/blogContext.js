@@ -36,7 +36,14 @@ export const BlogProvider = ({ children }) => {
           throw new Error(responseData.message || "Failed to fetch blogs.");
         }
 
-        setBlogs((previousBlogs) => [...previousBlogs, ...responseData.blogs]);
+        if (page === 1) {
+          setBlogs(responseData.blogs);
+        } else {
+          setBlogs((previousBlogs) => [
+            ...previousBlogs,
+            ...responseData.blogs,
+          ]);
+        }
         setPagination(responseData.pagination);
       } catch (error) {
         console.error("Error fetching blogs:", error);
