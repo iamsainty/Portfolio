@@ -16,12 +16,12 @@ export async function GET(request) {
     const blogs = await BlogPost.find(
       { status: "published" },
       {
-        coverImage: 1,
+        coverimage: 1,
         lastUpdated: 1,
         title: 1,
         summary: 1,
         permalink: 1,
-        tags: 1,
+        tag: 1,
         views: 1,
         comments: 1,
       }

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -13,50 +13,17 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
-import { FaRegComments } from "react-icons/fa";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  FiCalendar,
-  FiEye,
-  FiMessageCircle,
-  FiBookOpen,
-  FiClock,
-  FiArrowUpRight,
-} from "react-icons/fi";
-
-async function getBlogs() {
-  try {
-    const response = await fetch("/api/blog", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      return data.blogs;
-    } else {
-      throw new Error("Failed to fetch blogs");
-    }
-  } catch (error) {
-    console.error("Error fetching blogs:", error);
-    return [];
-  }
-}
+import { FiEye, FiMessageCircle, FiClock } from "react-icons/fi";
+import { useBlog } from "@/context/blogContext";
 
 const BlogSection = () => {
-  const [blogs, setBlogs] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { blogs, loading, fetchBlogs } = useBlog();
 
   useEffect(() => {
-    getBlogs().then((blogs) => {
-      setBlogs(blogs);
-      setLoading(false);
-    });
-  }, []);
+    fetchBlogs(1);
+  }, [fetchBlogs]);
+
   return (
     <section
       className="container mx-auto lg:max-w-6xl px-6 min-h-[90vh] w-full flex items-center overflow-hidden"
@@ -94,7 +61,6 @@ const BlogSection = () => {
           <div className="absolute w-[60%] h-[60%] bg-gradient-to-r from-indigo-500/30 via-purple-500/20 to-sky-400/20 blur-3xl rounded-full" />
           <div className="absolute w-[40%] h-[40%] bg-gradient-to-br from-indigo-400/30 via-purple-400/20 to-cyan-400/20 blur-2xl rounded-full" />
           <ScrollArea className="w-full whitespace-nowrap rounded-lg py-4">
-            {" "}
             <div className="flex min-w-full space-x-3 lg:space-x-5">
               {loading ? (
                 <>
