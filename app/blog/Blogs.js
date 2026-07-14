@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Card,
   CardContent,
@@ -8,19 +10,48 @@ import {
 } from "@/components/ui/card";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
-import { FaRegComments } from "react-icons/fa";
-import { IoEyeOutline, IoTimeOutline } from "react-icons/io5";
-import {
-  FiCalendar,
-  FiEye,
-  FiMessageCircle,
-  FiBookOpen,
-  FiClock,
-  FiArrowUpRight,
-} from "react-icons/fi";
+import React, { useEffect, useRef } from "react";
+import { FiEye, FiMessageCircle, FiClock } from "react-icons/fi";
+import { useBlog } from "@/context/blogContext";
 
-export default function Blogs({ blogs }) {
+export default function Blogs() {
+  const { blogs, loading, error, pagination, fetchBlogs } = useBlog();
+
+  const loadMoreRef = useRef(null);
+
+  useEffect(() => {
+    fetchBlogs(1);
+  }, [fetchBlogs]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !loading && pagination?.hasNextPage) {
+          fetchBlogs(pagination.currentPage + 1);
+        }
+      },
+      {
+        root: null,
+        rootMargin: "500px 0px",
+        threshold: 0,
+      }
+    );
+
+    if (loadMoreRef.current) {
+      observer.observe(loadMoreRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, [loading, pagination, fetchBlogs]);
+
+  if (error) {
+    return (
+      <section className="container mx-auto lg:max-w-6xl flex flex-col md:flex-row flex-wrap items-center justify-center overflow-hidden gap-8 lg:gap-5 my-20">
+        {error}
+      </section>
+    );
+  }
+
   return (
     <section className="container mx-auto lg:max-w-6xl flex flex-col md:flex-row flex-wrap items-center justify-center overflow-hidden gap-8 lg:gap-5 my-20">
       {blogs.map((blog) => (
@@ -91,6 +122,7 @@ export default function Blogs({ blogs }) {
           </Card>
         </Link>
       ))}
+      <div ref={loadMoreRef}></div>
     </section>
   );
 }

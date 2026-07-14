@@ -1,35 +1,9 @@
-import React, { Suspense } from "react";
+import React from "react";
 import Blogs from "./Blogs";
-import Loading from "./loading";
 import HeroSection from "@/components/common/HeroSection";
 import blogHeroConfig from "@/config/hero/blogHero";
 
-const fetchBlogs = async () => {
-  try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    if (data.success) {
-      return data.blogs;
-    }
-    return null;
-  } catch (error) {
-    console.error("Error fetching blogs:", error);
-    return null;
-  }
-};
-
 export async function generateMetadata() {
-  const blogs = await fetchBlogs();
-  const blogTitles = blogs ? blogs.map((blog) => blog.title).join(", ") : "";
-
   return {
     title: "Hey Sainty Blog - Tech Stories, Tutorials, Guides and More",
     description:
@@ -47,7 +21,6 @@ export async function generateMetadata() {
       "React Blog",
       "Tech Insights",
       "Priyanshu Chaurasiya",
-      ...blogTitles.split(", "),
     ],
     author: "Priyanshu Chaurasiya",
     canonical: "https://www.heysainty.com/blog",
@@ -82,21 +55,10 @@ export async function generateMetadata() {
 }
 
 export default async function Page() {
-  const blogs = await fetchBlogs();
-
-  if (!blogs || blogs.length === 0) {
-    return (
-      <section>
-        <h1>No blogs found</h1>
-      </section>
-    );
-  }
   return (
     <div className="flex flex-col items-center">
       <HeroSection data={blogHeroConfig} />
-      <Suspense fallback={<Loading />}>
-        <Blogs blogs={blogs} />
-      </Suspense>
+      <Blogs />
     </div>
   );
 }
