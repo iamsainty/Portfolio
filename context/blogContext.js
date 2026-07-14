@@ -1,6 +1,6 @@
 "use client";
 
-const { createContext, useState, useContext } = require("react");
+const { createContext, useState, useContext, useCallback } = require("react");
 
 const BlogContext = createContext();
 
@@ -9,34 +9,44 @@ export const BlogProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);
   const [blogpost, setBlogpost] = useState(null);
   const [error, setError] = useState(null);
+  const [pagination, setPagination] = useState(null);
 
-  const getBlogs = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          next: { revalidate: 3600 },
+  const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+  const fetchBlogs = useCallback(
+    async (page = 1) => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const apiResponse = await fetch(
+          `${API_BASE_URL}/api/blog?page=${encodeURIComponent(page)}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            next: { revalidate: 3600 },
+          }
+        );
+
+        const responseData = await apiResponse.json();
+
+        if (!apiResponse.ok || !responseData.success) {
+          throw new Error(responseData.message || "Failed to fetch blogs.");
         }
-      );
 
-      const data = await response.json();
-      if (data.success) {
-        setBlogs(data.blogs);
-      } else {
-        setError(data.error || "Failed to fetch blogs.");
+        setBlogs((previousBlogs) => [...previousBlogs, ...responseData.blogs]);
+        setPagination(responseData.pagination);
+      } catch (error) {
+        console.error("Error fetching blogs:", error);
+        setError(error.message || "An unexpected error occurred.");
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error(error);
-      setError(error.message || "An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [API_BASE_URL]
+  );
 
   const getBlogpost = async (permalink) => {
     try {
@@ -283,8 +293,9 @@ export const BlogProvider = ({ children }) => {
         blogs,
         loading,
         error,
-        getBlogs,
+        pagination,
         blogpost,
+        fetchBlogs,
         getBlogpost,
         newBlog,
         newNewsletterRecipient,
