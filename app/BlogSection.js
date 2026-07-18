@@ -16,6 +16,7 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { Skeleton } from "@/components/ui/skeleton";
 import { FiEye, FiMessageCircle, FiClock } from "react-icons/fi";
 import { useBlog } from "@/context/blogContext";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const BlogSection = () => {
   const { blogs, loading, fetchBlogs } = useBlog();
@@ -148,12 +149,10 @@ const BlogSection = () => {
                           <div className="flex items-center gap-2">
                             <FiClock className="text-base" />
                             <span>
-                              {new Date(blog.dateCreated).toLocaleDateString(
-                                "en-US",
+                              {formatDistanceToNowStrict(
+                                new Date(blog.lastUpdated),
                                 {
-                                  year: "numeric",
-                                  month: "long",
-                                  day: "numeric",
+                                  addSuffix: true,
                                 }
                               )}
                             </span>

@@ -13,6 +13,7 @@ import Link from "next/link";
 import React, { useEffect, useRef } from "react";
 import { FiEye, FiMessageCircle, FiClock } from "react-icons/fi";
 import { useBlog } from "@/context/blogContext";
+import { formatDistanceToNowStrict } from "date-fns";
 
 export default function Blogs() {
   const { blogs, loading, error, pagination, fetchBlogs } = useBlog();
@@ -103,10 +104,8 @@ export default function Blogs() {
               <div className="flex items-center gap-2">
                 <FiClock className="text-base" />
                 <span>
-                  {new Date(blog.dateCreated).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
+                  {formatDistanceToNowStrict(new Date(blog.lastUpdated), {
+                    addSuffix: true,
                   })}
                 </span>
               </div>

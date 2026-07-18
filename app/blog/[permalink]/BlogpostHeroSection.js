@@ -9,13 +9,9 @@ import {
 } from "@/components/ui/breadcrumb";
 import Image from "next/image";
 import { Dot } from "lucide-react";
-import { formatDistanceToNow } from "date-fns";
+import { formatDistanceToNowStrict } from "date-fns";
 
 const BlogpostHeroSection = ({ blogpost }) => {
-  const timeAgo = formatDistanceToNow(new Date(blogpost.dateCreated), {
-    addSuffix: true,
-  });
-
   return (
     <section className="px-6 py-10 md:py-14 lg:py-16 flex flex-col justify-evenly items-center gap-10 lg:w-3/5 mx-auto">
       <Breadcrumb className="font-normal border px-4 py-2 rounded-full mb-8 bg-gray-50 dark:bg-gray-800 dark:text-white">
@@ -50,7 +46,9 @@ const BlogpostHeroSection = ({ blogpost }) => {
               <Dot />
             </span>
             <p className="font-light">
-              {timeAgo.charAt(0).toUpperCase() + timeAgo.slice(1)}
+              {formatDistanceToNowStrict(new Date(blogpost.lastUpdated), {
+                addSuffix: true,
+              })}
             </p>
           </div>
         </header>
