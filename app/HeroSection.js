@@ -39,6 +39,21 @@ const profileLinks = [
   },
 ];
 
+const today = new Date();
+
+const isIndependenceRepublicDay = [
+  "24-01",
+  "25-01",
+  "26-01",
+  "13-08",
+  "14-08",
+  "15-08",
+].includes(
+  `${String(today.getDate()).padStart(2, "0")}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}`
+);
+
 const HeroSection = () => {
   return (
     <section
@@ -53,7 +68,13 @@ const HeroSection = () => {
           </p>
 
           <h1 className="text-4xl lg:text-6xl tracking-wider text-foreground">
-            HEY SAINTY
+            {isIndependenceRepublicDay ? (
+              <span className="bg-gradient-to-r from-[#FF9933] via-foreground to-[#138808] bg-clip-text text-transparent">
+                HEY SAINTY
+              </span>
+            ) : (
+              "HEY SAINTY"
+            )}
           </h1>
 
           <p className="text-sm font-medium lg:text-md lg:text-lg text-foreground/70 leading-relaxed max-w-lg">

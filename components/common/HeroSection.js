@@ -103,6 +103,21 @@ const HeroSection = ({ data }) => {
     scale: { duration: 0.2 },
   });
 
+  const today = new Date();
+
+  const isIndependenceRepublicDay = [
+    "25-01",
+    "26-01",
+    "27-01",
+    "14-08",
+    "15-08",
+    "16-08",
+  ].includes(
+    `${String(today.getDate()).padStart(2, "0")}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}`
+  );
+
   return (
     <section className="container mx-auto lg:max-w-6xl px-6 min-h-[80vh] w-full flex items-center overflow-hidden">
       <div className="grid lg:grid-cols-2 gap-4 lg:gap-10 h w-full items-center justify-center">
@@ -132,8 +147,14 @@ const HeroSection = ({ data }) => {
           </Breadcrumb>
 
           <div className="flex flex-col justify-center gap-10">
-            <h1 className="text-2xl md:text-3xl lg:text-4xl font tracking-wider">
-              {data.title}
+            <h1 className="text-2xl md:text-3xl lg:text-4xl font-medium tracking-wider">
+              {isIndependenceRepublicDay ? (
+                <span className="bg-gradient-to-r from-[#FF9933] via-foreground to-[#138808] bg-clip-text text-transparent">
+                  {data.title}
+                </span>
+              ) : (
+                data.title
+              )}
             </h1>
 
             {/* Description */}
