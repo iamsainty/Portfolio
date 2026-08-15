@@ -25,6 +25,21 @@ const NavbarLinks = [
   { label: "Blog", href: "/blog" },
 ];
 
+const today = new Date();
+
+const isIndependenceRepublicDay = [
+  "24-01",
+  "25-01",
+  "26-01",
+  "13-08",
+  "14-08",
+  "15-08",
+].includes(
+  `${String(today.getDate()).padStart(2, "0")}-${String(
+    today.getMonth() + 1
+  ).padStart(2, "0")}`
+);
+
 const Navbar = () => {
   return (
     <header className="flex justify-center w-full h-[15vh] items-center">
@@ -35,7 +50,15 @@ const Navbar = () => {
       >
         {/* Logo / Brand */}
         <Link href="/" aria-label="Homepage" title="Hey Sainty - Home">
-          <span className="text-md sm:text-lg font-semibold">Hey Sainty</span>
+          <span
+            className={
+              isIndependenceRepublicDay
+                ? "text-md sm:text-lg font-semibold bg-gradient-to-r from-[#FF9933] via-foreground to-[#138808] bg-clip-text text-transparent"
+                : "text-md sm:text-lg font-semibold"
+            }
+          >
+            Hey Sainty
+          </span>
         </Link>
 
         {/* Navigation Menu for large screen */}
@@ -76,7 +99,14 @@ const Navbar = () => {
               side="right"
               className="flex flex-col w-4/5 justify-start items-center gap-10 pt-24"
             >
-              <SheetTitle className="text-2xl" aria-label="Hey Sainty">
+              <SheetTitle
+                className={`text-2xl ${
+                  isIndependenceRepublicDay
+                    ? "bg-gradient-to-r from-[#FF9933] via-foreground to-[#138808] bg-clip-text text-transparent"
+                    : ""
+                }`}
+                aria-label="Hey Sainty"
+              >
                 Hey Sainty
               </SheetTitle>
               <SheetDescription>
