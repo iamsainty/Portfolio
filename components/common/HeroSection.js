@@ -106,12 +106,12 @@ const HeroSection = ({ data }) => {
   const today = new Date();
 
   const isIndependenceRepublicDay = [
+    "24-01",
     "25-01",
     "26-01",
-    "27-01",
+    "13-08",
     "14-08",
     "15-08",
-    "16-08",
   ].includes(
     `${String(today.getDate()).padStart(2, "0")}-${String(
       today.getMonth() + 1

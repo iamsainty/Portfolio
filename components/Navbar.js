@@ -25,22 +25,22 @@ const NavbarLinks = [
   { label: "Blog", href: "/blog" },
 ];
 
-const today = new Date();
-
-const isIndependenceRepublicDay = [
-  "24-01",
-  "25-01",
-  "26-01",
-  "13-08",
-  "14-08",
-  "15-08",
-].includes(
-  `${String(today.getDate()).padStart(2, "0")}-${String(
-    today.getMonth() + 1
-  ).padStart(2, "0")}`
-);
-
 const Navbar = () => {
+  const today = new Date();
+
+  const isIndependenceRepublicDay = [
+    "24-01",
+    "25-01",
+    "26-01",
+    "13-08",
+    "14-08",
+    "15-08",
+  ].includes(
+    `${String(today.getDate()).padStart(2, "0")}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}`
+  );
+
   return (
     <header className="flex justify-center w-full h-[15vh] items-center">
       <nav

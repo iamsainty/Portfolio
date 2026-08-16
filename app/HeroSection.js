@@ -39,22 +39,22 @@ const profileLinks = [
   },
 ];
 
-const today = new Date();
-
-const isIndependenceRepublicDay = [
-  "24-01",
-  "25-01",
-  "26-01",
-  "13-08",
-  "14-08",
-  "15-08",
-].includes(
-  `${String(today.getDate()).padStart(2, "0")}-${String(
-    today.getMonth() + 1
-  ).padStart(2, "0")}`
-);
-
 const HeroSection = () => {
+  const today = new Date();
+
+  const isIndependenceRepublicDay = [
+    "24-01",
+    "25-01",
+    "26-01",
+    "13-08",
+    "14-08",
+    "15-08",
+  ].includes(
+    `${String(today.getDate()).padStart(2, "0")}-${String(
+      today.getMonth() + 1
+    ).padStart(2, "0")}`
+  );
+
   return (
     <section
       className="container mx-auto lg:max-w-6xl px-6 min-h-[80vh] w-full flex items-center overflow-hidden"
