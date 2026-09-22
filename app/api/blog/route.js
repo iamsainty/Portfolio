@@ -11,42 +11,67 @@ export async function GET(request) {
     const { searchParams } = new URL(request.url);
 
     const page = Math.max(parseInt(searchParams.get("page")) || 1, 1);
-    const skip = (page - 1) * PAGE_SIZE;
+    const src = searchParams.get("src") || "home";
 
-    const blogs = await BlogPost.find(
-      { status: "published" },
-      {
-        coverimage: 1,
-        lastUpdated: 1,
-        title: 1,
-        summary: 1,
-        permalink: 1,
-        tag: 1,
-        views: 1,
-        comments: 1,
-      }
-    )
-      .sort({ dateCreated: -1 })
-      .skip(skip)
-      .limit(PAGE_SIZE)
-      .lean();
+    let blogs;
+    let pagination = null;
 
-    const totalBlogs = await BlogPost.countDocuments({
-      status: "published",
-    });
+    if (src === "home" || src === "blog") {
+      const skip = (page - 1) * PAGE_SIZE;
+
+      blogs = await BlogPost.find(
+        { status: "published" },
+        {
+          coverimage: 1,
+          lastUpdated: 1,
+          title: 1,
+          summary: 1,
+          permalink: 1,
+          tag: 1,
+          views: 1,
+          comments: 1,
+        }
+      )
+        .sort({ dateCreated: -1 })
+        .skip(skip)
+        .limit(PAGE_SIZE)
+        .lean();
+
+      const totalBlogs = await BlogPost.countDocuments({
+        status: "published",
+      });
+
+      pagination = {
+        currentPage: page,
+        pageSize: PAGE_SIZE,
+        totalBlogs,
+        totalPages: Math.ceil(totalBlogs / PAGE_SIZE),
+        hasNextPage: page * PAGE_SIZE < totalBlogs,
+        hasPreviousPage: page > 1,
+      };
+    } else if (src === "sitemap") {
+      blogs = await BlogPost.find(
+        { status: "published" },
+        {
+          permalink: 1,
+          lastUpdated: 1,
+        }
+      ).lean();
+    } else {
+      return NextResponse.json(
+        {
+          success: false,
+          message: "Invalid source.",
+        },
+        { status: 400 }
+      );
+    }
 
     return NextResponse.json(
       {
         success: true,
         blogs,
-        pagination: {
-          currentPage: page,
-          pageSize: PAGE_SIZE,
-          totalBlogs,
-          totalPages: Math.ceil(totalBlogs / PAGE_SIZE),
-          hasNextPage: page * PAGE_SIZE < totalBlogs,
-          hasPreviousPage: page > 1,
-        },
+        ...(pagination && { pagination }),
       },
       { status: 200 }
     );
