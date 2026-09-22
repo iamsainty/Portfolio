@@ -21,14 +21,14 @@ export default function Blogs() {
   const loadMoreRef = useRef(null);
 
   useEffect(() => {
-    fetchBlogs(1);
+    fetchBlogs(1, "blog");
   }, [fetchBlogs]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting && !loading && pagination?.hasNextPage) {
-          fetchBlogs(pagination.currentPage + 1);
+          fetchBlogs(pagination.currentPage + 1, "blog");
         }
       },
       {

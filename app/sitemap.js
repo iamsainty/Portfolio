@@ -5,7 +5,7 @@ export const metadata = {
 async function fetchBlogs() {
   try {
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog`,
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/blog?src=sitemap`,
       {
         method: "GET",
         headers: {
@@ -13,14 +13,17 @@ async function fetchBlogs() {
         },
       }
     );
+
     const data = await response.json();
+
     if (data.success) {
       return data.blogs;
     }
-    return null;
+
+    return [];
   } catch (error) {
     console.error("Error fetching blogs:", error);
-    return null;
+    return [];
   }
 }
 
@@ -35,31 +38,33 @@ async function fetchPages() {
         },
       }
     );
+
     const data = await response.json();
+
     if (data.success) {
       return data.pages;
     }
-    return null;
+
+    return [];
   } catch (error) {
     console.error("Error fetching pages:", error);
-    return null;
+    return [];
   }
 }
 
 export default async function sitemap() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  const blogs = await fetchBlogs();
-  const pages = await fetchPages();
+  const [blogs, pages] = await Promise.all([fetchBlogs(), fetchPages()]);
 
-  const blogsSitemap = (blogs || []).map((blog) => ({
+  const blogsSitemap = blogs.map((blog) => ({
     url: `${baseUrl}/blog/${blog.permalink}`,
     lastModified: blog.lastUpdated || new Date().toISOString(),
     changeFrequency: "monthly",
     priority: 0.9,
   }));
 
-  const pagesSitemap = (pages || []).map((page) => ({
+  const pagesSitemap = pages.map((page) => ({
     url: `${baseUrl}/page/${page.permalink}`,
     lastModified: page.lastUpdated || new Date().toISOString(),
     changeFrequency: "yearly",

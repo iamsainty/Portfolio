@@ -14,13 +14,15 @@ export const BlogProvider = ({ children }) => {
   const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
   const fetchBlogs = useCallback(
-    async (page = 1) => {
+    async (page = 1, src = "home") => {
       try {
         setLoading(true);
         setError(null);
 
         const apiResponse = await fetch(
-          `${API_BASE_URL}/api/blog?page=${encodeURIComponent(page)}`,
+          `${API_BASE_URL}/api/blog?page=${encodeURIComponent(
+            page
+          )}&src=${encodeURIComponent(src)}`,
           {
             method: "GET",
             headers: {

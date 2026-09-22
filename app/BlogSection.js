@@ -22,7 +22,7 @@ const BlogSection = () => {
   const { blogs, loading, fetchBlogs } = useBlog();
 
   useEffect(() => {
-    fetchBlogs(1);
+    fetchBlogs(1, "home");
   }, [fetchBlogs]);
 
   return (
